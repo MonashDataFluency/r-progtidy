@@ -1,0 +1,55 @@
+---
+title: "Programming and Tidy data analysis in R"
+output: 
+    html_document:
+        theme: cerulean
+        css: style.css
+---
+
+<br>
+These are the course notes for the [Monash Data Fluency](https://www.monash.edu/data-fluency)'s "Programming and Tidy data analysis in R" course.
+This builds on our ["Introduction to R"](https://monashdatafluency.github.io/r-intro-2/) course. 
+
+The topics covered today will make you more productive in R. You will be able to automate repetitive tasks, and able to tackle more complicated data analysis.
+
+## Files
+
+* [r-progtidy-files.zip](r-progtidy-files.zip) - files used in this course
+
+## Slides
+
+* [Introduction](slides/introduction.html) ([.Rmd](slides/introduction.Rmd))
+
+## Topics
+
+* [Programming](topics/programming.html) ([.Rmd](topics/programming.Rmd))
+* [The Tidyverse: dplyr, ggplot2, and friends](topics/tidyverse.html) ([.Rmd](topics/tidyverse.Rmd))
+
+## See also
+
+In this series:
+
+* [Introduction to R (version 2)](https://monashdatafluency.github.io/r-intro-2/)
+* [Linear models in R](https://monashbioinformaticsplatform.github.io/r-linear/)
+
+Other resources:
+
+* [Monash Data Fluency](https://www.monash.edu/data-fluency)
+* [Monash Bioinformatics Platform](https://www.monash.edu/researchinfrastructure/bioinformatics)
+* [More online learning material](https://monashdatafluency.github.io/resources/)
+* [Next steps](https://monashdatafluency.github.io/r-intro-2/next-steps.html)
+
+
+## Authors
+
+This course is developed by [Paul Harrison](https://twitter.com/paulfharrison) for [Monash Data Fluency](https://www.monash.edu/data-fluency) and the [Monash Bioinformatics Platform](https://www.monash.edu/researchinfrastructure/bioinformatics).
+
+<a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="figures/CC-BY.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
+
+## Source code
+
+* [GitHub repository](https://github.com/MonashBioinformaticsPlatform/r-more)
+
+
+
+

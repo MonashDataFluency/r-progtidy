@@ -1,0 +1,188 @@
+---
+title: "R more"
+output: 
+    ioslides_presentation:
+        widescreen: true
+        smaller: true
+        css: style.css
+---
+
+## R more
+
+<img src="../figures/Rlogo.png" style="float: right">
+
+Today will be a fast tour of modern R.
+
+* R is a moving target
+
+* Focus on "Tidyverse" 
+  * `dplyr`, `ggplot2`, `tidyr`, etc
+  *  Mostly written by [Hadley Wickham](http://hadley.nz/)
+
+<br>
+
+S - 1976
+
+R - 1993
+
+
+## Working with data today is
+
+### Exploratory
+
+Complex experimental designs, large $n$ and/or large $p$.
+
+Understanding is a cyclic process of exploratation.
+
+### Integrative
+
+In biology you may want to join together many different views of a process: DNA, RNA, epigenetics, proteins, metabolome, cell morphology, ...
+
+Your data can be viewed in the context of many other data sets.
+
+<br>
+In biology, reference genome and gene annotations are the key to joining different types of data.
+
+
+## Analysis cycle
+
+See also: [The "R for Data Science" book](http://r4ds.had.co.nz/)
+
+<img src="../figures/data-cycle.svg" height="500">
+
+
+## Analysis cycle
+
+<img src="../figures/data-cycle.svg" style="position: absolute; right: 0px; top: 0px;" height="200">
+
+### Load, tidy, normalize and transform data
+
+* Tidy data makes visualization and modelling fast and easy.
+* Correctly normalized and transformed data brings out the signal in visualizations, and necessary for correct modelling.
+
+**Key packages:** readr, tidyr, dplyr
+
+
+## Analysis cycle
+
+<img src="../figures/data-cycle.svg" style="position: absolute; right: 0px; top: 0px;" height="200">
+
+### Visualization, exploration
+
+*The greatest value of a picture is when it forces us 
+<br>to notice what we never expected to see.*
+
+-- John Tukey
+
+* Suggests the need for normalization or transformation.
+* Shows if any of the data is poor quality.
+* Shows unexpected things in the data.
+* Informs what relationships are important in the data for any modelling and statistical testing.
+
+**Key packages:** ggplot2, shiny
+
+
+
+## Analysis cycle
+
+<img src="../figures/data-cycle.svg" style="position: absolute; right: 0px; top: 0px;" height="200">
+
+### Summarization, modelling, statistical testing
+
+* Shrinks large data sets for more manageable visualization.
+* Confirm what can be seen in visualization, tells us what *isn't* real.
+* What hypotheses does the data support and reject?
+* Failures should prompt a rethink of normalization and tranformation, and further visualization to understand the data.
+
+**Key packages:** dplyr
+
+**Base R functions:** mean, min, max, sd, lm, glm, anova, ...
+
+**Specialized packages:** too many to name
+
+<br>
+**Note:** Model fitting and hypothesis testing won't be covered today.
+
+
+## Tidy data is key
+
+Tidy data doesn't mean tidy for a person to read, it means the easiest form for the computer to work with.
+
+* only use data frames
+* each row is a single unit of observation
+* each column is a single piece of information
+* each column is a distinct kind of information
+
+Similar to database design.
+
+The experimental design is in the body of the table alongside the data, *not* in row names or column names.
+
+## Not tidy ...
+
+Example from: [Wickham, H. (2015) Tidy data. The Journal of Statistical Software, vol. 59.](http://vita.had.co.nz/papers/tidy-data.html)
+
+<img src="../figures/untidy.png" height="350">
+
+## ... tidier ... tidy
+
+<img src="../figures/tidy.png" height="450">
+
+
+## Programming (scripting)
+
+If every step of your analysis is recorded in an R script, with no manual steps:
+
+* you have a complete record of what you have done
+* easy to run entire script with test data
+* changes easily tested, poor early decisions easily fixed
+* today's big project becomes tomorrow's building block
+
+<!--
+Elements of programming we will be looking at today:
+
+* re-usable step-by-step procedures with `function`
+* doing something "for each ..." with `for` loops
+* making decisions with `if`
+* running external software with `system`
+* running all the code in a .R file as a "script", or to load a "library" of functions
+-->
+
+## Best practices
+
+<img src="../figures/remember-kids.jpg" style="position: absolute; right: 0px; top: 0px;" height="400">
+
+Open, reproducable data science.
+
+Show your code. It may surprise you who picks it up and runs with it.
+
+* Document analysis in Rmarkdown
+
+* Ultimately, share useful functions in R packages
+    * Version control (eg git, GitHub or GitLab)
+    * Tutorial and reference documentation
+    * Testing
+    * `devtools::check`
+
+<br>
+
+* For reproducibility, record which versions of packages you used 
+    * `sessionInfo()`
+
+
+## Today
+
+Rmarkdown documents
+
+Programming
+
+Tidying data and visualizing it
+
+Sharing data interactively
+
+
+
+### Also in notes
+
+Working with DNA sequences and genomic feature data
+
+
