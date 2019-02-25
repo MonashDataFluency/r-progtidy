@@ -1,5 +1,7 @@
 *.Rproj
 *.sublime*
+*_cache
+topics/Day*
 
 # History files
 .Rhistory
