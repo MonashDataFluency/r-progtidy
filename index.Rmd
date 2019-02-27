@@ -39,10 +39,17 @@ Other resources:
 * [More online learning material](https://monashdatafluency.github.io/resources/)
 * [Next steps](https://monashdatafluency.github.io/r-intro-2/next-steps.html)
 
+<br>
+
+* ["R for Data Science" by Garret Grolemund and Hadley Wickham](https://r4ds.had.co.nz/)
+* [Hadley Wickham's website](http://hadley.nz/) has further useful resources.
+* [The official R manuals](https://cran.r-project.org/manuals.html) give a complete description of the R language.
+
+
 
 ## Authors
 
-This course is developed by [Paul Harrison](https://twitter.com/paulfharrison) for [Monash Data Fluency](https://www.monash.edu/data-fluency) and the [Monash Bioinformatics Platform](https://www.monash.edu/researchinfrastructure/bioinformatics).
+This course is developed by Paul Harrison for [Monash Data Fluency](https://www.monash.edu/data-fluency) and the [Monash Bioinformatics Platform](https://www.monash.edu/researchinfrastructure/bioinformatics).
 
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="figures/CC-BY.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 

@@ -240,8 +240,6 @@ for(i in c(10,20,30,40,50)) {       #    1
                                     #
 cat("done\n")                       #                            12
                                     #   --order-of-execution-->
-                                    #
-                                    # i= - a a b b c c d d e  e  e ...
 ```
 
 We can name the loop variable anything we like. `in` is part of the `for` syntax. The body of the loop is enclosed in curly braces `{ }`. For a single-line loop body the braces aren't needed, but it is good practice to always include them.

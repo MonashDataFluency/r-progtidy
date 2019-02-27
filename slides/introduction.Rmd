@@ -19,9 +19,9 @@ R has a long history.
 We will be focussing on the modern "Tidyverse" approach. 
 
 * `dplyr`, `ggplot2`, `tidyr`, `purrr`, etc
-* Data frame ("tibble") is the one true data structure
-* Mostly written by [Hadley Wickham](http://hadley.nz/)
-* Safer and less "helpful"
+* data frame ("tibble") is the one true data structure
+* mostly written by [Hadley Wickham](http://hadley.nz/)
+* safer and less "helpful"
    * less edge cases (eg same data type produced with 1 and many items)
    * abort with error on unexpected input
 
@@ -68,6 +68,54 @@ Elements of programming we will be looking at today:
 * running all the code in a .R file as a "script", or to load a "library" of functions
 -->
 
+## Data
+
+As your programs get more complicated, you will also need ways to represent complex data.
+
+R data types are a bit different from those in other languages, such as Python or Javascript. Translating data structures from one of these languages, often the solution will be to use a "list".
+
+
+## Data
+
+### Vectors
+
+Vectors are a collection of a single kind of data.
+
+Unlike other languages, single numbers are a vector of length 1.
+
+Vectors can have `names( )`.
+
+### Lists
+
+Lists are a special kind of vector that can hold any kind of data, including other vectors and lists.
+
+If you need to bundle together a miscelaneous collection of data, lists are your solution. For example, a function that needs to return multiple results can return a list.
+
+Lists play the same role as both the `list` and `dict` types in Python or objects in Javascript.
+
+Access individual elements with `[[ ]]`.
+
+## Data
+
+### Matrices
+
+Matrices hold tabular data all of the same type.
+
+These are important for linear maths, but we won't be using them today.
+
+### Data frames (tibbles)
+
+Data frames hold tabular data where the columns may be different types. 
+
+Under the hood, they are a list of column vectors. 
+
+### Other classes
+
+There are various other classes for specialized purposes. In R, these are usually lists with a `class( )` attribute that marks them as special. These are called "S3" classes. You can manipulate them like lists, but there will also be various other functions that can be used with them.
+
+Not covered today: Bioconductor uses "S4" classes, which are different.
+
+
 
 ## Tidy data
 
@@ -91,5 +139,23 @@ Example from: [Wickham, H. (2015) Tidy data. The Journal of Statistical Software
 ## ... tidier ... tidy
 
 <img src="../figures/tidy.png" height="450">
+
+
+## Learning more
+
+["R for Data Science" by Garret Grolemund and Hadley Wickham](https://r4ds.had.co.nz/)
+
+* good general introduction, more detail on most topics covered today
+
+[Hadley Wickham's website](http://hadley.nz/) 
+
+* further books on Advanced R and R package development
+
+[Official R manuals](https://cran.r-project.org/manuals.html)
+
+* complete description of the R language
+
+
+
 
 

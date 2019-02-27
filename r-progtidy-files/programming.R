@@ -168,8 +168,6 @@ for(i in c(10,20,30,40,50)) {       #    1
                                     #
 cat("done\n")                       #                            12
                                     #   --order-of-execution-->
-                                    #
-                                    # i= - a a b b c c d d e  e  e ...
 
 
 ## ---------
