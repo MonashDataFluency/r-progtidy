@@ -55,7 +55,7 @@ This course is developed by Paul Harrison for [Monash Data Fluency](https://www.
 
 ## Source code
 
-* [GitHub repository](https://github.com/MonashBioinformaticsPlatform/r-more)
+* [GitHub repository](https://github.com/MonashDataFluency/r-progtidy)
 
 
 
