@@ -962,20 +962,38 @@ source(&quot;fastqc.R&quot;)</code></pre>
 </div>
 <div id="packages" class="section level1">
 <h1>Packages</h1>
-<p>Packages are the next step up from sourcing .R files. They let you write code that other people can install and then load with <code>library</code>. Packages generally contain documentation for all functions, and one or more vignettes describing how to use the package.</p>
-<p>Hadley Wickham has a great package called <code>devtools</code> that takes a lot of the pain out of package writing.</p>
+<p>Packages are the next step up from sourcing .R files. They let you write code that other people can install and then load with <code>library</code>.</p>
+<p>Hadley Wickham has a great package called <a href="https://cran.r-project.org/web/packages/devtools/index.html">devtools</a> that takes a lot of the pain out of package writing. The package <a href="https://cran.r-project.org/web/packages/usethis/index.html">usethis</a> automates creation of a package directory and basic files, and can set up various other parts of a package.</p>
+<p>Packages generally contain documentation for all functions, and one or more vignettes describing how to use the package. Function documentation is usually written as specially formatted comments before each function using <a href="https://cran.r-project.org/web/packages/roxygen2/index.html">roxygen2</a>.</p>
 <pre class="r"><code># Create an empty package template
 library(devtools)
-create(&quot;mypack&quot;)
+library(usethis)
 
-# ... Edit mylibrary/DESCRIPTION file
-# ... Write .R files in mylibrary/R folder
+create_package(&quot;mypack&quot;, open=FALSE)
+
+
+# ... Edit mypack/DESCRIPTION file
+# ... Write .R files in mypackR folder
+# For example create a file mypack/R/hello.R containing:
+#----
+
+#' @export
+hello &lt;- function() {
+    cat(&quot;Hello, world.\n&quot;)
+}
+
+#----
 
 # Load package. Use this during development.
 load_all(&quot;mypack&quot;)
+hello()
 
-# Build package, including converting inline documentation to .Rd files using roxygen2.
+# Build package documentation, converting inline documentation to .Rd files using roxygen2.
+# Update NAMESPACE file (lists functions the package makes public).
+document(&quot;mypack&quot;)
+
 # Check for common problems and missing documentation.
+# This also automatically runs document( ).
 # A CRAN package must pass all checks.
 check(&quot;mypack&quot;)</code></pre>
 <ul>
@@ -1009,8 +1027,8 @@ devtools::install_github(&quot;myusername/mypack&quot;)</code></pre>
 ##  [9] stringr_1.4.0    tools_3.6.0      xfun_0.4         utf8_1.1.4      
 ## [13] cli_1.0.1        htmltools_0.3.6  yaml_2.2.0       digest_0.6.18   
 ## [17] assertthat_0.2.0 tibble_2.0.1     crayon_1.3.4     purrr_0.3.0     
-## [21] codetools_0.2-16 glue_1.3.0       evaluate_0.13    rmarkdown_1.11  
-## [25] stringi_1.3.1    compiler_3.6.0   pillar_1.3.1     pkgconfig_2.0.2</code></pre>
+## [21] glue_1.3.0       evaluate_0.13    rmarkdown_1.11   stringi_1.3.1   
+## [25] compiler_3.6.0   pillar_1.3.1     pkgconfig_2.0.2</code></pre>
 </div>
 
 

@@ -46,6 +46,46 @@ Other resources:
 * [The official R manuals](https://cran.r-project.org/manuals.html) give a complete description of the R language.
 
 
+## Ways to run R and RStudio
+
+We will be using a training server with everything already set up. Unfortunately we aren't able to offer accounts on this server that will last more than a few days. In the longer term, you have various options when using R:
+
+* Install [R](https://cran.rstudio.com/) and [RStudio](https://www.rstudio.com/products/rstudio/download/) on your laptop. This gives maximum freedom to tinker. There are sometimes problems to work around when using work-supplied laptops.
+
+* Use [RStudio Cloud](https://rstudio.cloud/). This is a currently free service by the RStudio corporation. This is a very easy way to get started!
+
+* Use a Docker image such as [`rocker/rstudio`](https://github.com/rocker-org/rocker-versioned/blob/master/rstudio/README.md) or `rocker/tidyverse` on a cloud service such as the [NECTAR](https://nectar.org.au/) research cloud, [Google Cloud](https://cloud.google.com/), or [Amazon Web Services](https://aws.amazon.com/). This allows use of machines with larger memory and more CPU cores.
+
+Once R and RStudio are running, you can get set up for this workshop with this R code:
+
+```{r eval=F}
+download.file(
+    "https://monashdatafluency.github.io/r-progtidy/r-progtidy-files.zip",
+    destfile="r-progtidy-files.zip")
+unzip("r-progtidy-files.zip")
+
+install.packages(c("tidyverse", "devtools", "roxygen2"))
+```
+
+Some parts of the workshop use the external software [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) as an example. Exactly how to install this differs between operating systems. The following will install FastQC in RStudio Cloud:
+
+```{r eval=F}
+download.file(
+    "https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.8.zip",
+    destfile="fastqc.zip")
+unzip("fastqc.zip")
+system("chmod 755 FastQC/fastqc")
+
+# Test that it works
+system("FastQC/fastqc -h")
+
+# In the workshop, you will need to replace uses of:
+#    system("fastqc ...")
+# with:
+#    system("FastQC/fastqc ...")
+```
+
+We recommend [using projects](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects) in RStudio to organize your files.
 
 ## Authors
 

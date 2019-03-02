@@ -585,23 +585,42 @@ How should we share a project with others?
 
 # Packages
 
-Packages are the next step up from sourcing .R files. They let you write code that other people can install and then load with `library`. Packages generally contain documentation for all functions, and one or more vignettes describing how to use the package.
+Packages are the next step up from sourcing .R files. They let you write code that other people can install and then load with `library`. 
 
-Hadley Wickham has a great package called `devtools` that takes a lot of the pain out of package writing.
+Hadley Wickham has a great package called [devtools](https://cran.r-project.org/web/packages/devtools/index.html) that takes a lot of the pain out of package writing. The package [usethis](https://cran.r-project.org/web/packages/usethis/index.html) automates creation of a package directory and basic files, and can set up various other parts of a package.
+
+Packages generally contain documentation for all functions, and one or more vignettes describing how to use the package. Function documentation is usually written as specially formatted comments before each function using [roxygen2](https://cran.r-project.org/web/packages/roxygen2/index.html).
 
 ```{r, eval=FALSE}
 # Create an empty package template
 library(devtools)
-create("mypack")
+library(usethis)
 
-# ... Edit mylibrary/DESCRIPTION file
-# ... Write .R files in mylibrary/R folder
+create_package("mypack", open=FALSE)
+
+
+# ... Edit mypack/DESCRIPTION file
+# ... Write .R files in mypackR folder
+# For example create a file mypack/R/hello.R containing:
+#----
+
+#' @export
+hello <- function() {
+    cat("Hello, world.\n")
+}
+
+#----
 
 # Load package. Use this during development.
 load_all("mypack")
+hello()
 
-# Build package, including converting inline documentation to .Rd files using roxygen2.
+# Build package documentation, converting inline documentation to .Rd files using roxygen2.
+# Update NAMESPACE file (lists functions the package makes public).
+document("mypack")
+
 # Check for common problems and missing documentation.
+# This also automatically runs document( ).
 # A CRAN package must pass all checks.
 check("mypack")
 ```
