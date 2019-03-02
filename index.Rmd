@@ -7,10 +7,7 @@ output:
 ---
 
 <br>
-These are the course notes for the [Monash Data Fluency](https://www.monash.edu/data-fluency)'s "Programming and Tidy data analysis in R" course.
-This builds on our ["Introduction to R"](https://monashdatafluency.github.io/r-intro-2/) course. 
-
-The topics covered today will make you more productive in R. You will be able to automate repetitive tasks, and able to tackle more complicated data analysis.
+These are the course notes for the [Monash Data Fluency](https://www.monash.edu/data-fluency)'s "Programming and Tidy data analysis in R" course. This is an intermediate level R workshop, for people wishing to increase their fluency in R. It covers tasks that while not specifically involved in statistical analysis are necessary when working with data: loading data and getting it into a form that is easy to work with, automating repetitive tasks, identifying problems such as the need for normalization and transformation, and properly understanding the story the data wants to tell.
 
 ## Files
 
