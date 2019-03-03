@@ -430,15 +430,14 @@ source("fastqc.R")
 # Packages
 # ========
 
-# Create an empty package template
 library(devtools)
 library(usethis)
 
+# Create an empty package template
 create_package("mypack", open=FALSE)
 
-
 # ... Edit mypack/DESCRIPTION file
-# ... Write .R files in mypackR folder
+# ... Write .R files in mypack/R folder
 # For example create a file mypack/R/hello.R containing:
 #----
 
@@ -454,7 +453,7 @@ load_all("mypack")
 hello()
 
 # Build package documentation, converting inline documentation to .Rd files using roxygen2.
-# Update NAMESPACE file (lists functions the package makes public).
+# Update NAMESPACE file (lists functions the package exports for public consumption).
 document("mypack")
 
 # Check for common problems and missing documentation.

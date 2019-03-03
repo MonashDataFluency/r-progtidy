@@ -45,13 +45,13 @@ Other resources:
 
 ## Ways to run R and RStudio
 
-We will be using a training server with everything already set up. Unfortunately we aren't able to offer accounts on this server that will last more than a few days. In the longer term, you have various options when using R:
+We will be using a training server with everything already set up. Unfortunately we aren't able to offer accounts on this server that will last more than a few days. In the longer term, some options when using R are:
 
 * Install [R](https://cran.rstudio.com/) and [RStudio](https://www.rstudio.com/products/rstudio/download/) on your laptop. This gives maximum freedom to tinker. There are sometimes problems to work around when using work-supplied laptops.
 
 * Use [RStudio Cloud](https://rstudio.cloud/). This is a currently free service by the RStudio corporation. This is a very easy way to get started!
 
-* Use a Docker image such as [`rocker/rstudio`](https://github.com/rocker-org/rocker-versioned/blob/master/rstudio/README.md) or `rocker/tidyverse` on a cloud service such as the [NECTAR](https://nectar.org.au/) research cloud, [Google Cloud](https://cloud.google.com/), or [Amazon Web Services](https://aws.amazon.com/). This allows use of machines with larger memory and more CPU cores.
+* Use a Docker image such as [`rocker/rstudio`](https://github.com/rocker-org/rocker-versioned/blob/master/rstudio/README.md) or `rocker/tidyverse` on a cloud service such as the [NECTAR](https://nectar.org.au/) research cloud, [Google Cloud](https://cloud.google.com/), or [Amazon Web Services](https://aws.amazon.com/). This allows use of machines with larger memory and more CPU cores. It's also a route to making reproducible and readily sharable working environments, including software external to R.
 
 Once R and RStudio are running, you can get set up for this workshop with this R code:
 

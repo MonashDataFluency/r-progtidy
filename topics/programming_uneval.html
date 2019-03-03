@@ -813,17 +813,16 @@ source(&quot;fastqc.R&quot;)</code></pre>
 <div id="packages" class="section level1">
 <h1>Packages</h1>
 <p>Packages are the next step up from sourcing .R files. They let you write code that other people can install and then load with <code>library</code>.</p>
-<p>Hadley Wickham has a great package called <a href="https://cran.r-project.org/web/packages/devtools/index.html">devtools</a> that takes a lot of the pain out of package writing. The package <a href="https://cran.r-project.org/web/packages/usethis/index.html">usethis</a> automates creation of a package directory and basic files, and can set up various other parts of a package.</p>
-<p>Packages generally contain documentation for all functions, and one or more vignettes describing how to use the package. Function documentation is usually written as specially formatted comments before each function using <a href="https://cran.r-project.org/web/packages/roxygen2/index.html">roxygen2</a>.</p>
-<pre class="r"><code># Create an empty package template
-library(devtools)
+<p>Hadley Wickham has a great package called <a href="https://cran.r-project.org/web/packages/devtools/index.html">devtools</a> that takes a lot of the pain out of package writing. Also useful is the package <a href="https://cran.r-project.org/web/packages/usethis/index.html">usethis</a> automates creation of a package directory and basic files, and can set up various other parts of a package.</p>
+<p>Packages generally contain documentation and example code for all functions, and one or more vignettes describing how to use the package. Function documentation is usually written as specially formatted comments before each function using <a href="https://cran.r-project.org/web/packages/roxygen2/index.html">roxygen2</a>.</p>
+<pre class="r"><code>library(devtools)
 library(usethis)
 
+# Create an empty package template
 create_package(&quot;mypack&quot;, open=FALSE)
 
-
 # ... Edit mypack/DESCRIPTION file
-# ... Write .R files in mypackR folder
+# ... Write .R files in mypack/R folder
 # For example create a file mypack/R/hello.R containing:
 #----
 
@@ -839,13 +838,14 @@ load_all(&quot;mypack&quot;)
 hello()
 
 # Build package documentation, converting inline documentation to .Rd files using roxygen2.
-# Update NAMESPACE file (lists functions the package makes public).
+# Update NAMESPACE file (lists functions the package exports for public consumption).
 document(&quot;mypack&quot;)
 
 # Check for common problems and missing documentation.
 # This also automatically runs document( ).
 # A CRAN package must pass all checks.
 check(&quot;mypack&quot;)</code></pre>
+<p><code>create_package</code> creates a <code>.Rproj</code> project file for the package. If you open this project, RStudio changes to the package directory, and there is a new “Build” tab. This provides tools that parallel what Hadley’s <code>devtools</code> package provides with <code>load_all</code> and <code>check</code>, you can decide which you prefer! Old-school R developers may also use <code>R CMD</code> commands from the terminal (try typing <code>R -h</code> in the “Terminal” tab).</p>
 <ul>
 <li><a href="http://r-pkgs.had.co.nz/">Hadley Wickham’s “R packages” book</a></li>
 <li><a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html">Official package writing manual</a></li>

@@ -471,11 +471,11 @@ $(document).ready(function () {
 </div>
 <div id="ways-to-run-r-and-rstudio" class="section level2">
 <h2>Ways to run R and RStudio</h2>
-<p>We will be using a training server with everything already set up. Unfortunately we aren’t able to offer accounts on this server that will last more than a few days. In the longer term, you have various options when using R:</p>
+<p>We will be using a training server with everything already set up. Unfortunately we aren’t able to offer accounts on this server that will last more than a few days. In the longer term, some options when using R are:</p>
 <ul>
 <li><p>Install <a href="https://cran.rstudio.com/">R</a> and <a href="https://www.rstudio.com/products/rstudio/download/">RStudio</a> on your laptop. This gives maximum freedom to tinker. There are sometimes problems to work around when using work-supplied laptops.</p></li>
 <li><p>Use <a href="https://rstudio.cloud/">RStudio Cloud</a>. This is a currently free service by the RStudio corporation. This is a very easy way to get started!</p></li>
-<li><p>Use a Docker image such as <a href="https://github.com/rocker-org/rocker-versioned/blob/master/rstudio/README.md"><code>rocker/rstudio</code></a> or <code>rocker/tidyverse</code> on a cloud service such as the <a href="https://nectar.org.au/">NECTAR</a> research cloud, <a href="https://cloud.google.com/">Google Cloud</a>, or <a href="https://aws.amazon.com/">Amazon Web Services</a>. This allows use of machines with larger memory and more CPU cores.</p></li>
+<li><p>Use a Docker image such as <a href="https://github.com/rocker-org/rocker-versioned/blob/master/rstudio/README.md"><code>rocker/rstudio</code></a> or <code>rocker/tidyverse</code> on a cloud service such as the <a href="https://nectar.org.au/">NECTAR</a> research cloud, <a href="https://cloud.google.com/">Google Cloud</a>, or <a href="https://aws.amazon.com/">Amazon Web Services</a>. This allows use of machines with larger memory and more CPU cores. It’s also a route to making reproducible and readily sharable working environments, including software external to R.</p></li>
 </ul>
 <p>Once R and RStudio are running, you can get set up for this workshop with this R code:</p>
 <pre class="r"><code>download.file(
