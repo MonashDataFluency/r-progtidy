@@ -5,7 +5,7 @@ output: html_document
 
 Starting out in R, we tend to use it interactively, running one command at a time. In this section we will look at writing R code that performs repetitive task using "for-loops", packages up commonly needed sequences of operations in "functions", and makes decisions using "if-statements".
 
-Some comments on programming to aid in setting context when learning to program. What can computers do? They so the following:
+Some comments on programming to aid in setting context when learning to program. What can computers do? They do the following:
 
 1. Store and retrieve data and instructions - for example, variables that were discussed in the introductory course.
 
