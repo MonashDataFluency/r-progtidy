@@ -47,6 +47,72 @@ Don't run this if you are using our biotraining server, the packages are already
 #   ))
 ```
 
+# If-statements
+
+One fundamental programming concept is the "if-statement". An if-statement lets us do something only if some logical value is `TRUE`, or do one thing if it is `TRUE` and another if it is `FALSE`.
+
+In the introductory R day, we used logical vectors to query a data frame. Everything we learned about making and manipulating logical vectors is applicable here, but with the restriction that we need a single logical value, i.e. a logical vector of length 1.
+
+The general pattern of an if statement is:
+
+```
+if (LOGICAL_VALUE) {
+    THING_TO_DO_IF_TRUE
+} else {
+    THING_TO_DO_IF_FALSE
+}
+```
+
+Here is an example:
+
+```{r, results="hold"}
+num <- 37                   # 1
+if (num > 100) {            #   2
+  cat("greater\n")          #
+} else {                    #
+  cat("not greater\n")      #     3
+}                           #       
+cat("done\n")               #       4
+                            # --time-->
+```
+
+The second line of this code uses an if-statement to tell R that we want to make a choice. If the following test is `TRUE`, the body of the `if` (i.e., the lines in the curly braces underneath it) are executed. If the test is `FALSE`, the body of the `else` is executed instead.
+Only one or the other is ever executed.
+
+In the example above, the test `num > 100` returns the value `FALSE`, which is why the code inside the `if` block was skipped and the code inside the `else` block was run instead.
+
+If-statements don't have to include an `else`. If there isn't one, R simply does nothing if the test is FALSE:
+
+```{r results="hold"}
+num <- 53                            # 1
+if (num > 100) {                     #   2
+  cat("num is greater than 100\n")   #
+}                                    #     
+cat("done\n")                        #     3
+                                     # --time-->
+```
+
+
+We can also chain several tests together when there are more than two options. As an example, here is a function that returns the sign of a number:
+
+```{r}
+if (num > 0) {            # line 1
+  return(1)             # line 2
+} else if (num == 0) {    # line 3
+  return(0)             # line 4
+} else {                  
+  return(-1)            # line 5
+}                         
+
+num <- -3
+num <- 0
+num <- 2/3
+```
+
+## Quiz {.challenge}
+
+Which lines above are executed, and in what order, for each value of `num`?
+
 
 # Functions
 
@@ -228,7 +294,6 @@ Testing your code is important. Invent a test case for your code consisting of:
 * The return value you expect.
 
 Confirm that your function works as expected.
-
 
 
 
@@ -501,73 +566,14 @@ checking. I use it to bind vectors into a data.frame, which `bind_rows` refuses 
 bigtab <- do.call(rbind, sumtabs)
 ```
 
-# If-statements
+## Summary
+What we've just done is:
 
-One final programming concept you need to know about is the "if-statement". An if-statement lets us do something only if some logical value is `TRUE`, or do one thing if it is `TRUE` and another if it is `FALSE`.
+1. Create a custom reader tool that sets up each file inside R
 
-In the introductory R day, we used logical vectors to query a data frame. Everything we learned about making and manipulating logical vectors is applicable here, but with the restriction that we need a single logical value, i.e. a logical vector of length 1.
+1. Use a looping tool to apply that function to a collection of file names
 
-The general pattern of an if statement is:
-
-```
-if (LOGICAL_VALUE) {
-    THING_TO_DO_IF_TRUE
-} else {
-    THING_TO_DO_IF_FALSE
-}
-```
-
-Here is an example:
-
-```{r, results="hold"}
-num <- 37                   # 1
-if (num > 100) {            #   2
-  cat("greater\n")          #
-} else {                    #
-  cat("not greater\n")      #     3
-}                           #       
-cat("done\n")               #       4
-                            # --time-->
-```
-
-The second line of this code uses an if-statement to tell R that we want to make a choice. If the following test is `TRUE`, the body of the `if` (i.e., the lines in the curly braces underneath it) are executed. If the test is `FALSE`, the body of the `else` is executed instead.
-Only one or the other is ever executed.
-
-In the example above, the test `num > 100` returns the value `FALSE`, which is why the code inside the `if` block was skipped and the code inside the `else` block was run instead.
-
-If-statements don't have to include an `else`. If there isn't one, R simply does nothing if the test is FALSE:
-
-```{r results="hold"}
-num <- 53                            # 1
-if (num > 100) {                     #   2
-  cat("num is greater than 100\n")   #
-}                                    #     
-cat("done\n")                        #     3
-                                     # --time-->
-```
-
-
-We can also chain several tests together when there are more than two options. As an example, here is a function that returns the sign of a number:
-
-```{r}
-sign <- function(num) {
-    if (num > 0) {            # line 1
-        return(1)             # line 2
-    } else if (num == 0) {    # line 3
-        return(0)             # line 4
-    } else {                  
-        return(-1)            # line 5
-    }                         
-}
-
-sign(-3)
-sign(0)
-sign(2/3)
-```
-
-## Quiz {.challenge}
-
-Which lines of the function `sign` executed when it was called above, and in what order?
+1. Transform the results produced by the looping tool into a data.frame that we can use for other purposes.
 
 
 ## Improving load_fastqc

@@ -1,0 +1,46 @@
+---
+title: "Microscopy preliminary analysis"
+author: "Richard Beare"
+date: "02/03/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::read_chunk("programming_microscopy.R")
+```
+
+# Introduction
+
+Some background
+
+# Loading data
+Load the data and combine into a single data frame. Add treatment, datestamp and field columns
+
+```{r Libraries}
+
+```
+```{r SourceFiles}
+
+```
+```{r LoadFunction}
+
+```
+```{r LoadData}
+
+```
+
+# Summary statistics
+
+General stuff about the data:
+
+```{r SummaryStats}
+
+```
+
+# Visualization
+
+```{r Plot}
+
+```
+
