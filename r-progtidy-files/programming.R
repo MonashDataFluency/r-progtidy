@@ -14,6 +14,57 @@
 #   ))
 
 
+# =============
+# If-statements
+# =============
+
+if (LOGICAL_VALUE) {
+    THING_TO_DO_IF_TRUE
+} else {
+    THING_TO_DO_IF_FALSE
+}
+
+
+num <- 37                   # 1
+if (num > 100) {            #   2
+  cat("greater\n")          #
+} else {                    #
+  cat("not greater\n")      #     3
+}                           #
+cat("done\n")               #       4
+                            # --time-->
+
+
+num <- 53                            # 1
+if (num > 100) {                     #   2
+  cat("num is greater than 100\n")   #
+}                                    #
+cat("done\n")                        #     3
+                                     # --time-->
+
+
+if (num > 0) {            # line 1
+  return(1)             # line 2
+} else if (num == 0) {    # line 3
+  return(0)             # line 4
+} else {
+  return(-1)            # line 5
+}
+
+num <- -3
+num <- 0
+num <- 2/3
+
+
+## ----
+## Quiz
+## ----
+# 
+# Which lines above are executed, and in what order, for each value of
+# `num`?
+# 
+# 
+#
 # =========
 # Functions
 # =========
@@ -130,7 +181,6 @@ fahr_to_celsius(212)
 # * The return value you expect.
 # 
 # Confirm that your function works as expected.
-# 
 # 
 # 
 # 
@@ -256,13 +306,13 @@ for(day in days) {
 library(readr)
 
 
-read_tsv("Day0_fastqc/summary.txt")
+read_tsv("r-progtidy-files/fastqc-output/Day0_fastqc/summary.txt")
 
 
-read_tsv("Day0_fastqc/summary.txt", col_names=FALSE)
+read_tsv("r-progtidy-files/fastqc-output/Day0_fastqc/summary.txt", col_names=FALSE)
 
 
-filename <- "Day0_fastqc/summary.txt"
+filename <- "r-progtidy-files/fastqc-output/Day0_fastqc/summary.txt"
 sumtab <- read_tsv(filename, col_names=FALSE)
 colnames(sumtab) <- c("grade", "test", "file")
 sumtab$grade <- factor(sumtab$grade, c("FAIL","WARN","PASS"))
@@ -276,7 +326,7 @@ load_fastqc <- function(filename) {
     sumtab
 }
 
-load_fastqc("Day0_fastqc/summary.txt")
+load_fastqc("r-progtidy-files/fastqc-output/Day0_fastqc/summary.txt")
 
 
 ## ---------------------
@@ -284,11 +334,17 @@ load_fastqc("Day0_fastqc/summary.txt")
 ## ---------------------
 
 days <- c(0,4,7,10,15,20)
-filenames <- paste0("Day", days, "_fastqc/summary.txt")
+filenames <- file.path("r-progtidy-files/fastqc-output", paste0("Day", days, "_fastqc/summary.txt"))
 filenames
 
 
 sumtabs <- lapply(filenames, load_fastqc)
+
+
+sumtabs <- list()
+for (idx in 1:length(filenames)) {
+  sumtabs[[idx]] <- load_fastqc(filenames[idx])
+}
 
 
 sumtabs
@@ -308,59 +364,13 @@ bigtab
 table(bigtab$test, bigtab$grade)
 
 
-# =============
-# If-statements
-# =============
-
-if (LOGICAL_VALUE) {
-    THING_TO_DO_IF_TRUE
-} else {
-    THING_TO_DO_IF_FALSE
-}
+bigtab <- do.call(rbind, sumtabs)
 
 
-num <- 37                   # 1
-if (num > 100) {            #   2
-  cat("greater\n")          #
-} else {                    #
-  cat("not greater\n")      #     3
-}                           #
-cat("done\n")               #       4
-                            # --time-->
+## -------
+## Summary
+## -------
 
-
-num <- 53                            # 1
-if (num > 100) {                     #   2
-  cat("num is greater than 100\n")   #
-}                                    #
-cat("done\n")                        #     3
-                                     # --time-->
-
-
-sign <- function(num) {
-    if (num > 0) {            # line 1
-        return(1)             # line 2
-    } else if (num == 0) {    # line 3
-        return(0)             # line 4
-    } else {
-        return(-1)            # line 5
-    }
-}
-
-sign(-3)
-sign(0)
-sign(2/3)
-
-
-## ----
-## Quiz
-## ----
-# 
-# Which lines of the function `sign` executed when it was called above,
-# and in what order?
-# 
-# 
-#
 ## ---------------------
 ## Improving load_fastqc
 ## ---------------------
@@ -424,8 +434,11 @@ source("fastqc.R")
 # R](http://swcarpentry.github.io/r-novice-inflammation/06-best-
 # practices-R/)
 # 
-# 
 #
+# ================
+# Extended example
+# ================
+
 # ========
 # Packages
 # ========

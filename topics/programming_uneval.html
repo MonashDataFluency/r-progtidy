@@ -336,9 +336,6 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
-summary {
-  display: list-item;
-}
 </style>
 
 
@@ -346,74 +343,14 @@ summary {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
-
-<style type="text/css">
-.tabset-dropdown > .nav-tabs {
-  display: inline-table;
-  max-height: 500px;
-  min-height: 44px;
-  overflow-y: auto;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
-  font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
-  font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
-}
-
-.tabset-dropdown > .nav-tabs > li.active {
-  display: block;
-}
-
-.tabset-dropdown > .nav-tabs > li > a,
-.tabset-dropdown > .nav-tabs > li > a:focus,
-.tabset-dropdown > .nav-tabs > li > a:hover {
-  border: none;
-  display: inline-block;
-  border-radius: 4px;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
-  display: block;
-  float: none;
-}
-
-.tabset-dropdown > .nav-tabs > li {
-  display: none;
-}
-</style>
-
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
 </script>
 
 <!-- code folding -->
+
 
 
 
@@ -429,16 +366,27 @@ $(document).ready(function () {
 
 <div id="TOC">
 <ul>
+<li><a href="#if-statements">If-statements</a></li>
 <li><a href="#functions">Functions</a></li>
 <li><a href="#for-loops">For-loops</a></li>
 <li><a href="#a-practical-programming-exercise">A practical programming exercise</a></li>
-<li><a href="#if-statements">If-statements</a></li>
 <li><a href="#sourcing-.r-files">Sourcing .R files</a></li>
+<li><a href="#extended-example">Extended example</a></li>
 <li><a href="#packages">Packages</a></li>
 </ul>
 </div>
 
 <p>Starting out in R, we tend to use it interactively, running one command at a time. In this section we will look at writing R code that performs repetitive task using “for-loops”, packages up commonly needed sequences of operations in “functions”, and makes decisions using “if-statements”.</p>
+<p>Some comments on programming to aid in setting context when learning to program. What can computers do? They so the following:</p>
+<ol style="list-style-type: decimal">
+<li><p>Store and retrieve data and instructions - for example, variables that were discussed in the introductory course.</p></li>
+<li><p>Perform arithemtic, including performing comparisons.</p></li>
+<li><p>Execute stored instructions</p></li>
+</ol>
+<p>A programming language makes these basics accessible in convenient forms. Loops, which we will meet soon, are combinations of counters (arithmetic) and comparisons to perform repeated execution of blocks of instructions.</p>
+<p>Programming languages are collections of useful combinations of these structures that are usually presented in a formal style. Learning to use a specific programming language includes learning to read the specific formulation, or <em>syntax</em> (the use of brackets, keywords etc), and how to utilise the language specific structures for your problem.</p>
+<p>As you gain experience you will build a mental library of <em>patterns</em> or <em>idioms</em> - small collections of code and concepts that you can apply, with minor modifications, to many problems. We’ll introduce a few patterns that we’ve found useful in a variety of applications.</p>
+<p>While <em>R</em> is known as a statistical environment, it is built around a general purpose programming language. This is part of what has made so many extensions possible. The big gains of learning to use this language are especially evident in the early stages of a data analysis problem - importing, cleaning and visualizing the data.</p>
 <p>We are using a couple of packages from CRAN in this tutorial, which we can install with <code>install.packages</code>. Don’t run this if you are using our biotraining server, the packages are already installed!</p>
 <pre class="r"><code># Install the entire Tidyverse collection of packages with:
 #
@@ -450,8 +398,54 @@ $(document).ready(function () {
 #       &quot;readr&quot;,    # read tabular data
 #       &quot;dplyr&quot;     # general data frame manipulation
 #   ))</code></pre>
+<div id="if-statements" class="section level1">
+<h1>If-statements</h1>
+<p>One fundamental programming concept is the “if-statement”. An if-statement lets us do something only if some logical value is <code>TRUE</code>, or do one thing if it is <code>TRUE</code> and another if it is <code>FALSE</code>.</p>
+<p>In the introductory R day, we used logical vectors to query a data frame. Everything we learned about making and manipulating logical vectors is applicable here, but with the restriction that we need a single logical value, i.e. a logical vector of length 1.</p>
+<p>The general pattern of an if statement is:</p>
+<pre><code>if (LOGICAL_VALUE) {
+    THING_TO_DO_IF_TRUE
+} else {
+    THING_TO_DO_IF_FALSE
+}</code></pre>
+<p>Here is an example:</p>
+<pre class="r"><code>num &lt;- 37                   # 1
+if (num &gt; 100) {            #   2
+  cat(&quot;greater\n&quot;)          #
+} else {                    #
+  cat(&quot;not greater\n&quot;)      #     3
+}                           #       
+cat(&quot;done\n&quot;)               #       4
+                            # --time--&gt;</code></pre>
+<p>The second line of this code uses an if-statement to tell R that we want to make a choice. If the following test is <code>TRUE</code>, the body of the <code>if</code> (i.e., the lines in the curly braces underneath it) are executed. If the test is <code>FALSE</code>, the body of the <code>else</code> is executed instead. Only one or the other is ever executed.</p>
+<p>In the example above, the test <code>num &gt; 100</code> returns the value <code>FALSE</code>, which is why the code inside the <code>if</code> block was skipped and the code inside the <code>else</code> block was run instead.</p>
+<p>If-statements don’t have to include an <code>else</code>. If there isn’t one, R simply does nothing if the test is FALSE:</p>
+<pre class="r"><code>num &lt;- 53                            # 1
+if (num &gt; 100) {                     #   2
+  cat(&quot;num is greater than 100\n&quot;)   #
+}                                    #     
+cat(&quot;done\n&quot;)                        #     3
+                                     # --time--&gt;</code></pre>
+<p>We can also chain several tests together when there are more than two options. As an example, here is a function that returns the sign of a number:</p>
+<pre class="r"><code>if (num &gt; 0) {            # line 1
+  return(1)             # line 2
+} else if (num == 0) {    # line 3
+  return(0)             # line 4
+} else {                  
+  return(-1)            # line 5
+}                         
+
+num &lt;- -3
+num &lt;- 0
+num &lt;- 2/3</code></pre>
+<div id="quiz" class="section level2 challenge">
+<h2>Quiz</h2>
+<p>Which lines above are executed, and in what order, for each value of <code>num</code>?</p>
+</div>
+</div>
 <div id="functions" class="section level1">
 <h1>Functions</h1>
+<p>Functions are blocks of code stored in a special structure. They are modelled on the concept of a mathematical function - they receive inputs (arguments), perform operations on the inputs, and return results. We saw some examples of functions in the introduction: <code>mean</code>, <code>sum</code>, <code>read_csv</code></p>
 <p>Starting out in R mostly involves using functions that other people had written. We’re now going to see how to create our own functions. The general pattern of a function is:</p>
 <pre><code>FUNCTION_NAME &lt;- function(ARGUMENT_NAME1, ARGUMENT_NAME2, ...) {
     FUNCTION_BODY
@@ -461,6 +455,7 @@ $(document).ready(function () {
     (temp-32) * (5/9) + 273.15
 }</code></pre>
 <p>We define <code>fahr_to_kelvin</code> by assigning it a <code>function</code>. The list of argument names are containted within parentheses. Next, the body of the function–the statements that are executed when it runs–is contained within curly braces (<code>{}</code>). The statements in the body have been indented by four spaces, which makes the code easier to read but does not affect how the code operates.</p>
+<p>Note that there is a very important difference between <em>defining</em> a function and <em>calling</em>, or running a function.</p>
 <p>When we call the function, the values we pass to it are assigned to those variables so that we can use them inside the function. The expression inside the function is evaluated and the result is “returned” back to whoever asked for it.</p>
 <p>Let’s try running our function. Calling our own function is no different from calling any other function:</p>
 <pre class="r"><code># freezing point of water
@@ -478,7 +473,7 @@ fahr_to_kelvin(212)</code></pre>
 }</code></pre>
 <p>The braces are not actually needed if the function only contains one statement.</p>
 <pre class="r"><code>fahr_to_kelvin &lt;- function(temp) (temp-32) * (5/9) + 273.15</code></pre>
-<p><code>return</code> can be used to return from a function immediately. Further code will not be run.</p>
+<p><code>return</code> can be used to return from a function immediately. Further code will not be run. I recommend always using explicit <code>return</code> statements.</p>
 <pre class="r"><code>fahr_to_kelvin &lt;- function(temp) {
     kelvin &lt;- (temp-32) * (5/9) + 273.15
     return(kelvin)
@@ -532,6 +527,8 @@ kelvin_to_celsius(0)</code></pre>
 # freezing point of water in Celsius
 fahr_to_celsius(32.0)</code></pre>
 <p>This is our first taste of how larger programs are built: we define basic operations, then combine them in ever-larger chunks to get the effect we want. Real-life functions will usually be larger than the ones shown here–typically half a dozen to a few dozen lines–but they shouldn’t ever be much longer than that, or the next person who reads it won’t be able to understand what’s going on.</p>
+<p>Function names and argument names are important cues to what code is doing.</p>
+<p>Functions also help manage code complexity by cleaning up their contents after completion.</p>
 <p>You might have noticed that all of these functions have an argument called <code>temp</code>. Why hasn’t this caused confusion and chaos? The answer is that arguments to a function and variables defined in the body of a function are <em>local</em> to a call to that function. Within the body of a function, R code can see variables from its own local environment, and variables from the global environment, but <em>not</em> variables local to other function calls. While running code R maintains a <em>stack</em> of local environments. When a call to a function returns, all of its local arguments and variables disappear.</p>
 <p><b>Tip:</b> There are several ways to see this in action.</p>
 <ul>
@@ -665,11 +662,11 @@ for(day in days) {
 <p>In base R we could use the function <code>read.delim</code> to read this file. It’s quite similar to <code>read.csv</code>. However, let’s use the Tidyverse package <code>readr</code> to load the file. To use <code>readr</code> we first need to load it with <code>library</code>.</p>
 <pre class="r"><code>library(readr)</code></pre>
 <p>We can now read the file like this:</p>
-<pre class="r"><code>read_tsv(&quot;Day0_fastqc/summary.txt&quot;)</code></pre>
+<pre class="r"><code>read_tsv(&quot;r-progtidy-files/fastqc-output/Day0_fastqc/summary.txt&quot;)</code></pre>
 <p>Oh! There aren’t column headings in this file. We need to tell <code>read_tsv</code> this.</p>
-<pre class="r"><code>read_tsv(&quot;Day0_fastqc/summary.txt&quot;, col_names=FALSE)</code></pre>
+<pre class="r"><code>read_tsv(&quot;r-progtidy-files/fastqc-output/Day0_fastqc/summary.txt&quot;, col_names=FALSE)</code></pre>
 <p>We should tidy this up a bit before using it. Columns should have meaningful names, and the PASS/WARN/FAIL grading looks like it should be a factor:</p>
-<pre class="r"><code>filename &lt;- &quot;Day0_fastqc/summary.txt&quot;
+<pre class="r"><code>filename &lt;- &quot;r-progtidy-files/fastqc-output/Day0_fastqc/summary.txt&quot;
 sumtab &lt;- read_tsv(filename, col_names=FALSE)
 colnames(sumtab) &lt;- c(&quot;grade&quot;, &quot;test&quot;, &quot;file&quot;)
 sumtab$grade &lt;- factor(sumtab$grade, c(&quot;FAIL&quot;,&quot;WARN&quot;,&quot;PASS&quot;))
@@ -683,7 +680,7 @@ sumtab</code></pre>
     sumtab
 }
 
-load_fastqc(&quot;Day0_fastqc/summary.txt&quot;)</code></pre>
+load_fastqc(&quot;r-progtidy-files/fastqc-output/Day0_fastqc/summary.txt&quot;)</code></pre>
 </div>
 <div id="applying-the-function" class="section level2">
 <h2>Applying the function</h2>
@@ -691,11 +688,18 @@ load_fastqc(&quot;Day0_fastqc/summary.txt&quot;)</code></pre>
 <p>The flavour of apply we need here is <code>lapply</code>, which takes a vector and calls a function on each element in turn of that vector (i.e. the “subsets” here are simply individual elements). The result is a list containing the returned values, hence the name <code>lapply</code>.</p>
 <p>First let’s work out the names of the files we want to load.</p>
 <pre class="r"><code>days &lt;- c(0,4,7,10,15,20)
-filenames &lt;- paste0(&quot;Day&quot;, days, &quot;_fastqc/summary.txt&quot;)
+filenames &lt;- file.path(&quot;r-progtidy-files/fastqc-output&quot;, paste0(&quot;Day&quot;, days, &quot;_fastqc/summary.txt&quot;))
 filenames</code></pre>
 <p>Now we can use <code>lapply</code> to apply our function to each of the filenames.</p>
 <pre class="r"><code>sumtabs &lt;- lapply(filenames, load_fastqc)</code></pre>
+<p><code>lapply</code> is one of the base R functional programming tools. It stands for loop-apply and performs a specific class of loops without the user needing to write the loop structure. It can lead to clear code, when you are used to seeing it.</p>
+<p>This example is equivalent to:</p>
+<pre class="r"><code>sumtabs &lt;- list()
+for (idx in 1:length(filenames)) {
+  sumtabs[[idx]] &lt;- load_fastqc(filenames[idx])
+}</code></pre>
 <p>We now have a list of data frames. Lists are a little different from the vectors we usually work with. See section 20.5 in the <a href="http://r4ds.had.co.nz/vectors.html">“R for data science” book</a> for a comprehensive explanation. Here are some ways to examine this object:</p>
+<p>Basic differences are that lists can contain things of different types and different sizes. In this case, we have a list of data.frames, which are not a basic R type (a vector of something)</p>
 <pre class="r"><code>sumtabs
 class(sumtabs)
 length(sumtabs)
@@ -709,53 +713,17 @@ bigtab &lt;- bind_rows(sumtabs)
 
 bigtab
 table(bigtab$test, bigtab$grade)</code></pre>
+<p>Base R has a similar idiom to do the same task. It is more flexible, but does less checking. I use it to bind vectors into a data.frame, which <code>bind_rows</code> refuses to do.</p>
+<pre class="r"><code>bigtab &lt;- do.call(rbind, sumtabs)</code></pre>
 </div>
-</div>
-<div id="if-statements" class="section level1">
-<h1>If-statements</h1>
-<p>One final programming concept you need to know about is the “if-statement”. An if-statement lets us do something only if some logical value is <code>TRUE</code>, or do one thing if it is <code>TRUE</code> and another if it is <code>FALSE</code>.</p>
-<p>In the introductory R day, we used logical vectors to query a data frame. Everything we learned about making and manipulating logical vectors is applicable here, but with the restriction that we need a single logical value, i.e. a logical vector of length 1.</p>
-<p>The general pattern of an if statement is:</p>
-<pre><code>if (LOGICAL_VALUE) {
-    THING_TO_DO_IF_TRUE
-} else {
-    THING_TO_DO_IF_FALSE
-}</code></pre>
-<p>Here is an example:</p>
-<pre class="r"><code>num &lt;- 37                   # 1
-if (num &gt; 100) {            #   2
-  cat(&quot;greater\n&quot;)          #
-} else {                    #
-  cat(&quot;not greater\n&quot;)      #     3
-}                           #       
-cat(&quot;done\n&quot;)               #       4
-                            # --time--&gt;</code></pre>
-<p>The second line of this code uses an if-statement to tell R that we want to make a choice. If the following test is <code>TRUE</code>, the body of the <code>if</code> (i.e., the lines in the curly braces underneath it) are executed. If the test is <code>FALSE</code>, the body of the <code>else</code> is executed instead. Only one or the other is ever executed.</p>
-<p>In the example above, the test <code>num &gt; 100</code> returns the value <code>FALSE</code>, which is why the code inside the <code>if</code> block was skipped and the code inside the <code>else</code> block was run instead.</p>
-<p>If-statements don’t have to include an <code>else</code>. If there isn’t one, R simply does nothing if the test is FALSE:</p>
-<pre class="r"><code>num &lt;- 53                            # 1
-if (num &gt; 100) {                     #   2
-  cat(&quot;num is greater than 100\n&quot;)   #
-}                                    #     
-cat(&quot;done\n&quot;)                        #     3
-                                     # --time--&gt;</code></pre>
-<p>We can also chain several tests together when there are more than two options. As an example, here is a function that returns the sign of a number:</p>
-<pre class="r"><code>sign &lt;- function(num) {
-    if (num &gt; 0) {            # line 1
-        return(1)             # line 2
-    } else if (num == 0) {    # line 3
-        return(0)             # line 4
-    } else {                  
-        return(-1)            # line 5
-    }                         
-}
-
-sign(-3)
-sign(0)
-sign(2/3)</code></pre>
-<div id="quiz" class="section level2 challenge">
-<h2>Quiz</h2>
-<p>Which lines of the function <code>sign</code> executed when it was called above, and in what order?</p>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+<p>What we’ve just done is:</p>
+<ol style="list-style-type: decimal">
+<li><p>Create a custom reader tool that sets up each file inside R</p></li>
+<li><p>Use a looping tool to apply that function to a collection of file names</p></li>
+<li><p>Transform the results produced by the looping tool into a data.frame that we can use for other purposes.</p></li>
+</ol>
 </div>
 <div id="improving-load_fastqc" class="section level2">
 <h2>Improving load_fastqc</h2>
@@ -810,6 +778,9 @@ source(&quot;fastqc.R&quot;)</code></pre>
 </ul>
 </div>
 </div>
+<div id="extended-example" class="section level1">
+<h1>Extended example</h1>
+</div>
 <div id="packages" class="section level1">
 <h1>Packages</h1>
 <p>Packages are the next step up from sourcing .R files. They let you write code that other people can install and then load with <code>library</code>.</p>
@@ -826,7 +797,7 @@ create_package(&quot;mypack&quot;, open=FALSE)
 # For example create a file mypack/R/hello.R containing:
 #----
 
-#' @export
+#&#39; @export
 hello &lt;- function() {
     cat(&quot;Hello, world.\n&quot;)
 }
