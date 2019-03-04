@@ -430,18 +430,34 @@ source("fastqc.R")
 # Packages
 # ========
 
-# Create an empty package template
 library(devtools)
-create("mypack")
+library(usethis)
 
-# ... Edit mylibrary/DESCRIPTION file
-# ... Write .R files in mylibrary/R folder
+# Create an empty package template
+create_package("mypack", open=FALSE)
+
+# ... Edit mypack/DESCRIPTION file
+# ... Write .R files in mypack/R folder
+# For example create a file mypack/R/hello.R containing:
+#----
+
+#' @export
+hello <- function() {
+    cat("Hello, world.\n")
+}
+
+#----
 
 # Load package. Use this during development.
 load_all("mypack")
+hello()
 
-# Build package, including converting inline documentation to .Rd files using roxygen2.
+# Build package documentation, converting inline documentation to .Rd files using roxygen2.
+# Update NAMESPACE file (lists functions the package exports for public consumption).
+document("mypack")
+
 # Check for common problems and missing documentation.
+# This also automatically runs document( ).
 # A CRAN package must pass all checks.
 check("mypack")
 

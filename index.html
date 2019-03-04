@@ -428,8 +428,7 @@ $(document).ready(function () {
 </div>
 
 
-<p><br> These are the course notes for the <a href="https://www.monash.edu/data-fluency">Monash Data Fluency</a>’s “Programming and Tidy data analysis in R” course. This builds on our <a href="https://monashdatafluency.github.io/r-intro-2/">“Introduction to R”</a> course.</p>
-<p>The topics covered today will make you more productive in R. You will be able to automate repetitive tasks, and able to tackle more complicated data analysis.</p>
+<p><br> These are the course notes for the <a href="https://www.monash.edu/data-fluency">Monash Data Fluency</a>’s “Programming and Tidy data analysis in R” course. This is an intermediate level R workshop, for people wishing to increase their fluency in R. It covers tasks that while not specifically involved in statistical analysis are necessary when working with data: loading data and getting it into a form that is easy to work with, automating repetitive tasks, identifying problems such as the need for normalization and transformation, and properly understanding the story the data wants to tell.</p>
 <div id="files" class="section level2">
 <h2>Files</h2>
 <ul>
@@ -469,6 +468,37 @@ $(document).ready(function () {
 <li><a href="http://hadley.nz/">Hadley Wickham’s website</a> has further useful resources.</li>
 <li><a href="https://cran.r-project.org/manuals.html">The official R manuals</a> give a complete description of the R language.</li>
 </ul>
+</div>
+<div id="ways-to-run-r-and-rstudio" class="section level2">
+<h2>Ways to run R and RStudio</h2>
+<p>We will be using a training server with everything already set up. Unfortunately we aren’t able to offer accounts on this server that will last more than a few days. In the longer term, some options when using R are:</p>
+<ul>
+<li><p>Install <a href="https://cran.rstudio.com/">R</a> and <a href="https://www.rstudio.com/products/rstudio/download/">RStudio</a> on your laptop. This gives maximum freedom to tinker. There are sometimes problems to work around when using work-supplied laptops.</p></li>
+<li><p>Use <a href="https://rstudio.cloud/">RStudio Cloud</a>. This is a currently free service by the RStudio corporation. This is a very easy way to get started!</p></li>
+<li><p>Use a Docker image such as <a href="https://github.com/rocker-org/rocker-versioned/blob/master/rstudio/README.md"><code>rocker/rstudio</code></a> or <code>rocker/tidyverse</code> on a cloud service such as the <a href="https://nectar.org.au/">NECTAR</a> research cloud, <a href="https://cloud.google.com/">Google Cloud</a>, or <a href="https://aws.amazon.com/">Amazon Web Services</a>. This allows use of machines with larger memory and more CPU cores. It’s also a route to making reproducible and readily sharable working environments, including software external to R.</p></li>
+</ul>
+<p>Once R and RStudio are running, you can get set up for this workshop with this R code:</p>
+<pre class="r"><code>download.file(
+    &quot;https://monashdatafluency.github.io/r-progtidy/r-progtidy-files.zip&quot;,
+    destfile=&quot;r-progtidy-files.zip&quot;)
+unzip(&quot;r-progtidy-files.zip&quot;)
+
+install.packages(c(&quot;tidyverse&quot;, &quot;devtools&quot;, &quot;roxygen2&quot;))</code></pre>
+<p>Some parts of the workshop use the external software <a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a> as an example. Exactly how to install this differs between operating systems. The following will install FastQC in RStudio Cloud:</p>
+<pre class="r"><code>download.file(
+    &quot;https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.8.zip&quot;,
+    destfile=&quot;fastqc.zip&quot;)
+unzip(&quot;fastqc.zip&quot;)
+system(&quot;chmod 755 FastQC/fastqc&quot;)
+
+# Test that it works
+system(&quot;FastQC/fastqc -h&quot;)
+
+# In the workshop, you will need to replace uses of:
+#    system(&quot;fastqc ...&quot;)
+# with:
+#    system(&quot;FastQC/fastqc ...&quot;)</code></pre>
+<p>We recommend <a href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects">using projects</a> in RStudio to organize your files.</p>
 </div>
 <div id="authors" class="section level2">
 <h2>Authors</h2>
