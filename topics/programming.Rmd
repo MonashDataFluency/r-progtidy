@@ -5,7 +5,33 @@ output: html_document
 
 Starting out in R, we tend to use it interactively, running one command at a time. In this section we will look at writing R code that performs repetitive task using "for-loops", packages up commonly needed sequences of operations in "functions", and makes decisions using "if-statements".
 
-We are using a couple of packages from CRAN in this tutorial, which we can install with `install.packages`. Don't run this if you are using our biotraining server, the packages are already installed!
+Some comments on programming to aid in setting context when learning to program. What can computers do? They so the following:
+
+1. Store and retrieve data and instructions - for example, variables that were discussed in the introductory course.
+
+1. Perform arithemtic, including performing comparisons.
+
+1. Execute stored instructions
+
+A programming language makes these basics accessible in convenient forms. Loops, 
+which we will meet soon, are combinations of counters (arithmetic) and comparisons to perform
+repeated execution of blocks of instructions.
+
+Programming languages are collections of useful combinations of these structures that are usually
+presented in a formal style. Learning to use a specific programming language includes learning to
+read the specific formulation, or _syntax_ (the use of brackets, keywords etc), and how to utilise
+the language specific structures for your problem.
+
+As you gain experience you will build a mental library of _patterns_ or _idioms_ - small collections of
+code and concepts that you can apply, with minor modifications, to many problems. We'll introduce a few patterns that we've found
+useful in a variety of applications.
+
+While _R_ is known as a statistical environment, it is built around a general purpose programming language. This
+is part of what has made so many extensions possible. The big gains of learning to use this language are
+especially evident in the early stages of a data analysis problem - importing, cleaning and visualizing the data.
+
+We are using a couple of packages from CRAN in this tutorial, which we can install with `install.packages`.
+Don't run this if you are using our biotraining server, the packages are already installed!
 
 
 ```{r eval=FALSE}
@@ -21,8 +47,78 @@ We are using a couple of packages from CRAN in this tutorial, which we can insta
 #   ))
 ```
 
+# If-statements
+
+One fundamental programming concept is the "if-statement". An if-statement lets us do something only if some logical value is `TRUE`, or do one thing if it is `TRUE` and another if it is `FALSE`.
+
+In the introductory R day, we used logical vectors to query a data frame. Everything we learned about making and manipulating logical vectors is applicable here, but with the restriction that we need a single logical value, i.e. a logical vector of length 1.
+
+The general pattern of an if statement is:
+
+```
+if (LOGICAL_VALUE) {
+    THING_TO_DO_IF_TRUE
+} else {
+    THING_TO_DO_IF_FALSE
+}
+```
+
+Here is an example:
+
+```{r, results="hold"}
+num <- 37                   # 1
+if (num > 100) {            #   2
+  cat("greater\n")          #
+} else {                    #
+  cat("not greater\n")      #     3
+}                           #       
+cat("done\n")               #       4
+                            # --time-->
+```
+
+The second line of this code uses an if-statement to tell R that we want to make a choice. If the following test is `TRUE`, the body of the `if` (i.e., the lines in the curly braces underneath it) are executed. If the test is `FALSE`, the body of the `else` is executed instead.
+Only one or the other is ever executed.
+
+In the example above, the test `num > 100` returns the value `FALSE`, which is why the code inside the `if` block was skipped and the code inside the `else` block was run instead.
+
+If-statements don't have to include an `else`. If there isn't one, R simply does nothing if the test is FALSE:
+
+```{r results="hold"}
+num <- 53                            # 1
+if (num > 100) {                     #   2
+  cat("num is greater than 100\n")   #
+}                                    #     
+cat("done\n")                        #     3
+                                     # --time-->
+```
+
+
+We can also chain several tests together when there are more than two options. As an example, here is a function that returns the sign of a number:
+
+```{r}
+if (num > 0) {            # line 1
+  return(1)             # line 2
+} else if (num == 0) {    # line 3
+  return(0)             # line 4
+} else {                  
+  return(-1)            # line 5
+}                         
+
+num <- -3
+num <- 0
+num <- 2/3
+```
+
+## Quiz {.challenge}
+
+Which lines above are executed, and in what order, for each value of `num`?
+
 
 # Functions
+
+Functions are blocks of code stored in a special structure. They are modelled on the concept of a mathematical
+function - they receive inputs (arguments), perform operations on the inputs, and return results. We saw
+some examples of functions in the introduction: `mean`, `sum`, `read_csv`
 
 Starting out in R mostly involves using functions that other people had written. We're now going to see how to create our own functions. The general pattern of a function is:
 
@@ -40,7 +136,11 @@ fahr_to_kelvin <- function(temp) {
 }
 ```
 
-We define `fahr_to_kelvin` by assigning it a `function`. The list of argument names are containted within parentheses. Next, the body of the function--the statements that are executed when it runs--is contained within curly braces (`{}`). The statements in the body have been indented by four spaces, which makes the code easier to read but does not affect how the code operates.
+We define `fahr_to_kelvin` by assigning it a `function`. The list of argument names are containted within parentheses.
+Next, the body of the function--the statements that are executed when it runs--is contained within curly braces (`{}`). 
+The statements in the body have been indented by four spaces, which makes the code easier to read but does not affect how the code operates.
+
+Note that there is a very important difference between _defining_ a function and _calling_, or running a function.
 
 When we call the function, the values we pass to it are assigned to those variables so that we can use them inside the function.
 The expression inside the function is evaluated and the result is "returned" back to whoever asked for it.
@@ -75,7 +175,8 @@ The braces are not actually needed if the function only contains one statement.
 fahr_to_kelvin <- function(temp) (temp-32) * (5/9) + 273.15
 ```
 
-`return` can be used to return from a function immediately. Further code will not be run.
+`return` can be used to return from a function immediately. Further code will not be run. I recommend
+always using explicit `return` statements.
 
 ```{r}
 fahr_to_kelvin <- function(temp) {
@@ -159,6 +260,11 @@ fahr_to_celsius(32.0)
 
 This is our first taste of how larger programs are built: we define basic operations, then combine them in ever-larger chunks to get the effect we want. Real-life functions will usually be larger than the ones shown here--typically half a dozen to a few dozen lines--but they shouldn't ever be much longer than that, or the next person who reads it won't be able to understand what's going on.
 
+Function names and argument names are important cues to what code is doing.
+
+Functions also help manage code complexity by cleaning up their contents after
+completion.
+
 You might have noticed that all of these functions have an argument called `temp`. Why hasn't this caused confusion and chaos? The answer is that arguments to a function and variables defined in the body of a function are *local* to a call to that function. Within the body of a function, R code can see variables from its own local environment, and variables from the global environment, but *not* variables local to other function calls. While running code R maintains a *stack* of local environments. When a call to a function returns, all of its local arguments and variables disappear.
 
 <b>Tip:</b> There are several ways to see this in action.
@@ -188,7 +294,6 @@ Testing your code is important. Invent a test case for your code consisting of:
 * The return value you expect.
 
 Confirm that your function works as expected.
-
 
 
 
@@ -358,19 +463,19 @@ library(readr)
 We can now read the file like this:
 
 ```{r}
-read_tsv("Day0_fastqc/summary.txt")
+read_tsv("r-progtidy-files/fastqc-output/Day0_fastqc/summary.txt")
 ```
 
 Oh! There aren't column headings in this file. We need to tell `read_tsv` this.
 
 ```{r}
-read_tsv("Day0_fastqc/summary.txt", col_names=FALSE)
+read_tsv("r-progtidy-files/fastqc-output/Day0_fastqc/summary.txt", col_names=FALSE)
 ```
 
 We should tidy this up a bit before using it. Columns should have meaningful names, and the PASS/WARN/FAIL grading looks like it should be a factor:
 
 ```{r}
-filename <- "Day0_fastqc/summary.txt"
+filename <- "r-progtidy-files/fastqc-output/Day0_fastqc/summary.txt"
 sumtab <- read_tsv(filename, col_names=FALSE)
 colnames(sumtab) <- c("grade", "test", "file")
 sumtab$grade <- factor(sumtab$grade, c("FAIL","WARN","PASS"))
@@ -389,7 +494,7 @@ load_fastqc <- function(filename) {
     sumtab
 }
 
-load_fastqc("Day0_fastqc/summary.txt")
+load_fastqc("r-progtidy-files/fastqc-output/Day0_fastqc/summary.txt")
 ```
 
 
@@ -403,7 +508,7 @@ First let's work out the names of the files we want to load.
 
 ```{r}
 days <- c(0,4,7,10,15,20)
-filenames <- paste0("Day", days, "_fastqc/summary.txt")
+filenames <- file.path("r-progtidy-files/fastqc-output", paste0("Day", days, "_fastqc/summary.txt"))
 filenames
 ```
 
@@ -413,7 +518,22 @@ Now we can use `lapply` to apply our function to each of the filenames.
 sumtabs <- lapply(filenames, load_fastqc)
 ```
 
+`lapply` is one of the base R functional programming tools. It stands for loop-apply
+and performs a specific class of loops without the user needing to write the loop
+structure. It can lead to clear code, when you are used to seeing it.
+
+This example is equivalent to:
+```{r}
+sumtabs <- list()
+for (idx in 1:length(filenames)) {
+  sumtabs[[idx]] <- load_fastqc(filenames[idx])
+}
+```
+
 We now have a list of data frames. Lists are a little different from the vectors we usually work with. See section 20.5 in the ["R for data science" book](http://r4ds.had.co.nz/vectors.html) for a comprehensive explanation. Here are some ways to examine this object:
+
+Basic differences are that lists can contain things of different types and different
+sizes. In this case, we have a list of data.frames, which are not a basic R type (a vector of something)
 
 ```{r eval=FALSE}
 sumtabs
@@ -439,74 +559,21 @@ bigtab
 table(bigtab$test, bigtab$grade)
 ```
 
-
-# If-statements
-
-One final programming concept you need to know about is the "if-statement". An if-statement lets us do something only if some logical value is `TRUE`, or do one thing if it is `TRUE` and another if it is `FALSE`.
-
-In the introductory R day, we used logical vectors to query a data frame. Everything we learned about making and manipulating logical vectors is applicable here, but with the restriction that we need a single logical value, i.e. a logical vector of length 1.
-
-The general pattern of an if statement is:
-
-```
-if (LOGICAL_VALUE) {
-    THING_TO_DO_IF_TRUE
-} else {
-    THING_TO_DO_IF_FALSE
-}
-```
-
-Here is an example:
-
-```{r, results="hold"}
-num <- 37                   # 1
-if (num > 100) {            #   2
-  cat("greater\n")          #
-} else {                    #
-  cat("not greater\n")      #     3
-}                           #       
-cat("done\n")               #       4
-                            # --time-->
-```
-
-The second line of this code uses an if-statement to tell R that we want to make a choice. If the following test is `TRUE`, the body of the `if` (i.e., the lines in the curly braces underneath it) are executed. If the test is `FALSE`, the body of the `else` is executed instead.
-Only one or the other is ever executed.
-
-In the example above, the test `num > 100` returns the value `FALSE`, which is why the code inside the `if` block was skipped and the code inside the `else` block was run instead.
-
-If-statements don't have to include an `else`. If there isn't one, R simply does nothing if the test is FALSE:
-
-```{r results="hold"}
-num <- 53                            # 1
-if (num > 100) {                     #   2
-  cat("num is greater than 100\n")   #
-}                                    #     
-cat("done\n")                        #     3
-                                     # --time-->
-```
-
-
-We can also chain several tests together when there are more than two options. As an example, here is a function that returns the sign of a number:
+Base R has a similar idiom to do the same task. It is more flexible, but does less
+checking. I use it to bind vectors into a data.frame, which `bind_rows` refuses to do.
 
 ```{r}
-sign <- function(num) {
-    if (num > 0) {            # line 1
-        return(1)             # line 2
-    } else if (num == 0) {    # line 3
-        return(0)             # line 4
-    } else {                  
-        return(-1)            # line 5
-    }                         
-}
-
-sign(-3)
-sign(0)
-sign(2/3)
+bigtab <- do.call(rbind, sumtabs)
 ```
 
-## Quiz {.challenge}
+## Summary
+What we've just done is:
 
-Which lines of the function `sign` executed when it was called above, and in what order?
+1. Create a custom reader tool that sets up each file inside R
+
+1. Use a looping tool to apply that function to a collection of file names
+
+1. Transform the results produced by the looping tool into a data.frame that we can use for other purposes.
 
 
 ## Improving load_fastqc
@@ -582,6 +649,7 @@ How should we share a project with others?
 
 * [Software Carpentry's list of best practices in R](http://swcarpentry.github.io/r-novice-inflammation/06-best-practices-R/)
 
+# Extended example
 
 # Packages
 
