@@ -1,6 +1,9 @@
 ---
 title: "The Tidyverse: dplyr, ggplot2, and friends"
-output: html_document
+output: 
+    html_document:
+        toc_depth: 2
+bibliography: bibliography.bib
 ---
 
 This lesson covers packages primarily by Hadley Wickham for tidying data and then working with it in tidy form, collectively known as the "tidyverse".
@@ -8,11 +11,7 @@ This lesson covers packages primarily by Hadley Wickham for tidying data and the
 The packages we are using in this lesson are all from CRAN, so we can install them with `install.packages`. Don't run this if you are using our biotraining server, the packages are already installed!
 
 ```{r eval=FALSE}
-# install.packages(c(
-#     "tidyverse",
-#     "viridis",
-#     "broom"
-# ))
+# install.packages(c("tidyverse", "viridis"))
 ```
 
 ```{r warning=FALSE, message=FALSE}
@@ -110,8 +109,10 @@ Each verb takes a data frame as input and returns a modified version of it. The 
 #   frame       +--------+        +--------+        +--------+        frame
 ```
 
+Some of these verbs are covered in our [introductory R workshop](https://monashdatafluency.github.io/r-intro-2/data-frames.html), so some of this may be familiar already.
 
-## tibbles
+
+## Tibbles
 
 ```{r}
 bigtab
@@ -131,7 +132,7 @@ print(bigtab, n=100, width=1000)
 ```
 
 
-## filter
+## filter( )
 
 Say we want to know all the tests that failed. `filter` provides a convenient way to get these.
 
@@ -142,7 +143,7 @@ filter(bigtab, grade == "FAIL")
 Something is magic here: we do not have `grade` in our environment, only within the data frame. Arguments to `filter` can use any column of the data frame as a variable. `dplyr` uses this idea heavily, arguments to `dplyr` verbs often behave in a special way.
 
 
-## arrange
+## arrange( )
 
 Rather than filtering, we might instead want to sort the data so the most important rows are at the top. `arrange` sorts a data frame by one or more columns.
 
@@ -152,25 +153,6 @@ arrange(bigtab, grade)
 # desc( ) can be used to reverse the sort order
 arrange(bigtab, desc(grade))
 ```
-
-
-## select
-
-dplyr's `select` function is for subsetting, renaming, and reordering *columns*. Old columns can be referred to by name or by number.
-
-```{r}
-select(bigtab, test,grade) 
-select(bigtab, 2,1)
-select(bigtab, foo=file, bar=test, baz=grade)
-```
-
-You can also remove specific columns like this:
-
-```{r}
-select(bigtab, -file)
-```
-
-The magic here is that column variables refer to their column number. `select` subsets columns rather like subsetting vectors with `[ ]`. So `-file` becomes `-1`, and negative numbers remove items. We can also refer to ranges of columns, such as `grade:file`, which would become `1:3`, which is `c(1,2,3)`.
 
 
 ## Joins
@@ -187,9 +169,7 @@ scoring <- tibble(grade=factor(fwp,levels=fwp), score=c(0,0.5,1))
 scoring
 ```
 
-In the introduction to R day, we saw the `merge` function. dplyr has its own version of this in the form of several functions: `left_join`, `right_join`, `inner_join`, `full_join`, `anti_join`.
-
-The difference between these functions is what happens when there is a row in one data frame without a corresponding row in the other data frame. `inner_join` discards such rows. `full_join` always keeps them, filling in missing data with NA. `left_join` always keeps rows from the first data frame. `right_join` always keeps rows from the second data frame. `anti_join` is a bit different, it gives you rows from the first data frame that *aren't* in the second data frame.
+`dplyr` has several join functions, including `left_join`, `right_join`, `inner_join`, `full_join`, and `anti_join`. The difference between these functions is what happens when there is a row in one data frame without a corresponding row in the other data frame. `inner_join` discards such rows. `full_join` always keeps them, filling in missing data with NA. `left_join` always keeps rows from the first data frame. `right_join` always keeps rows from the second data frame. `anti_join` is a bit different, it gives you rows from the first data frame that *aren't* in the second data frame.
 
 Often we use a join to augment a data frame with some extra information. `left_join` is a good default choice for this as it will never delete rows from the data frame that is being augmented.
 
@@ -198,7 +178,7 @@ scoretab <- left_join(bigtab, scoring, by="grade")
 scoretab
 ```
 
-"grade" is here acting as the *key*, allowing corresponding rows in the data frames to be joined together.
+The grade columns is here acting as the *key*, allowing corresponding rows in the data frames to be joined together.
 
 One important thing that all the join functions do: if multiple rows have the same key in either data frame, all ways of combining the two sets of rows will be included in the result. So, here, rows from the scoring data frame have been copied many times in the output. 
 
@@ -207,34 +187,8 @@ Joins are the key tool for *integrating* different types of data, based on some 
 <b>See also:</b> `match` and `merge` in base R.
 
 
-### Challenge {.challenge}
 
-Using the newly created `score` column:
-
-1. Filter `scoretab` to get only "WARN" or "FAIL" grades. 
-
-2. Sort the result so that "FAIL"s are at the top.
-
-
-## mutate
-
-`mutate` lets us add or overwrite columns by computing a new value for them.
-
-```{r}
-mutate(scoretab, doublescore = score*2)
-```
-
-Even though this is called "mutate", it is not literally modifying the input. Rather it is producing a copy of the data frame that has the modifiction.
-
-This is equivalent to:
-
-```{r eval=FALSE}
-scoretab2 <- scoretab
-scoretab2$doublescore <- scoretab2$score * 2
-```
-
-
-## summarize
+## summarize( )
 
 `summarize` lets us compute summaries of data.
 
@@ -256,14 +210,14 @@ The special function `n()` can be used within `summarize` to get the number of r
 summarize(group_by(scoretab, grade), count=n())
 ```
 
-So `summarize` lets us do the things we do with base R using `table` and `tapply`, but staying tidy by using data frames.
+<b>See also:</b> shortcut functions for simple uses of summarize `count` and `distinct`.
+
+<b>See also:</b> `table` and `tapply` in base R.
 
 <b>Tip:</b> `group_by` also affects other verbs, such as mutate. This is more advanced than we will be going into today. Grouping can be removed with `ungroup`.
 
-See also functions for common uses of summarize: `count`, `distinct`.
 
-
-# The pipe %>%
+## The pipe %>%
 
 We often want to string together a series of `dplyr` functions. This is achieved using `dplyr`'s pipe operator, `%>%`. This takes the value on the left, and passes it as the first argument to the function call on the right. So the previous summarization could be written:
 
@@ -279,16 +233,75 @@ rep(paste("hello", "world"), 5)
 "hello" %>% paste("world") %>% rep(5)
 ```
 
-The idea of adding geoms in `ggplot2` is rather like the `dplyr` pipe. `ggplot2` predates `dplyr`, and Hadley Wickham has had a progression of ideas. It will probably be possible to use `%>%` instead of `+` in some successor to `ggplot2` in the not too distant future.
+Often for readability we will write a pipeline over several lines:
 
+```{r eval=FALSE}
+scoretab %>% 
+    group_by(grade) %>% 
+    summarize(count=n())
+```
+
+The idea of adding geoms in `ggplot2` is rather like the `dplyr` pipe. The only reason pipes aren't used in `ggplot2` is that it predates `dplyr` and the invention of the pipe.
+
+
+### Challenge {.challenge}
+
+Write a pipeline using `%>%`s that starts with `bigtab`, joins the score table, and then calculates average scores for each file.
+
+
+
+## mutate( )
+
+A couple more verbs will complete our core vocabulary. `mutate` lets us add or overwrite columns by computing a new value for them.
+
+```{r eval=F}
+mutate(scoretab, doublescore = score*2)
+```
+
+Equivalently:
+
+```{r}
+scoretab %>%
+    mutate(doublescore = score*2)
+```
+
+Even though this is called "mutate", it is not literally modifying the input. Rather it is producing a copy of the data frame that has the modifiction.
+
+This is equivalent to:
+
+```{r eval=FALSE}
+scoretab2 <- scoretab
+scoretab2$doublescore <- scoretab2$score * 2
+```
+
+## select( )
+
+dplyr's `select` function is for subsetting, renaming, and reordering *columns*. Old columns can be referred to by name or by number.
+
+```{r}
+select(bigtab, test,grade) 
+select(bigtab, 2,1)
+select(bigtab, foo=file, bar=test, baz=grade)
+```
+
+You can also remove specific columns like this:
+
+```{r}
+select(bigtab, -file)
+```
+
+The magic here is that column variables refer to their column number. `select` subsets columns rather like subsetting vectors with `[ ]`. So `-file` becomes `-1`, and negative numbers remove items. We can also refer to ranges of columns, such as `grade:file`, which would become `1:3`, which is `c(1,2,3)`.
+
+With `filter`, `arrange`, `mutate`, `select`, `group_by`, `summarize`, and joins, we have a core vocabulary for manipulating data frames in pipelines.
 
 
 # tidyr
 
 `tidyr` is the Tidyverse package for getting data frames to tidy. Recall that in a tidy data frame:
 
-* each row is a unit of observation
+* each row is a single unit of observation
 * each column is a single piece of information
+* each column is a distinct kind of information
 
 I'm not convinced `tidyr` is a great package, but the *ideas* behind it are very important. `dplyr` uses magic arguments to produces very beautiful R code, but in `tidyr` it gets a bit confusing. Anyway, let's work through a toy example:
 
@@ -309,11 +322,10 @@ gathered
 
 We give a data frame, a name for the key and value columns to be created. Remaining arguments behave like `select`, here we are saying that the country column shouldn't be gathered.
 
-In the introductory R day we saw `melt` from the `reshape2` package, which did a similar thing to matrices.
-
 `spread` is the opposite operation, spreading a column into many columns, which generally makes data less tidy but is sometimes necessary. A common application is producing a scatter plot, where the x and y axes need to be two different columns even though they measure the same type of thing. Data may also be easier to look at in a table in spread form.
 
 ```{r}
+spread(gathered, key=group, value=cases)
 spread(bigtab, key=file, value=grade)
 ```
 
@@ -366,12 +378,12 @@ We will now put this all together by looking at a small-scale gene expression da
 
 This is much smaller than a typical RNA-Seq dataset. We are only looking at 44 genes, rather than all of the thousands of genes in the yeast genome.
 
-Recall the three activities involved in data analysis. This dataset requires all of them.
+Recall the diagram from the ["R for Data Science" book](http://r4ds.had.co.nz/). We will here focus on the "import", "tidy", "transform", and "visualize" steps.
 
-<img src="../figures/data-cycle.svg" height="400">
+<img src="../figures/data-science.png" height="285">
 
 
-## Tidying
+## Importing and tidying
 
 <b>Hint:</b> You can select from the top of a pipeline to partway through and press Ctrl-Enter or Command-Enter to see the value part-way through the pipeline.
 
@@ -469,6 +481,8 @@ Experiment with other geoms and other ways to assign columns to aesthetics.
 
 ### Whole dataset visualization
 
+Heatmaps using `geom_tile` and the use of facets allow the entire dataset to be viewed at once.
+
 ```{r fig.width=8, fig.height=8}
 ggplot(counts_norm, aes(x=sample, y=gene, fill=log_norm_count)) + 
     geom_tile() + 
@@ -478,6 +492,8 @@ ggplot(counts_norm, aes(x=sample, y=gene, fill=log_norm_count)) +
               angle=90,vjust=0.5,hjust=1))              
 ```
 
+Facetting the heatmap makes it easier to understand.
+
 ```{r fig.width=8, fig.height=8}
 ggplot(counts_norm, aes(x=time, y=gene, fill=log_norm_count)) + 
     geom_tile() + 
@@ -485,6 +501,8 @@ ggplot(counts_norm, aes(x=time, y=gene, fill=log_norm_count)) +
     scale_fill_viridis() + 
     theme_minimal()
 ```
+
+We are interested in the interaction of strain and time, so we can instead set these as the x and y axes for each gene.
 
 ```{r fig.width=10, fig.height=8}
 ggplot(counts_norm, aes(x=time, y=strain, fill=log_norm_count)) + 
@@ -494,6 +512,8 @@ ggplot(counts_norm, aes(x=time, y=strain, fill=log_norm_count)) +
     theme_minimal()
 ```
 
+A famous paper by Cleveland and McGill [-@cleveland1984] ranks color last in terms of perceptual accuracy. A more traditional way of examining the interaction between two factors is a line graph called an "interaction plot". We can also give each gene a separate scale.
+
 ```{r fig.width=10, fig.height=8}
 ggplot(counts_norm, aes(x=time, y=log_norm_count, color=strain, group=strain)) + 
     geom_line() + 
@@ -501,7 +521,7 @@ ggplot(counts_norm, aes(x=time, y=log_norm_count, color=strain, group=strain)) +
 ```
 
 
-## Exercises {.challenge}
+### Exercises {.challenge}
 
 1. Which are the three most variable genes?
 
@@ -509,81 +529,11 @@ Hint: `intToUtf8(utf8ToInt("xvh#jurxsbe|/#vxppdul}h/#vg/#dqg#duudqjh")-3)`
 
 2. Different genes have different average expression levels, but what we are interested in is how they change over time. Further normalize the data by subtracting the average for each gene from `log_norm_count`.
 
-
-# Appendix: Tidy linear modelling
-
-The idea of this section is to give a taste of what is possible, so that you know what topics to read up on or ask an expert for help with if this is the sort of analysis you need. It will also provide a little context for advanced forms of RNA-Seq differential expression analysis.
-
-```{r}
-sut476 <- counts_norm %>% filter(gene=="SUT476") 
-sut476_wt <- sut476 %>% filter(strain=="WT")
-
-ggplot(sut476_wt,aes(x=time,y=log_norm_count)) +
-    geom_point() +
-    geom_smooth(method="lm")
-```
-
-`ggplot2` includes a handy geom for fitting a curve or line to data, but what exactly is it doing? What if we want to work with that fitted curve ourselves? `ggplot2` can use various curve fitting methods, the simplest of which is a linear model with "lm".
-
-```{r}
-model <- lm(log_norm_count ~ time, data=sut476_wt)
-model
-# Note: The p-values listed by summary aren't always meaningful.
-# It makes no sense to remove the intercept term but retain the time term.
-# Significance testing can better be done with anova() and the multcomp package.
-summary(model)
-model.matrix(log_norm_count ~ time, data=sut476_wt)
-```
-
-A model can be tested against a simpler null model using `anova`. Is the fit sufficiently better to justify the extra complexity?
-
-```{r}
-null_model <- lm(log_norm_count ~ 1, data=sut476_wt)
-anova(null_model, model)
-```
-
-A linear trend is not supported, in comparison to the null hypothesis that expression is constant, by this data. Also useful for hypothesis testing, the `multcomp` package can be used to test comparisons of interest such as a set of pairwise comparisons. This is similar to testing of contrasts in packages for differential expression analysis such as `limma`, `edgeR`, or `DESeq2`.
-
-`augment` from the `broom` package gives various diagnostic statistics.
-
-* .fitted = Model prediction.
-* .residual = Actual value minus .fitted.
-* .hat = The leverage -- how important the observation is in the design of the experiment. This can be considered before performing the experiment!
-*  .cooksd = Cook's Distance -- how much actual influence the observation had on the model. Combines information from .residual and .hat.
-
-```{r}
-library(broom)
-
-augment(model, sut476_wt) %>% head
-
-# augment() can also be used to produce predictions for new inputs
-augment(model, newdata=sut476_wt[1:5,])
-
-# Let's look at the model fit
-augment(model, sut476_wt) %>%
-ggplot(aes(x=time)) + 
-    geom_point(aes(y=log_norm_count)) +
-    geom_line(aes(y=.fitted))
-```
-
-We see the initial timepoint in the wildtype strain is wildly off the linear trend. Possibly early time points need to be removed, or (more likely!) a linear trend is not a good model of this data.
-
-Linear models can be much more complicated than this. They can include multiple explanatory variables, including categorical variables, and interactions between them, and even polynomials.
-
-```{r}
-model2 <- lm(log_norm_count ~ strain*poly(time,3), data=sut476)
-model2
-
-augment(model2, sut476) %>%
-ggplot(aes(x=time, color=strain, group=strain)) + 
-    geom_point(aes(y=log_norm_count), alpha=0.5) +
-    geom_line(aes(y=.fitted))
-```
-
+###
 
 ```{r}
 sessionInfo()
 ```
 
-
+**References**
 

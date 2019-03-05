@@ -336,6 +336,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -343,14 +346,74 @@ button.code-folding-btn:focus {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -366,22 +429,31 @@ $(document).ready(function () {
 
 <div id="TOC">
 <ul>
-<li><a href="#ggplot2-revisited">ggplot2 revisited</a></li>
-<li><a href="#dplyr">dplyr</a></li>
+<li><a href="#ggplot2-revisited">ggplot2 revisited</a><ul>
+<li><a href="#publication-quality-images">Publication quality images</a></li>
+</ul></li>
+<li><a href="#dplyr">dplyr</a><ul>
+<li><a href="#tibbles">Tibbles</a></li>
+<li><a href="#filter">filter( )</a></li>
+<li><a href="#arrange">arrange( )</a></li>
+<li><a href="#joins">Joins</a></li>
+<li><a href="#summarize">summarize( )</a></li>
 <li><a href="#the-pipe">The pipe %&gt;%</a></li>
+<li><a href="#mutate">mutate( )</a></li>
+<li><a href="#select">select( )</a></li>
+</ul></li>
 <li><a href="#tidyr">tidyr</a></li>
-<li><a href="#an-rna-seq-example">An RNA-Seq example</a></li>
-<li><a href="#appendix-tidy-linear-modelling">Appendix: Tidy linear modelling</a></li>
+<li><a href="#an-rna-seq-example">An RNA-Seq example</a><ul>
+<li><a href="#importing-and-tidying">Importing and tidying</a></li>
+<li><a href="#transformation-and-normalization">Transformation and normalization</a></li>
+<li><a href="#visualization">Visualization</a></li>
+</ul></li>
 </ul>
 </div>
 
 <p>This lesson covers packages primarily by Hadley Wickham for tidying data and then working with it in tidy form, collectively known as the “tidyverse”.</p>
 <p>The packages we are using in this lesson are all from CRAN, so we can install them with <code>install.packages</code>. Don’t run this if you are using our biotraining server, the packages are already installed!</p>
-<pre class="r"><code># install.packages(c(
-#     &quot;tidyverse&quot;,
-#     &quot;viridis&quot;,
-#     &quot;broom&quot;
-# ))</code></pre>
+<pre class="r"><code># install.packages(c(&quot;tidyverse&quot;, &quot;viridis&quot;))</code></pre>
 <pre class="r"><code>library(tidyverse) # Load all &quot;tidyverse&quot; libraries.
 # OR
 # library(readr)   # Read tabular data.
@@ -442,8 +514,9 @@ ggsave(&quot;plot2.png&quot;, myplot, width=10, height=10, dpi=300)</code></pre>
 <pre><code># input         +--------+        +--------+        +--------+      result
 #  data   %&gt;%   |  verb  |  %&gt;%   |  verb  |  %&gt;%   |  verb  |  -&gt;   data
 #   frame       +--------+        +--------+        +--------+        frame</code></pre>
+<p>Some of these verbs are covered in our <a href="https://monashdatafluency.github.io/r-intro-2/data-frames.html">introductory R workshop</a>, so some of this may be familiar already.</p>
 <div id="tibbles" class="section level2">
-<h2>tibbles</h2>
+<h2>Tibbles</h2>
 <pre class="r"><code>bigtab</code></pre>
 <p>As we used <code>readr</code> to read the data, <code>bigtab</code> is a “tibble”, which is the Tidyverse’s improved data frame. The <code>dplyr</code> verbs also all return their results as tibbles. You can also create tibbles explicitly with the <code>tibble</code> function (or <code>data_frame</code>). One convenient feature is that it only shows a few rows of the data frame when you print it. If you do want to see the whole table, you can use <code>as.data.frame</code>, or use the <code>View</code> function to view it in a tab.</p>
 <pre class="r"><code>as.data.frame(bigtab)
@@ -452,28 +525,18 @@ View(bigtab)</code></pre>
 <pre class="r"><code>print(bigtab, n=100, width=1000)</code></pre>
 </div>
 <div id="filter" class="section level2">
-<h2>filter</h2>
+<h2>filter( )</h2>
 <p>Say we want to know all the tests that failed. <code>filter</code> provides a convenient way to get these.</p>
 <pre class="r"><code>filter(bigtab, grade == &quot;FAIL&quot;)</code></pre>
 <p>Something is magic here: we do not have <code>grade</code> in our environment, only within the data frame. Arguments to <code>filter</code> can use any column of the data frame as a variable. <code>dplyr</code> uses this idea heavily, arguments to <code>dplyr</code> verbs often behave in a special way.</p>
 </div>
 <div id="arrange" class="section level2">
-<h2>arrange</h2>
+<h2>arrange( )</h2>
 <p>Rather than filtering, we might instead want to sort the data so the most important rows are at the top. <code>arrange</code> sorts a data frame by one or more columns.</p>
 <pre class="r"><code>arrange(bigtab, grade)
 
 # desc( ) can be used to reverse the sort order
 arrange(bigtab, desc(grade))</code></pre>
-</div>
-<div id="select" class="section level2">
-<h2>select</h2>
-<p>dplyr’s <code>select</code> function is for subsetting, renaming, and reordering <em>columns</em>. Old columns can be referred to by name or by number.</p>
-<pre class="r"><code>select(bigtab, test,grade) 
-select(bigtab, 2,1)
-select(bigtab, foo=file, bar=test, baz=grade)</code></pre>
-<p>You can also remove specific columns like this:</p>
-<pre class="r"><code>select(bigtab, -file)</code></pre>
-<p>The magic here is that column variables refer to their column number. <code>select</code> subsets columns rather like subsetting vectors with <code>[ ]</code>. So <code>-file</code> becomes <code>-1</code>, and negative numbers remove items. We can also refer to ranges of columns, such as <code>grade:file</code>, which would become <code>1:3</code>, which is <code>c(1,2,3)</code>.</p>
 </div>
 <div id="joins" class="section level2">
 <h2>Joins</h2>
@@ -485,35 +548,17 @@ scoring &lt;- tibble(grade=factor(fwp,levels=fwp), score=c(0,0.5,1))
 # scoring &lt;- data.frame(grade=factor(fwp,levels=fwp), score=c(0,0.5,1))
 
 scoring</code></pre>
-<p>In the introduction to R day, we saw the <code>merge</code> function. dplyr has its own version of this in the form of several functions: <code>left_join</code>, <code>right_join</code>, <code>inner_join</code>, <code>full_join</code>, <code>anti_join</code>.</p>
-<p>The difference between these functions is what happens when there is a row in one data frame without a corresponding row in the other data frame. <code>inner_join</code> discards such rows. <code>full_join</code> always keeps them, filling in missing data with NA. <code>left_join</code> always keeps rows from the first data frame. <code>right_join</code> always keeps rows from the second data frame. <code>anti_join</code> is a bit different, it gives you rows from the first data frame that <em>aren’t</em> in the second data frame.</p>
+<p><code>dplyr</code> has several join functions, including <code>left_join</code>, <code>right_join</code>, <code>inner_join</code>, <code>full_join</code>, and <code>anti_join</code>. The difference between these functions is what happens when there is a row in one data frame without a corresponding row in the other data frame. <code>inner_join</code> discards such rows. <code>full_join</code> always keeps them, filling in missing data with NA. <code>left_join</code> always keeps rows from the first data frame. <code>right_join</code> always keeps rows from the second data frame. <code>anti_join</code> is a bit different, it gives you rows from the first data frame that <em>aren’t</em> in the second data frame.</p>
 <p>Often we use a join to augment a data frame with some extra information. <code>left_join</code> is a good default choice for this as it will never delete rows from the data frame that is being augmented.</p>
 <pre class="r"><code>scoretab &lt;- left_join(bigtab, scoring, by=&quot;grade&quot;)
 scoretab</code></pre>
-<p>“grade” is here acting as the <em>key</em>, allowing corresponding rows in the data frames to be joined together.</p>
+<p>The grade columns is here acting as the <em>key</em>, allowing corresponding rows in the data frames to be joined together.</p>
 <p>One important thing that all the join functions do: if multiple rows have the same key in either data frame, all ways of combining the two sets of rows will be included in the result. So, here, rows from the scoring data frame have been copied many times in the output.</p>
 <p>Joins are the key tool for <em>integrating</em> different types of data, based on some common key such as gene id.</p>
 <p><b>See also:</b> <code>match</code> and <code>merge</code> in base R.</p>
-<div id="challenge" class="section level3 challenge">
-<h3>Challenge</h3>
-<p>Using the newly created <code>score</code> column:</p>
-<ol style="list-style-type: decimal">
-<li><p>Filter <code>scoretab</code> to get only “WARN” or “FAIL” grades.</p></li>
-<li><p>Sort the result so that “FAIL”s are at the top.</p></li>
-</ol>
-</div>
-</div>
-<div id="mutate" class="section level2">
-<h2>mutate</h2>
-<p><code>mutate</code> lets us add or overwrite columns by computing a new value for them.</p>
-<pre class="r"><code>mutate(scoretab, doublescore = score*2)</code></pre>
-<p>Even though this is called “mutate”, it is not literally modifying the input. Rather it is producing a copy of the data frame that has the modifiction.</p>
-<p>This is equivalent to:</p>
-<pre class="r"><code>scoretab2 &lt;- scoretab
-scoretab2$doublescore &lt;- scoretab2$score * 2</code></pre>
 </div>
 <div id="summarize" class="section level2">
-<h2>summarize</h2>
+<h2>summarize( )</h2>
 <p><code>summarize</code> lets us compute summaries of data.</p>
 <pre class="r"><code>summarize(scoretab, total=sum(score))</code></pre>
 <p>We really want to summarize the data grouped by file, so we can see if there are any particularly bad files. This is achieved using the <code>group_by</code> “adjective”. <code>group_by</code> gives the data frame a grouping using one or more columns, which modifies the subsequent call to <code>summarize</code>.</p>
@@ -522,27 +567,59 @@ scoretab2$doublescore &lt;- scoretab2$score * 2</code></pre>
 summarize(group_by(scoretab, file), average_score=mean(score))</code></pre>
 <p>The special function <code>n()</code> can be used within <code>summarize</code> to get the number of rows. (This also works in <code>mutate</code>, but is most useful in <code>summarize</code>.)</p>
 <pre class="r"><code>summarize(group_by(scoretab, grade), count=n())</code></pre>
-<p>So <code>summarize</code> lets us do the things we do with base R using <code>table</code> and <code>tapply</code>, but staying tidy by using data frames.</p>
+<p><b>See also:</b> shortcut functions for simple uses of summarize <code>count</code> and <code>distinct</code>.</p>
+<p><b>See also:</b> <code>table</code> and <code>tapply</code> in base R.</p>
 <p><b>Tip:</b> <code>group_by</code> also affects other verbs, such as mutate. This is more advanced than we will be going into today. Grouping can be removed with <code>ungroup</code>.</p>
-<p>See also functions for common uses of summarize: <code>count</code>, <code>distinct</code>.</p>
 </div>
-</div>
-<div id="the-pipe" class="section level1">
-<h1>The pipe %&gt;%</h1>
+<div id="the-pipe" class="section level2">
+<h2>The pipe %&gt;%</h2>
 <p>We often want to string together a series of <code>dplyr</code> functions. This is achieved using <code>dplyr</code>’s pipe operator, <code>%&gt;%</code>. This takes the value on the left, and passes it as the first argument to the function call on the right. So the previous summarization could be written:</p>
 <pre class="r"><code>scoretab %&gt;% group_by(grade) %&gt;% summarize(count=n())</code></pre>
 <p><code>%&gt;%</code> isn’t limited to <code>dplyr</code> functions. It’s an alternative way of writing any R code.</p>
 <pre class="r"><code>rep(paste(&quot;hello&quot;, &quot;world&quot;), 5)
 
 &quot;hello&quot; %&gt;% paste(&quot;world&quot;) %&gt;% rep(5)</code></pre>
-<p>The idea of adding geoms in <code>ggplot2</code> is rather like the <code>dplyr</code> pipe. <code>ggplot2</code> predates <code>dplyr</code>, and Hadley Wickham has had a progression of ideas. It will probably be possible to use <code>%&gt;%</code> instead of <code>+</code> in some successor to <code>ggplot2</code> in the not too distant future.</p>
+<p>Often for readability we will write a pipeline over several lines:</p>
+<pre class="r"><code>scoretab %&gt;% 
+    group_by(grade) %&gt;% 
+    summarize(count=n())</code></pre>
+<p>The idea of adding geoms in <code>ggplot2</code> is rather like the <code>dplyr</code> pipe. The only reason pipes aren’t used in <code>ggplot2</code> is that it predates <code>dplyr</code> and the invention of the pipe.</p>
+<div id="challenge" class="section level3 challenge">
+<h3>Challenge</h3>
+<p>Write a pipeline using <code>%&gt;%</code>s that starts with <code>bigtab</code>, joins the score table, and then calculates average scores for each file.</p>
+</div>
+</div>
+<div id="mutate" class="section level2">
+<h2>mutate( )</h2>
+<p>A couple more verbs will complete our core vocabulary. <code>mutate</code> lets us add or overwrite columns by computing a new value for them.</p>
+<pre class="r"><code>mutate(scoretab, doublescore = score*2)</code></pre>
+<p>Equivalently:</p>
+<pre class="r"><code>scoretab %&gt;%
+    mutate(doublescore = score*2)</code></pre>
+<p>Even though this is called “mutate”, it is not literally modifying the input. Rather it is producing a copy of the data frame that has the modifiction.</p>
+<p>This is equivalent to:</p>
+<pre class="r"><code>scoretab2 &lt;- scoretab
+scoretab2$doublescore &lt;- scoretab2$score * 2</code></pre>
+</div>
+<div id="select" class="section level2">
+<h2>select( )</h2>
+<p>dplyr’s <code>select</code> function is for subsetting, renaming, and reordering <em>columns</em>. Old columns can be referred to by name or by number.</p>
+<pre class="r"><code>select(bigtab, test,grade) 
+select(bigtab, 2,1)
+select(bigtab, foo=file, bar=test, baz=grade)</code></pre>
+<p>You can also remove specific columns like this:</p>
+<pre class="r"><code>select(bigtab, -file)</code></pre>
+<p>The magic here is that column variables refer to their column number. <code>select</code> subsets columns rather like subsetting vectors with <code>[ ]</code>. So <code>-file</code> becomes <code>-1</code>, and negative numbers remove items. We can also refer to ranges of columns, such as <code>grade:file</code>, which would become <code>1:3</code>, which is <code>c(1,2,3)</code>.</p>
+<p>With <code>filter</code>, <code>arrange</code>, <code>mutate</code>, <code>select</code>, <code>group_by</code>, <code>summarize</code>, and joins, we have a core vocabulary for manipulating data frames in pipelines.</p>
+</div>
 </div>
 <div id="tidyr" class="section level1">
 <h1>tidyr</h1>
 <p><code>tidyr</code> is the Tidyverse package for getting data frames to tidy. Recall that in a tidy data frame:</p>
 <ul>
-<li>each row is a unit of observation</li>
+<li>each row is a single unit of observation</li>
 <li>each column is a single piece of information</li>
+<li>each column is a distinct kind of information</li>
 </ul>
 <p>I’m not convinced <code>tidyr</code> is a great package, but the <em>ideas</em> behind it are very important. <code>dplyr</code> uses magic arguments to produces very beautiful R code, but in <code>tidyr</code> it gets a bit confusing. Anyway, let’s work through a toy example:</p>
 <pre class="r"><code>untidy &lt;- read_csv(
@@ -554,9 +631,9 @@ untidy</code></pre>
 <pre class="r"><code>gathered &lt;- gather(untidy, key=group, value=cases, -country)
 gathered</code></pre>
 <p>We give a data frame, a name for the key and value columns to be created. Remaining arguments behave like <code>select</code>, here we are saying that the country column shouldn’t be gathered.</p>
-<p>In the introductory R day we saw <code>melt</code> from the <code>reshape2</code> package, which did a similar thing to matrices.</p>
 <p><code>spread</code> is the opposite operation, spreading a column into many columns, which generally makes data less tidy but is sometimes necessary. A common application is producing a scatter plot, where the x and y axes need to be two different columns even though they measure the same type of thing. Data may also be easier to look at in a table in spread form.</p>
-<pre class="r"><code>spread(bigtab, key=file, value=grade)</code></pre>
+<pre class="r"><code>spread(gathered, key=group, value=cases)
+spread(bigtab, key=file, value=grade)</code></pre>
 <p>In our toy example, we have a further problem that the “group” column contains two pieces of data. This can be fixed with <code>separate</code>. By default <code>separate</code> splits on any non-alphanumeric characters, but different separator characters can be specified.</p>
 <pre class="r"><code>separate(gathered, col=group, into=c(&quot;gender&quot;,&quot;age&quot;))</code></pre>
 <p>All of this would typically be written as a single pipline:</p>
@@ -587,12 +664,12 @@ unnest(nested)</code></pre>
 <h1>An RNA-Seq example</h1>
 <p>We will now put this all together by looking at a small-scale gene expression data set. To simplify somewhat: The data was generated from a multiplex PCR targetting 44 genes. The PCR product is quantified by counting reads from high throughput sequencing. The experiment is of yeast released synchronously into cell cycling, so that we can see which genes are active at different points in the cycle. Several strains of yeast have been used, a wildtype and several gene knock-downs. Each has nine time points, covering two cell cycles (two hours).</p>
 <p>This is much smaller than a typical RNA-Seq dataset. We are only looking at 44 genes, rather than all of the thousands of genes in the yeast genome.</p>
-<p>Recall the three activities involved in data analysis. This dataset requires all of them.</p>
-<p><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz48c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIGZpbGwtb3BhY2l0eT0iMSIgY29sb3ItcmVuZGVyaW5nPSJhdXRvIiBjb2xvci1pbnRlcnBvbGF0aW9uPSJhdXRvIiB0ZXh0LXJlbmRlcmluZz0iYXV0byIgc3Ryb2tlPSJibGFjayIgc3Ryb2tlLWxpbmVjYXA9InNxdWFyZSIgd2lkdGg9IjM4MCIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBzaGFwZS1yZW5kZXJpbmc9ImF1dG8iIHN0cm9rZS1vcGFjaXR5PSIxIiBmaWxsPSJibGFjayIgc3Ryb2tlLWRhc2hhcnJheT0ibm9uZSIgZm9udC13ZWlnaHQ9Im5vcm1hbCIgc3Ryb2tlLXdpZHRoPSIxIiBoZWlnaHQ9IjM3MiIgZm9udC1mYW1pbHk9IidEaWFsb2cnIiBmb250LXN0eWxlPSJub3JtYWwiIHN0cm9rZS1saW5lam9pbj0ibWl0ZXIiIGZvbnQtc2l6ZT0iMTJweCIgc3Ryb2tlLWRhc2hvZmZzZXQ9IjAiIGltYWdlLXJlbmRlcmluZz0iYXV0byI+CiAgPCEtLUdlbmVyYXRlZCBieSB5U1ZHIDIuNS0tPgogIDxkZWZzIGlkPSJnZW5lcmljRGVmcyIvPgogIDxnPgogICAgPGRlZnMgaWQ9ImRlZnMxIj4KICAgICAgPGNsaXBQYXRoIGNsaXBQYXRoVW5pdHM9InVzZXJTcGFjZU9uVXNlIiBpZD0iY2xpcFBhdGgxIj4KICAgICAgICA8cGF0aCBkPSJNMCAwIEwzODAgMCBMMzgwIDM3MiBMMCAzNzIgTDAgMCBaIi8+CiAgICAgIDwvY2xpcFBhdGg+CiAgICAgIDxjbGlwUGF0aCBjbGlwUGF0aFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgaWQ9ImNsaXBQYXRoMiI+CiAgICAgICAgPHBhdGggZD0iTTk1IC05NiBMNDc1IC05NiBMNDc1IDI3NiBMOTUgMjc2IEw5NSAtOTYgWiIvPgogICAgICA8L2NsaXBQYXRoPgogICAgPC9kZWZzPgogICAgPGcgZmlsbD0id2hpdGUiIHRleHQtcmVuZGVyaW5nPSJnZW9tZXRyaWNQcmVjaXNpb24iIHNoYXBlLXJlbmRlcmluZz0iZ2VvbWV0cmljUHJlY2lzaW9uIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtOTUsOTYpIiBzdHJva2U9IndoaXRlIj4KICAgICAgPHJlY3QgeD0iOTUiIHdpZHRoPSIzODAiIGhlaWdodD0iMzcyIiB5PSItOTYiIGNsaXAtcGF0aD0idXJsKCNjbGlwUGF0aDIpIiBzdHJva2U9Im5vbmUiLz4KICAgIDwvZz4KICAgIDxnIGZpbGw9InJnYigyNTUsMjA0LDApIiB0ZXh0LXJlbmRlcmluZz0iZ2VvbWV0cmljUHJlY2lzaW9uIiBzaGFwZS1yZW5kZXJpbmc9Imdlb21ldHJpY1ByZWNpc2lvbiIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSwtOTUsOTYpIiBzdHJva2U9InJnYigyNTUsMjA0LDApIj4KICAgICAgPHJlY3QgeD0iMjEzLjUiIHdpZHRoPSIxNDAiIGhlaWdodD0iMTI1IiB5PSItODAuNSIgY2xpcC1wYXRoPSJ1cmwoI2NsaXBQYXRoMikiIHN0cm9rZT0ibm9uZSIvPgogICAgPC9nPgogICAgPGcgdGV4dC1yZW5kZXJpbmc9Imdlb21ldHJpY1ByZWNpc2lvbiIgc3Ryb2tlLW1pdGVybGltaXQ9IjEuNDUiIHNoYXBlLXJlbmRlcmluZz0iZ2VvbWV0cmljUHJlY2lzaW9uIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSwtOTUsOTYpIiBzdHJva2UtbGluZWNhcD0iYnV0dCI+CiAgICAgIDx0ZXh0IHg9IjI2MC4zMjYyIiB4bWw6c3BhY2U9InByZXNlcnZlIiB5PSItNTUuODYzMyIgY2xpcC1wYXRoPSJ1cmwoI2NsaXBQYXRoMikiIHN0cm9rZT0ibm9uZSI+TG9hZGluZzwvdGV4dD4KICAgICAgPHRleHQgeD0iMjgxLjYwMTYiIHhtbDpzcGFjZT0icHJlc2VydmUiIHk9Ii00MS43MzA1IiBjbGlwLXBhdGg9InVybCgjY2xpcFBhdGgyKSIgc3Ryb2tlPSJub25lIj4gPC90ZXh0PgogICAgICA8dGV4dCB4PSIyNjEuODYxMyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgeT0iLTI3LjU5NzciIGNsaXAtcGF0aD0idXJsKCNjbGlwUGF0aDIpIiBzdHJva2U9Im5vbmUiPlRpZHlpbmc8L3RleHQ+CiAgICAgIDx0ZXh0IHg9IjI4MS42MDE2IiB4bWw6c3BhY2U9InByZXNlcnZlIiB5PSItMTMuNDY0OCIgY2xpcC1wYXRoPSJ1cmwoI2NsaXBQYXRoMikiIHN0cm9rZT0ibm9uZSI+IDwvdGV4dD4KICAgICAgPHRleHQgeD0iMjQyLjQwMjMiIHhtbDpzcGFjZT0icHJlc2VydmUiIHk9IjAuNjY4IiBjbGlwLXBhdGg9InVybCgjY2xpcFBhdGgyKSIgc3Ryb2tlPSJub25lIj5Ob3JtYWxpemF0aW9uPC90ZXh0PgogICAgICA8dGV4dCB4PSIyODEuNjAxNiIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgeT0iMTQuODAwOCIgY2xpcC1wYXRoPSJ1cmwoI2NsaXBQYXRoMikiIHN0cm9rZT0ibm9uZSI+IDwvdGV4dD4KICAgICAgPHRleHQgeD0iMjM4LjUwNTkiIHhtbDpzcGFjZT0icHJlc2VydmUiIHk9IjI4LjkzMzYiIGNsaXAtcGF0aD0idXJsKCNjbGlwUGF0aDIpIiBzdHJva2U9Im5vbmUiPlRyYW5zZm9ybWF0aW9uPC90ZXh0PgogICAgICA8cmVjdCBmaWxsPSJub25lIiB4PSIyMTMuNSIgd2lkdGg9IjE0MCIgaGVpZ2h0PSIxMjUiIHk9Ii04MC41IiBjbGlwLXBhdGg9InVybCgjY2xpcFBhdGgyKSIvPgogICAgPC9nPgogICAgPGcgZmlsbD0icmdiKDI1NSwyMDQsMCkiIHRleHQtcmVuZGVyaW5nPSJnZW9tZXRyaWNQcmVjaXNpb24iIHNoYXBlLXJlbmRlcmluZz0iZ2VvbWV0cmljUHJlY2lzaW9uIiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLC05NSw5NikiIHN0cm9rZT0icmdiKDI1NSwyMDQsMCkiPgogICAgICA8cmVjdCB4PSIxMTAiIHdpZHRoPSIxNDAiIGhlaWdodD0iOTgiIHk9IjEwMSIgY2xpcC1wYXRoPSJ1cmwoI2NsaXBQYXRoMikiIHN0cm9rZT0ibm9uZSIvPgogICAgPC9nPgogICAgPGcgdGV4dC1yZW5kZXJpbmc9Imdlb21ldHJpY1ByZWNpc2lvbiIgc3Ryb2tlLW1pdGVybGltaXQ9IjEuNDUiIHNoYXBlLXJlbmRlcmluZz0iZ2VvbWV0cmljUHJlY2lzaW9uIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSwtOTUsOTYpIiBzdHJva2UtbGluZWNhcD0iYnV0dCI+CiAgICAgIDx0ZXh0IHg9IjE0Mi42Mzc3IiB4bWw6c3BhY2U9InByZXNlcnZlIiB5PSIxNDAuNDAyMyIgY2xpcC1wYXRoPSJ1cmwoI2NsaXBQYXRoMikiIHN0cm9rZT0ibm9uZSI+VmlzdWFsaXphdGlvbjwvdGV4dD4KICAgICAgPHRleHQgeD0iMTc4LjEwMTYiIHhtbDpzcGFjZT0icHJlc2VydmUiIHk9IjE1NC41MzUyIiBjbGlwLXBhdGg9InVybCgjY2xpcFBhdGgyKSIgc3Ryb2tlPSJub25lIj4gPC90ZXh0PgogICAgICA8dGV4dCB4PSIxNDYuNzE1OCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgeT0iMTY4LjY2OCIgY2xpcC1wYXRoPSJ1cmwoI2NsaXBQYXRoMikiIHN0cm9rZT0ibm9uZSI+RXhwbG9yYXRpb248L3RleHQ+CiAgICAgIDxyZWN0IGZpbGw9Im5vbmUiIHg9IjExMCIgd2lkdGg9IjE0MCIgaGVpZ2h0PSI5OCIgeT0iMTAxIiBjbGlwLXBhdGg9InVybCgjY2xpcFBhdGgyKSIvPgogICAgPC9nPgogICAgPGcgZmlsbD0icmdiKDI1NSwyMDQsMCkiIHRleHQtcmVuZGVyaW5nPSJnZW9tZXRyaWNQcmVjaXNpb24iIHNoYXBlLXJlbmRlcmluZz0iZ2VvbWV0cmljUHJlY2lzaW9uIiB0cmFuc2Zvcm09Im1hdHJpeCgxLDAsMCwxLC05NSw5NikiIHN0cm9rZT0icmdiKDI1NSwyMDQsMCkiPgogICAgICA8cmVjdCB4PSIzMjAiIHdpZHRoPSIxNDAiIGhlaWdodD0iOTgiIHk9IjEwMSIgY2xpcC1wYXRoPSJ1cmwoI2NsaXBQYXRoMikiIHN0cm9rZT0ibm9uZSIvPgogICAgPC9nPgogICAgPGcgdGV4dC1yZW5kZXJpbmc9Imdlb21ldHJpY1ByZWNpc2lvbiIgc3Ryb2tlLW1pdGVybGltaXQ9IjEuNDUiIHNoYXBlLXJlbmRlcmluZz0iZ2VvbWV0cmljUHJlY2lzaW9uIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSwtOTUsOTYpIiBzdHJva2UtbGluZWNhcD0iYnV0dCI+CiAgICAgIDx0ZXh0IHg9IjM0Ni4xOTgyIiB4bWw6c3BhY2U9InByZXNlcnZlIiB5PSIxMjYuMjY5NSIgY2xpcC1wYXRoPSJ1cmwoI2NsaXBQYXRoMikiIHN0cm9rZT0ibm9uZSI+U3VtbWFyaXphdGlvbjwvdGV4dD4KICAgICAgPHRleHQgeD0iMzg4LjEwMTYiIHhtbDpzcGFjZT0icHJlc2VydmUiIHk9IjE0MC40MDIzIiBjbGlwLXBhdGg9InVybCgjY2xpcFBhdGgyKSIgc3Ryb2tlPSJub25lIj4gPC90ZXh0PgogICAgICA8dGV4dCB4PSIzNjEuMzU5NCIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgeT0iMTU0LjUzNTIiIGNsaXAtcGF0aD0idXJsKCNjbGlwUGF0aDIpIiBzdHJva2U9Im5vbmUiPk1vZGVsbGluZzwvdGV4dD4KICAgICAgPHRleHQgeD0iMzg4LjEwMTYiIHhtbDpzcGFjZT0icHJlc2VydmUiIHk9IjE2OC42NjgiIGNsaXAtcGF0aD0idXJsKCNjbGlwUGF0aDIpIiBzdHJva2U9Im5vbmUiPiA8L3RleHQ+CiAgICAgIDx0ZXh0IHg9IjM0MC4wODY5IiB4bWw6c3BhY2U9InByZXNlcnZlIiB5PSIxODIuODAwOCIgY2xpcC1wYXRoPSJ1cmwoI2NsaXBQYXRoMikiIHN0cm9rZT0ibm9uZSI+U3RhdGlzdGljYWwgdGVzdGluZzwvdGV4dD4KICAgICAgPHJlY3QgZmlsbD0ibm9uZSIgeD0iMzIwIiB3aWR0aD0iMTQwIiBoZWlnaHQ9Ijk4IiB5PSIxMDEiIGNsaXAtcGF0aD0idXJsKCNjbGlwUGF0aDIpIi8+CiAgICA8L2c+CiAgICA8ZyB0ZXh0LXJlbmRlcmluZz0iZ2VvbWV0cmljUHJlY2lzaW9uIiBzdHJva2UtbWl0ZXJsaW1pdD0iMS40NSIgc2hhcGUtcmVuZGVyaW5nPSJnZW9tZXRyaWNQcmVjaXNpb24iIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLDEsLTk1LDk2KSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiPgogICAgICA8cGF0aCBmaWxsPSJub25lIiBkPSJNMjQ0Ljk5NTUgNDQuNSBMMjMxLjgwNjUgNTMuOTkyNyBMMjM3LjM0NTUgNTQuMDU3NyBMMjM3LjM0NTUgNTQuMDU3NyBMMjE1LjI4MzMgODkuODY4NyBMMjEyLjczNDEgODQuOTUwOCBMMjEwLjE4NzUgMTAxIEwyMjMuMzc2NiA5MS41MDczIEwyMTcuODM3NSA5MS40NDIzIEwyMTcuODM3NSA5MS40NDIzIEwyMzkuODk5NyA1NS42MzEzIEwyNDIuNDQ4OSA2MC41NDkyIEwyNDQuOTk1NSA0NC41IFoiIGNsaXAtcGF0aD0idXJsKCNjbGlwUGF0aDIpIi8+CiAgICA8L2c+CiAgICA8ZyB0ZXh0LXJlbmRlcmluZz0iZ2VvbWV0cmljUHJlY2lzaW9uIiBzdHJva2UtbWl0ZXJsaW1pdD0iMS40NSIgc2hhcGUtcmVuZGVyaW5nPSJnZW9tZXRyaWNQcmVjaXNpb24iIHRyYW5zZm9ybT0ibWF0cml4KDEsMCwwLDEsLTk1LDk2KSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiPgogICAgICA8cGF0aCBmaWxsPSJub25lIiBkPSJNMzIzLjEyMDUgNDQuNSBMMzI1Ljg3MyA2MC41MTUyIEwzMjguMzU4OSA1NS41NjQ5IEwzNTEuMTY1NCA5MS41NDEzIEwzNTEuMTY1NCA5MS41NDEzIEwzNDUuNjI3NyA5MS42Nzc0IEwzNTguOTM3NSAxMDEgTDM1Ni4xODUxIDg0Ljk4NDggTDM1My42OTkyIDg5LjkzNTEgTDMzMC44OTI3IDUzLjk1ODcgTDMzMC44OTI3IDUzLjk1ODcgTDMzNi40MzA0IDUzLjgyMjYgTDMyMy4xMjA1IDQ0LjUgWiIgY2xpcC1wYXRoPSJ1cmwoI2NsaXBQYXRoMikiLz4KICAgIDwvZz4KICAgIDxnIHRleHQtcmVuZGVyaW5nPSJnZW9tZXRyaWNQcmVjaXNpb24iIHN0cm9rZS1taXRlcmxpbWl0PSIxLjQ1IiBzaGFwZS1yZW5kZXJpbmc9Imdlb21ldHJpY1ByZWNpc2lvbiIgdHJhbnNmb3JtPSJtYXRyaXgoMSwwLDAsMSwtOTUsOTYpIiBzdHJva2UtbGluZWNhcD0iYnV0dCI+CiAgICAgIDxwYXRoIGZpbGw9Im5vbmUiIGQ9Ik0yNjUgMTQzLjc1IEwyNTAgMTUwIEwyNjUgMTU2LjI1IEwyNjIuMTUgMTUxLjUgTDMwNy44NSAxNTEuNSBMMzA1IDE1Ni4yNSBMMzIwIDE1MCBMMzA1IDE0My43NSBMMzA3Ljg1IDE0OC41IEwyNjIuMTUgMTQ4LjUgTDI2NSAxNDMuNzUgWiIgY2xpcC1wYXRoPSJ1cmwoI2NsaXBQYXRoMikiLz4KICAgIDwvZz4KICA8L2c+Cjwvc3ZnPgo=" height="400"></p>
-<div id="tidying" class="section level2">
-<h2>Tidying</h2>
+<p>Recall the diagram from the <a href="http://r4ds.had.co.nz/">“R for Data Science” book</a>. We will here focus on the “import”, “tidy”, “transform”, and “visualize” steps.</p>
+<p><img src="data:image/png;base64,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LjAvc1R5cGUvUmVzb3VyY2VFdmVudCMiCiAgICB4bWxuczpwbHVzPSJodHRwOi8vbnMudXNlcGx1cy5vcmcvbGRmL3htcC8xLjAvIgogICAgeG1sbnM6R0lNUD0iaHR0cDovL3d3dy5naW1wLm9yZy94bXAvIgogICAgeG1sbnM6ZGM9Imh0dHA6Ly9wdXJsLm9yZy9kYy9lbGVtZW50cy8xLjEvIgogICAgeG1sbnM6dGlmZj0iaHR0cDovL25zLmFkb2JlLmNvbS90aWZmLzEuMC8iCiAgICB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iCiAgIHhtcE1NOkRvY3VtZW50SUQ9ImdpbXA6ZG9jaWQ6Z2ltcDoxYWFiZThkNi0wOWUzLTQ2YzUtYTU4NS04MWQ3NWFjNTk3ZjAiCiAgIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6NDg3NjEwMmUtMDAxNS00ODhiLWJhMTItMmNiOWY4MThhNzkwIgogICB4bXBNTTpPcmlnaW5hbERvY3VtZW50SUQ9InhtcC5kaWQ6ZTJmY2I4NWYtMmQwNy00MTkwLTkwODYtNjI5ZThhODM1ZmY2IgogICBHSU1QOkFQST0iMi4wIgogICBHSU1QOlBsYXRmb3JtPSJNYWMgT1MiCiAgIEdJTVA6VGltZVN0YW1wPSIxNTUxMTQxNTY0MTI3MDgyIgogICBHSU1QOlZlcnNpb249IjIuMTAuOCIKICAgZGM6Rm9ybWF0PSJpbWFnZS9wbmciCiAgIHRpZmY6Q29tcHJlc3Npb249IjUiCiAgIHRpZmY6T3JpZW50YXRpb249IjEiCiAgIHRpZmY6UGhvdG9tZXRyaWNJbnRlcnByZXRhdGlvbj0iMiIKICAgeG1wOkNyZWF0b3JUb29sPSJHSU1QIDIuMTAiPgogICA8aXB0Y0V4dDpMb2NhdGlvbkNyZWF0ZWQ+CiAgICA8cmRmOkJhZy8+CiAgIDwvaXB0Y0V4dDpMb2NhdGlvbkNyZWF0ZWQ+CiAgIDxpcHRjRXh0OkxvY2F0aW9uU2hvd24+CiAgICA8cmRmOkJhZy8+CiAgIDwvaXB0Y0V4dDpMb2NhdGlvblNob3duPgogICA8aXB0Y0V4dDpBcnR3b3JrT3JPYmplY3Q+CiAgICA8cmRmOkJhZy8+CiAgIDwvaXB0Y0V4dDpBcnR3b3JrT3JPYmplY3Q+CiAgIDxpcHRjRXh0OlJlZ2lzdHJ5SWQ+CiAgICA8cmRmOkJhZy8+CiAgIDwvaXB0Y0V4dDpSZWdpc3RyeUlkPgogICA8eG1wTU06SGlzdG9yeT4KICAgIDxyZGY6U2VxPgogICAgIDxyZGY6bGkKICAgICAgc3RFdnQ6YWN0aW9uPSJzYXZlZCIKICAgICAgc3RFdnQ6Y2hhbmdlZD0iLyIKICAgICAgc3RFdnQ6aW5zdGFuY2VJRD0ieG1wLmlpZDpkMzQzN2NiMS04MWEzLTQ0NzQtODI5NS0wODRjMmI3OTdmYzQiCiAgICAgIHN0RXZ0OnNvZnR3YXJlQWdlbnQ9IkdpbXAgMi4xMCAoTWFjIE9TKSIKICAgICAgc3RFdnQ6d2hlbj0iMjAxOS0wMi0yNlQxMTozOToyNCsxMTowMCIvPgogICAgPC9yZGY6U2VxPgogICA8L3htcE1NOkhpc3Rvcnk+CiAgIDxwbHVzOkltYWdlU3VwcGxpZXI+CiAgICA8cmRmOlNlcS8+CiAgIDwvcGx1czpJbWFnZVN1cHBsaWVyPgogICA8cGx1czpJbWFnZUNyZWF0b3I+CiAgICA8cmRmOlNlcS8+CiAgIDwvcGx1czpJbWFnZUNyZWF0b3I+CiAgIDxwbHVzOkNvcHlyaWdodE93bmVyPgogICAgPHJkZjpTZXEvPgogICA8L3BsdXM6Q29weXJpZ2h0T3duZXI+CiAgIDxwbHVzOkxpY2Vuc29yPgogICAgPHJkZjpTZXEvPgogICA8L3BsdXM6TGljZW5zb3I+CiAgPC9yZGY6RGVzY3JpcHRpb24+CiA8L3JkZjpSREY+CjwveDp4bXBtZXRhPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg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" height="285"></p>
+<div id="importing-and-tidying" class="section level2">
+<h2>Importing and tidying</h2>
 <p><b>Hint:</b> You can select from the top of a pipeline to partway through and press Ctrl-Enter or Command-Enter to see the value part-way through the pipeline.</p>
-<pre class="r"><code># Use readr&#39;s read_csv function to load the file
+<pre class="r"><code># Use readr's read_csv function to load the file
 counts_untidy &lt;- read_csv(&quot;r-progtidy-files/read-counts.csv&quot;)
 
 counts &lt;- counts_untidy %&gt;%
@@ -660,29 +737,32 @@ normalizer_by_tmm &lt;- tibble(sample=names(adjusted_lib_sizes), norm=adjusted_l
 </div>
 <div id="whole-dataset-visualization" class="section level3">
 <h3>Whole dataset visualization</h3>
+<p>Heatmaps using <code>geom_tile</code> and the use of facets allow the entire dataset to be viewed at once.</p>
 <pre class="r"><code>ggplot(counts_norm, aes(x=sample, y=gene, fill=log_norm_count)) + 
     geom_tile() + 
     scale_fill_viridis() + 
     theme_minimal() +
     theme(axis.text.x=element_text(           # Vertical text on x axis
               angle=90,vjust=0.5,hjust=1))              </code></pre>
+<p>Facetting the heatmap makes it easier to understand.</p>
 <pre class="r"><code>ggplot(counts_norm, aes(x=time, y=gene, fill=log_norm_count)) + 
     geom_tile() + 
     facet_grid(~ strain) + 
     scale_fill_viridis() + 
     theme_minimal()</code></pre>
+<p>We are interested in the interaction of strain and time, so we can instead set these as the x and y axes for each gene.</p>
 <pre class="r"><code>ggplot(counts_norm, aes(x=time, y=strain, fill=log_norm_count)) + 
     geom_tile() + 
     facet_wrap(~ gene) + 
     scale_fill_viridis() + 
     theme_minimal()</code></pre>
+<p>A famous paper by Cleveland and McGill <span class="citation">(1984)</span> ranks color last in terms of perceptual accuracy. A more traditional way of examining the interaction between two factors is a line graph called an “interaction plot”. We can also give each gene a separate scale.</p>
 <pre class="r"><code>ggplot(counts_norm, aes(x=time, y=log_norm_count, color=strain, group=strain)) + 
     geom_line() + 
     facet_wrap(~ gene, scale=&quot;free&quot;)</code></pre>
 </div>
-</div>
-<div id="exercises" class="section level2 challenge">
-<h2>Exercises</h2>
+<div id="exercises" class="section level3 challenge">
+<h3>Exercises</h3>
 <ol style="list-style-type: decimal">
 <li>Which are the three most variable genes?</li>
 </ol>
@@ -691,57 +771,17 @@ normalizer_by_tmm &lt;- tibble(sample=names(adjusted_lib_sizes), norm=adjusted_l
 <li>Different genes have different average expression levels, but what we are interested in is how they change over time. Further normalize the data by subtracting the average for each gene from <code>log_norm_count</code>.</li>
 </ol>
 </div>
-</div>
-<div id="appendix-tidy-linear-modelling" class="section level1">
-<h1>Appendix: Tidy linear modelling</h1>
-<p>The idea of this section is to give a taste of what is possible, so that you know what topics to read up on or ask an expert for help with if this is the sort of analysis you need. It will also provide a little context for advanced forms of RNA-Seq differential expression analysis.</p>
-<pre class="r"><code>sut476 &lt;- counts_norm %&gt;% filter(gene==&quot;SUT476&quot;) 
-sut476_wt &lt;- sut476 %&gt;% filter(strain==&quot;WT&quot;)
-
-ggplot(sut476_wt,aes(x=time,y=log_norm_count)) +
-    geom_point() +
-    geom_smooth(method=&quot;lm&quot;)</code></pre>
-<p><code>ggplot2</code> includes a handy geom for fitting a curve or line to data, but what exactly is it doing? What if we want to work with that fitted curve ourselves? <code>ggplot2</code> can use various curve fitting methods, the simplest of which is a linear model with “lm”.</p>
-<pre class="r"><code>model &lt;- lm(log_norm_count ~ time, data=sut476_wt)
-model
-# Note: The p-values listed by summary aren&#39;t always meaningful.
-# It makes no sense to remove the intercept term but retain the time term.
-# Significance testing can better be done with anova() and the multcomp package.
-summary(model)
-model.matrix(log_norm_count ~ time, data=sut476_wt)</code></pre>
-<p>A model can be tested against a simpler null model using <code>anova</code>. Is the fit sufficiently better to justify the extra complexity?</p>
-<pre class="r"><code>null_model &lt;- lm(log_norm_count ~ 1, data=sut476_wt)
-anova(null_model, model)</code></pre>
-<p>A linear trend is not supported, in comparison to the null hypothesis that expression is constant, by this data. Also useful for hypothesis testing, the <code>multcomp</code> package can be used to test comparisons of interest such as a set of pairwise comparisons. This is similar to testing of contrasts in packages for differential expression analysis such as <code>limma</code>, <code>edgeR</code>, or <code>DESeq2</code>.</p>
-<p><code>augment</code> from the <code>broom</code> package gives various diagnostic statistics.</p>
-<ul>
-<li>.fitted = Model prediction.</li>
-<li>.residual = Actual value minus .fitted.</li>
-<li>.hat = The leverage – how important the observation is in the design of the experiment. This can be considered before performing the experiment!</li>
-<li>.cooksd = Cook’s Distance – how much actual influence the observation had on the model. Combines information from .residual and .hat.</li>
-</ul>
-<pre class="r"><code>library(broom)
-
-augment(model, sut476_wt) %&gt;% head
-
-# augment() can also be used to produce predictions for new inputs
-augment(model, newdata=sut476_wt[1:5,])
-
-# Let&#39;s look at the model fit
-augment(model, sut476_wt) %&gt;%
-ggplot(aes(x=time)) + 
-    geom_point(aes(y=log_norm_count)) +
-    geom_line(aes(y=.fitted))</code></pre>
-<p>We see the initial timepoint in the wildtype strain is wildly off the linear trend. Possibly early time points need to be removed, or (more likely!) a linear trend is not a good model of this data.</p>
-<p>Linear models can be much more complicated than this. They can include multiple explanatory variables, including categorical variables, and interactions between them, and even polynomials.</p>
-<pre class="r"><code>model2 &lt;- lm(log_norm_count ~ strain*poly(time,3), data=sut476)
-model2
-
-augment(model2, sut476) %&gt;%
-ggplot(aes(x=time, color=strain, group=strain)) + 
-    geom_point(aes(y=log_norm_count), alpha=0.5) +
-    geom_line(aes(y=.fitted))</code></pre>
+<div id="section" class="section level3">
+<h3></h3>
 <pre class="r"><code>sessionInfo()</code></pre>
+<p><strong>References</strong></p>
+<div id="refs" class="references">
+<div id="ref-cleveland1984">
+<p>Cleveland, William S., and Robert McGill. 1984. “Graphical Perception: Theory, Experimentation, and Application to the Development of Graphical Methods.” <em>Journal of the American Statistical Association</em> 79 (387). Taylor &amp; Francis: 531–54. <a href="https://doi.org/10.1080/01621459.1984.10478080" class="uri">https://doi.org/10.1080/01621459.1984.10478080</a>.</p>
+</div>
+</div>
+</div>
+</div>
 </div>
 
 

@@ -2,11 +2,7 @@
 
 
 
-# install.packages(c(
-#     "tidyverse",
-#     "viridis",
-#     "broom"
-# ))
+# install.packages(c("tidyverse", "viridis"))
 
 
 library(tidyverse) # Load all "tidyverse" libraries.
@@ -80,7 +76,7 @@ ggsave("plot2.png", myplot, width=10, height=10, dpi=300)
 
 
 ## -------
-## tibbles
+## Tibbles
 ## -------
 
 bigtab
@@ -93,33 +89,21 @@ View(bigtab)
 print(bigtab, n=100, width=1000)
 
 
-## ------
-## filter
-## ------
+## ---------
+## filter( )
+## ---------
 
 filter(bigtab, grade == "FAIL")
 
 
-## -------
-## arrange
-## -------
+## ----------
+## arrange( )
+## ----------
 
 arrange(bigtab, grade)
 
 # desc( ) can be used to reverse the sort order
 arrange(bigtab, desc(grade))
-
-
-## ------
-## select
-## ------
-
-select(bigtab, test,grade)
-select(bigtab, 2,1)
-select(bigtab, foo=file, bar=test, baz=grade)
-
-
-select(bigtab, -file)
 
 
 ## -----
@@ -139,32 +123,9 @@ scoretab <- left_join(bigtab, scoring, by="grade")
 scoretab
 
 
-### ---------
-### Challenge
-### ---------
-# 
-# Using the newly created `score` column:
-# 
-# 1. Filter `scoretab` to get only "WARN" or "FAIL" grades.
-# 
-# 2. Sort the result so that "FAIL"s are at the top.
-# 
-# 
-#
-## ------
-## mutate
-## ------
-
-mutate(scoretab, doublescore = score*2)
-
-
-scoretab2 <- scoretab
-scoretab2$doublescore <- scoretab2$score * 2
-
-
-## ---------
-## summarize
-## ---------
+## ------------
+## summarize( )
+## ------------
 
 summarize(scoretab, total=sum(score))
 
@@ -177,9 +138,9 @@ summarize(group_by(scoretab, file), average_score=mean(score))
 summarize(group_by(scoretab, grade), count=n())
 
 
-# ============
-# The pipe %>%
-# ============
+## ------------
+## The pipe %>%
+## ------------
 
 scoretab %>% group_by(grade) %>% summarize(count=n())
 
@@ -187,6 +148,48 @@ scoretab %>% group_by(grade) %>% summarize(count=n())
 rep(paste("hello", "world"), 5)
 
 "hello" %>% paste("world") %>% rep(5)
+
+
+scoretab %>%
+    group_by(grade) %>%
+    summarize(count=n())
+
+
+### ---------
+### Challenge
+### ---------
+# 
+# Write a pipeline using `%>%`s that starts with `bigtab`, joins the
+# score table, and then calculates average scores for each file.
+# 
+# 
+# 
+#
+## ---------
+## mutate( )
+## ---------
+
+mutate(scoretab, doublescore = score*2)
+
+
+scoretab %>%
+    mutate(doublescore = score*2)
+
+
+scoretab2 <- scoretab
+scoretab2$doublescore <- scoretab2$score * 2
+
+
+## ---------
+## select( )
+## ---------
+
+select(bigtab, test,grade)
+select(bigtab, 2,1)
+select(bigtab, foo=file, bar=test, baz=grade)
+
+
+select(bigtab, -file)
 
 
 # =====
@@ -204,6 +207,7 @@ gathered <- gather(untidy, key=group, value=cases, -country)
 gathered
 
 
+spread(gathered, key=group, value=cases)
 spread(bigtab, key=file, value=grade)
 
 
@@ -252,9 +256,9 @@ df <- read_csv(
 # An RNA-Seq example
 # ==================
 
-## -------
-## Tidying
-## -------
+## ---------------------
+## Importing and tidying
+## ---------------------
 
 # Use readr's read_csv function to load the file
 counts_untidy <- read_csv("r-progtidy-files/read-counts.csv")
@@ -372,9 +376,9 @@ ggplot(counts_norm, aes(x=time, y=log_norm_count, color=strain, group=strain)) +
     facet_wrap(~ gene, scale="free")
 
 
-## ---------
-## Exercises
-## ---------
+### ---------
+### Exercises
+### ---------
 # 
 # 1. Which are the three most variable genes?
 # 
@@ -386,55 +390,10 @@ ggplot(counts_norm, aes(x=time, y=log_norm_count, color=strain, group=strain)) +
 # the data by subtracting the average for each gene from
 # `log_norm_count`.
 # 
-# 
 #
-# ===============================
-# Appendix: Tidy linear modelling
-# ===============================
-
-sut476 <- counts_norm %>% filter(gene=="SUT476")
-sut476_wt <- sut476 %>% filter(strain=="WT")
-
-ggplot(sut476_wt,aes(x=time,y=log_norm_count)) +
-    geom_point() +
-    geom_smooth(method="lm")
-
-
-model <- lm(log_norm_count ~ time, data=sut476_wt)
-model
-# Note: The p-values listed by summary aren't always meaningful.
-# It makes no sense to remove the intercept term but retain the time term.
-# Significance testing can better be done with anova() and the multcomp package.
-summary(model)
-model.matrix(log_norm_count ~ time, data=sut476_wt)
-
-
-null_model <- lm(log_norm_count ~ 1, data=sut476_wt)
-anova(null_model, model)
-
-
-library(broom)
-
-augment(model, sut476_wt) %>% head
-
-# augment() can also be used to produce predictions for new inputs
-augment(model, newdata=sut476_wt[1:5,])
-
-# Let's look at the model fit
-augment(model, sut476_wt) %>%
-ggplot(aes(x=time)) +
-    geom_point(aes(y=log_norm_count)) +
-    geom_line(aes(y=.fitted))
-
-
-model2 <- lm(log_norm_count ~ strain*poly(time,3), data=sut476)
-model2
-
-augment(model2, sut476) %>%
-ggplot(aes(x=time, color=strain, group=strain)) +
-    geom_point(aes(y=log_norm_count), alpha=0.5) +
-    geom_line(aes(y=.fitted))
-
+### 
+###
+### 
 
 sessionInfo()
 
