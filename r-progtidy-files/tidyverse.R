@@ -160,7 +160,7 @@ scoretab %>%
 ### ---------
 # 
 # Write a pipeline using `%>%`s that starts with `bigtab`, joins the
-# score table, and then calculates average scores for each file.
+# `scoring` table, and then calculates average scores for each file.
 # 
 # 
 # 
