@@ -160,6 +160,12 @@ fahr_to_kelvin(212)
 
 Here are some other equivalent ways to write this function. 
 
+The braces are not actually needed if the function only contains one statement.
+
+```{r}
+fahr_to_kelvin <- function(temp) (temp-32) * (5/9) + 273.15
+```
+
 The body of the function within the `{}` can contain multiple lines of code, "statements". Only the last line is returned.
 
 ```{r}
@@ -169,11 +175,6 @@ fahr_to_kelvin <- function(temp) {
 }
 ```
 
-The braces are not actually needed if the function only contains one statement.
-
-```{r}
-fahr_to_kelvin <- function(temp) (temp-32) * (5/9) + 273.15
-```
 
 `return` can be used to return from a function immediately. Further code will not be run. I recommend
 always using explicit `return` statements.
