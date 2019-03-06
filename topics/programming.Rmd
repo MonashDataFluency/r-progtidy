@@ -97,11 +97,11 @@ We can also chain several tests together when there are more than two options. A
 
 ```{r}
 if (num > 0) {            # line 1
-  return(1)             # line 2
+  print(1)             # line 2
 } else if (num == 0) {    # line 3
-  return(0)             # line 4
+  print(0)             # line 4
 } else {                  
-  return(-1)            # line 5
+  print(-1)            # line 5
 }                         
 
 num <- -3
