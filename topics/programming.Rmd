@@ -652,6 +652,10 @@ How should we share a project with others?
 
 # Extended example
 
+Importing microscopy data and generating a report.
+
+![](cellsA.png)
+
 # Packages
 
 Packages are the next step up from sourcing .R files. They let you write code that other people can install and then load with `library`. 

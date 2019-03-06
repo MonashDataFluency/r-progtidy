@@ -44,11 +44,11 @@ cat("done\n")                        #     3
 
 
 if (num > 0) {            # line 1
-  return(1)             # line 2
+  print(1)             # line 2
 } else if (num == 0) {    # line 3
-  return(0)             # line 4
+  print(0)             # line 4
 } else {
-  return(-1)            # line 5
+  print(-1)            # line 5
 }
 
 num <- -3
@@ -90,13 +90,13 @@ fahr_to_kelvin(212)
 ## Variations
 ## ----------
 
+fahr_to_kelvin <- function(temp) (temp-32) * (5/9) + 273.15
+
+
 fahr_to_kelvin <- function(temp) {
     kelvin <- (temp-32) * (5/9) + 273.15
     kelvin
 }
-
-
-fahr_to_kelvin <- function(temp) (temp-32) * (5/9) + 273.15
 
 
 fahr_to_kelvin <- function(temp) {
