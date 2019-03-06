@@ -61,7 +61,7 @@ download.file(
     destfile="r-progtidy-files.zip")
 unzip("r-progtidy-files.zip")
 
-install.packages(c("tidyverse", "devtools", "roxygen2"))
+install.packages(c("tidyverse", "viridis", "devtools", "roxygen2"))
 ```
 
 Some parts of the workshop use the external software [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) as an example. Exactly how to install this differs between operating systems. The following will install FastQC in RStudio Cloud:
@@ -86,7 +86,7 @@ We recommend [using projects](https://support.rstudio.com/hc/en-us/articles/2005
 
 ## Authors
 
-This course is developed by Paul Harrison for [Monash Data Fluency](https://www.monash.edu/data-fluency) and the [Monash Bioinformatics Platform](https://www.monash.edu/researchinfrastructure/bioinformatics).
+This course was developed by Paul Harrison and Richard Beare for [Monash Data Fluency](https://www.monash.edu/data-fluency) and the [Monash Bioinformatics Platform](https://www.monash.edu/researchinfrastructure/bioinformatics).
 
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="figures/CC-BY.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 

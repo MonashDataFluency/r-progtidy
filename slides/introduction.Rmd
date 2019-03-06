@@ -1,5 +1,6 @@
 ---
 title: "Programming and Tidy data analysis in R"
+author: "Monash Data Fluency"
 output: 
     ioslides_presentation:
         widescreen: true
@@ -16,19 +17,19 @@ R has a long history.
 * S - 1976
 * R - 1993
 
-We will be focussing on the modern "Tidyverse" approach. 
+We will be focussing on the modern [Tidyverse](https://tidyverse.org) approach. 
 
 * `dplyr`, `ggplot2`, `tidyr`, `purrr`, etc
 * data frame ("tibble") is the one true data structure
 * mostly written by [Hadley Wickham](http://hadley.nz/)
-* safer and less "helpful"
+* simpler, safer, and less "helpful"
    * less edge cases (eg same data type produced with 1 and many items)
    * abort with error on unexpected input
 
 
 ## Analysis cycle
 
-From [The "R for Data Science" book](http://r4ds.had.co.nz/)
+From the ["R for Data Science" book](http://r4ds.had.co.nz/)
 
 <img src="../figures/data-science.png" height="285">
 
@@ -56,7 +57,7 @@ If every step of your analysis is recorded in an R script, with no manual steps:
 * you have a complete record of what you have done
 * easy to run entire script with test data
 * changes easily tested, poor early decisions easily fixed
-* today's big project becomes tomorrow's building block
+* today's big project becomes a function in a package, serves as tomorrow's building block
 
 <!--
 Elements of programming we will be looking at today:
@@ -68,52 +69,39 @@ Elements of programming we will be looking at today:
 * running all the code in a .R file as a "script", or to load a "library" of functions
 -->
 
+
 ## Data
 
 As your programs get more complicated, you will also need ways to represent complex data.
 
-R data types are a bit different from those in other languages, such as Python or Javascript. Translating data structures from one of these languages, often the solution will be to use a "list".
-
-
-## Data
-
 ### Vectors
 
-Vectors are a collection of a single kind of data.
-
-Unlike other languages, single numbers are a vector of length 1.
-
-Vectors can have `names( )`.
+* A collection of a single kind of data:<br>numeric, character, factor, logical
+* Single numbers are a vector of length 1.
+* Can have `names( )`.
 
 ### Lists
 
-Lists are a special kind of vector that can hold any kind of data, including other vectors and lists.
-
-If you need to bundle together a miscelaneous collection of data, lists are your solution. For example, a function that needs to return multiple results can return a list.
-
-Lists play the same role as both the `list` and `dict` types in Python or objects in Javascript.
-
-Access individual elements with `[[ ]]`.
+* A special kind of vector that can hold any kind of data, including other vectors and lists.
+* If you need to bundle together a miscelaneous collection of data, lists are your solution. For example, a function that needs to return multiple results can return a list.
+* Play the same role as both the `list` and `dict` types in Python or objects in Javascript.
+* Access individual elements with `[[ ]]`.
 
 ## Data
 
-### Matrices
+### Data frames
 
-Matrices hold tabular data all of the same type.
+* Data frames hold tabular data where the columns may be different types. 
+* Under the hood, a list of column vectors. 
+* Tidyverse has an improved data frame called a "tibble".
 
-These are important for linear maths, but we won't be using them today.
+### Others (not covered today)
 
-### Data frames (tibbles)
+* **Matrices** hold tabular data all of the same type, usually numeric. Distinct from data frames in R!
 
-Data frames hold tabular data where the columns may be different types. 
+* **"S3" objects** are (usually) a list, with a special class attribute. Example: an lm object holding a linear model.
 
-Under the hood, they are a list of column vectors. 
-
-### Other classes
-
-There are various other classes for specialized purposes. In R, these are usually lists with a `class( )` attribute that marks them as special. These are called "S3" classes. You can manipulate them like lists, but there will also be various other functions that can be used with them.
-
-Not covered today: Bioconductor uses "S4" classes, which are different.
+* **"S4" objects** are a more formal approach to object-orientation. Most heavily used by the Bioconductor project. Example: a GRanges object holding genomic ranges.
 
 
 
