@@ -22,8 +22,18 @@ and cover Rmarkdown and shiny in a separate "r-communicate" workshop.
 
 There is scope to expand Rmarkdown to cover bookdown, which supports figure numbering and cross referencing, and to refine the shiny section. The tidyverse section is a little tedious when covering dplyr (and this now recapitulates some material taught in the introductory workshop), and the end example is complex and could have fewer ggplots (and so far has also always been rushed). More challenges in all sections would be a plus.
 
-
 ----
 
-Would be nice to print some RStudio cheatsheets.
+First run of r-progtidy, 2019-03-07.
+
+We used 5.5 teaching hours total.
+
+There was another class directly after the workshop, so we had to finish exactly on time. Probably a good habit to maintain. We ran out of time to collect one good thing/one bad thing responses.
+
+The amount of material is good, with a good amount of time available for challenges. We had a little bit of a look at Richard's CellExperiment data, and using Rmarkdown with an external R file for R chunks (~1 hour, in two half hour sections). Alternatively, there was some more material on sourcing R files, writing packages.
+
+A weakness with this material is that the datasets (Richard's cell data, Paul's RNA-seq data) are best presented by people thoroughly familiar with them, so it may be difficult to transfer to different instructors.
+
+
+
 
