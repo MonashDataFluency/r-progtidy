@@ -540,7 +540,7 @@ fahr_to_kelvin(212)</code></pre>
     kelvin &lt;- (temp-32) * (5/9) + 273.15
     kelvin
 }</code></pre>
-<p><code>return</code> can be used to return from a function immediately. Further code will not be run. I recommend always using explicit <code>return</code> statements.</p>
+<p><code>return</code> can be used to return from a function immediately. Further code will not be run.</p>
 <pre class="r"><code>fahr_to_kelvin &lt;- function(temp) {
     kelvin &lt;- (temp-32) * (5/9) + 273.15
     return(kelvin)
@@ -595,8 +595,7 @@ kelvin_to_celsius(0)</code></pre>
 fahr_to_celsius(32.0)</code></pre>
 <p>This is our first taste of how larger programs are built: we define basic operations, then combine them in ever-larger chunks to get the effect we want. Real-life functions will usually be larger than the ones shown here–typically half a dozen to a few dozen lines–but they shouldn’t ever be much longer than that, or the next person who reads it won’t be able to understand what’s going on.</p>
 <p>Function names and argument names are important cues to what code is doing.</p>
-<p>Functions also help manage code complexity by cleaning up their contents after completion.</p>
-<p>You might have noticed that all of these functions have an argument called <code>temp</code>. Why hasn’t this caused confusion and chaos? The answer is that arguments to a function and variables defined in the body of a function are <em>local</em> to a call to that function. Within the body of a function, R code can see variables from its own local environment, and variables from the global environment, but <em>not</em> variables local to other function calls. While running code R maintains a <em>stack</em> of local environments. When a call to a function returns, all of its local arguments and variables disappear.</p>
+<p>Functions also help manage code complexity by cleaning up their contents after completion. You might have noticed that all of these functions have an argument called <code>temp</code>. Why hasn’t this caused confusion and chaos? The answer is that arguments to a function and variables defined in the body of a function are <em>local</em> to a call to that function. Within the body of a function, R code can see variables from its own local environment, and variables from the global environment, but <em>not</em> variables local to other function calls. While running code R maintains a <em>stack</em> of local environments. When a call to a function returns, all of its local arguments and variables disappear.</p>
 <p><b>Tip:</b> There are several ways to see this in action.</p>
 <ul>
 <li><p>Scatter <code>cat</code>s through your functions showing the values of arguments and variables at various points.</p></li>
@@ -732,7 +731,7 @@ for(day in days) {
 <pre class="r"><code>read_tsv(&quot;Day0_fastqc/summary.txt&quot;)</code></pre>
 <p>Oh! There aren’t column headings in this file. We need to tell <code>read_tsv</code> this.</p>
 <pre class="r"><code>read_tsv(&quot;Day0_fastqc/summary.txt&quot;, col_names=FALSE)</code></pre>
-<p>Finally, <code>readr</code> is nudging us to specify the column types. Otherwise it has to guess, and sometimes guesses wrong. Not guessing things is especially important for programming as opposed to interactive use of R. Have a look at <code>?read_tsv</code> to learn about using <code>col_types</code>.</p>
+<p>Finally, <code>readr</code> is nudging us to specify the column types. Otherwise it has to guess, and sometimes guesses wrong. Not guessing things is especially important for programming as opposed to interactive use of R, as we won’t immediately see the mistake. Have a look at <code>?read_tsv</code> to learn about using <code>col_types</code>.</p>
 <pre class="r"><code>read_tsv(&quot;Day0_fastqc/summary.txt&quot;, col_names=FALSE, col_types=&quot;ccc&quot;)</code></pre>
 <p>We should tidy this up a bit before using it. Columns should have meaningful names, and the PASS/WARN/FAIL grading looks like it should be a factor:</p>
 <pre class="r"><code>filename &lt;- &quot;Day0_fastqc/summary.txt&quot;
@@ -761,7 +760,6 @@ filenames &lt;- paste0(&quot;Day&quot;, days, &quot;_fastqc/summary.txt&quot;)
 filenames</code></pre>
 <p>Now we can use <code>lapply</code> to apply our function to each of the filenames.</p>
 <pre class="r"><code>sumtabs &lt;- lapply(filenames, load_fastqc)</code></pre>
-<p><code>lapply</code> is one of the base R functional programming tools. It stands for loop-apply and performs a specific class of loops without the user needing to write the loop structure. It can lead to clear code, when you are used to seeing it.</p>
 <p>This example is equivalent to:</p>
 <pre class="r"><code>sumtabs &lt;- list()
 for (idx in 1:length(filenames)) {
@@ -776,7 +774,7 @@ str(sumtabs)</code></pre>
 <p>When we print <code>sumtabs</code> on the console, it gives us a hint how to access individual elements: using the <code>[[ ]]</code> syntax:</p>
 <pre class="r"><code>sumtabs[[1]]
 sumtabs[[2]]</code></pre>
-<p>This is an ungainly data structure, we would like to turn it into a single a single big data frame. The <code>dplyr</code> package provides a function to do this:</p>
+<p>This is an ungainly data structure, we would like to turn it into a single big data frame. The <code>dplyr</code> package provides a function to do this:</p>
 <pre class="r"><code>library(dplyr)
 bigtab &lt;- bind_rows(sumtabs)
 

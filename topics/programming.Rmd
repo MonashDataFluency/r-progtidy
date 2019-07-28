@@ -175,8 +175,7 @@ fahr_to_kelvin <- function(temp) {
 ```
 
 
-`return` can be used to return from a function immediately. Further code will not be run. I recommend
-always using explicit `return` statements.
+`return` can be used to return from a function immediately. Further code will not be run.
 
 ```{r}
 fahr_to_kelvin <- function(temp) {
@@ -263,9 +262,7 @@ This is our first taste of how larger programs are built: we define basic operat
 Function names and argument names are important cues to what code is doing.
 
 Functions also help manage code complexity by cleaning up their contents after
-completion.
-
-You might have noticed that all of these functions have an argument called `temp`. Why hasn't this caused confusion and chaos? The answer is that arguments to a function and variables defined in the body of a function are *local* to a call to that function. Within the body of a function, R code can see variables from its own local environment, and variables from the global environment, but *not* variables local to other function calls. While running code R maintains a *stack* of local environments. When a call to a function returns, all of its local arguments and variables disappear.
+completion. You might have noticed that all of these functions have an argument called `temp`. Why hasn't this caused confusion and chaos? The answer is that arguments to a function and variables defined in the body of a function are *local* to a call to that function. Within the body of a function, R code can see variables from its own local environment, and variables from the global environment, but *not* variables local to other function calls. While running code R maintains a *stack* of local environments. When a call to a function returns, all of its local arguments and variables disappear.
 
 <b>Tip:</b> There are several ways to see this in action.
 
@@ -472,7 +469,7 @@ Oh! There aren't column headings in this file. We need to tell `read_tsv` this.
 read_tsv("Day0_fastqc/summary.txt", col_names=FALSE)
 ```
 
-Finally, `readr` is nudging us to specify the column types. Otherwise it has to guess, and sometimes guesses wrong. Not guessing things is especially important for programming as opposed to interactive use of R. Have a look at `?read_tsv` to learn about using `col_types`.
+Finally, `readr` is nudging us to specify the column types. Otherwise it has to guess, and sometimes guesses wrong. Not guessing things is especially important for programming as opposed to interactive use of R, as we won't immediately see the mistake. Have a look at `?read_tsv` to learn about using `col_types`.
 
 ```{r}
 read_tsv("Day0_fastqc/summary.txt", col_names=FALSE, col_types="ccc")
@@ -506,7 +503,7 @@ load_fastqc("r-progtidy-files/fastqc-output/Day0_fastqc/summary.txt")
 
 ## Applying the function
 
-We now want to load each of the `summary.txt` files we created earlier. One perfectly valid way would be to use a for-loop. However here we're going to use an "apply"-style function. "apply"-style functions are functions that call some other function repeatedly on subsets of a data set. R has a variety of functions with names such as `apply` and `tapply`, and several other functions where the idea is similar such as `aggregate`. `apply` itself is for use with matrices and produces a vector as output. Other functions in this family have different input and output types. 
+We now want to load each of the `summary.txt` files we created earlier. One perfectly valid way would be to use a for-loop. However here we're going to use an "apply"-style function. "apply"-style functions are functions that call some other function repeatedly on subsets of a data set. R has a variety of functions with names such as `apply` and `tapply`, and several other functions where the idea is similar such as `aggregate`. `apply` itself is for use with matrices and produces a vector as output. Other functions in this family have different input and output types.
 
 The flavour of apply we need here is `lapply`, which takes a vector and calls a function on each element in turn of that vector (i.e. the "subsets" here are simply individual elements). The result is a list containing the returned values, hence the name `lapply`.
 
@@ -523,10 +520,6 @@ Now we can use `lapply` to apply our function to each of the filenames.
 ```{r message=F}
 sumtabs <- lapply(filenames, load_fastqc)
 ```
-
-`lapply` is one of the base R functional programming tools. It stands for loop-apply
-and performs a specific class of loops without the user needing to write the loop
-structure. It can lead to clear code, when you are used to seeing it.
 
 This example is equivalent to:
 
@@ -556,7 +549,7 @@ sumtabs[[1]]
 sumtabs[[2]]
 ```
 
-This is an ungainly data structure, we would like to turn it into a single a single big data frame. The `dplyr` package provides a function to do this:
+This is an ungainly data structure, we would like to turn it into a single big data frame. The `dplyr` package provides a function to do this:
 
 ```{r message=F, warning=F}
 library(dplyr)
