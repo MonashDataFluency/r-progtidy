@@ -456,7 +456,7 @@ $(document).ready(function () {
 <div id="setup" class="section level2">
 <h2>Setup</h2>
 <p>This workshop is designed to work with <a href="https://rstudio.cloud/">RStudio Cloud</a>. Go to <a href="https://rstudio.cloud/" class="uri">https://rstudio.cloud/</a> (Monash users can log in with their Monash google account) and create a new project.</p>
-<p>Running the R code below will download files and install packages used in this workshop. This should also work for R used locally, excepting that to use FastQC you will need to have installed Java, and the FastQC steps will probably need some adjustments for Windows computers.</p>
+<p>Running the R code below will download files and install packages used in this workshop. This should also work for R used locally, excepting that to use <a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a> you will need to have installed Java, and the FastQC steps will probably need some adjustments for Windows computers (this isn’t an essential part of the workshop).</p>
 <pre class="r"><code># Download workshop files
 download.file(
     &quot;https://monashdatafluency.github.io/r-progtidy/r-progtidy-files.zip&quot;,
@@ -487,12 +487,12 @@ BiocManager::install(&quot;edgeR&quot;)</code></pre>
 <ul>
 <li><a href="https://monashdatafluency.github.io/r-intro-2/">Introduction to R (version 2)</a></li>
 <li><a href="https://monashbioinformaticsplatform.github.io/r-linear/">Linear models in R</a></li>
+<li><a href="https://monashdatafluency.github.io/r-rep-res/">Reproducible Research in R</a></li>
 </ul>
 <p>Other resources:</p>
 <ul>
 <li><a href="https://www.monash.edu/data-fluency">Monash Data Fluency</a></li>
 <li><a href="https://www.monash.edu/researchinfrastructure/bioinformatics">Monash Bioinformatics Platform</a></li>
-<li><a href="https://monashdatafluency.github.io/resources/">More online learning material</a></li>
 <li><a href="https://monashdatafluency.github.io/r-intro-2/next-steps.html">Next steps</a></li>
 </ul>
 <p><br></p>
@@ -501,37 +501,6 @@ BiocManager::install(&quot;edgeR&quot;)</code></pre>
 <li><a href="http://hadley.nz/">Hadley Wickham’s website</a> has further useful resources.</li>
 <li><a href="https://cran.r-project.org/manuals.html">The official R manuals</a> give a complete description of the R language.</li>
 </ul>
-</div>
-<div id="ways-to-run-r-and-rstudio" class="section level2">
-<h2>Ways to run R and RStudio</h2>
-<p>We will be using a training server with everything already set up. Unfortunately we aren’t able to offer accounts on this server that will last more than a few days. In the longer term, some options when using R are:</p>
-<ul>
-<li><p>Install <a href="https://cran.rstudio.com/">R</a> and <a href="https://www.rstudio.com/products/rstudio/download/">RStudio</a> on your laptop. This gives maximum freedom to tinker. There are sometimes problems to work around when using work-supplied laptops.</p></li>
-<li><p>Use <a href="https://rstudio.cloud/">RStudio Cloud</a>. This is a currently free service by the RStudio corporation. This is a very easy way to get started!</p></li>
-<li><p>Use a Docker image such as <a href="https://github.com/rocker-org/rocker-versioned/blob/master/rstudio/README.md"><code>rocker/rstudio</code></a> or <code>rocker/tidyverse</code> on a cloud service such as the <a href="https://nectar.org.au/">NECTAR</a> research cloud, <a href="https://cloud.google.com/">Google Cloud</a>, or <a href="https://aws.amazon.com/">Amazon Web Services</a>. This allows use of machines with larger memory and more CPU cores. It’s also a route to making reproducible and readily sharable working environments, including software external to R.</p></li>
-</ul>
-<p>Once R and RStudio are running, you can get set up for this workshop with this R code:</p>
-<pre class="r"><code>download.file(
-    &quot;https://monashdatafluency.github.io/r-progtidy/r-progtidy-files.zip&quot;,
-    destfile=&quot;r-progtidy-files.zip&quot;)
-unzip(&quot;r-progtidy-files.zip&quot;)
-
-install.packages(c(&quot;tidyverse&quot;, &quot;viridis&quot;, &quot;devtools&quot;, &quot;roxygen2&quot;))</code></pre>
-<p>Some parts of the workshop use the external software <a href="https://www.bioinformatics.babraham.ac.uk/projects/fastqc/">FastQC</a> as an example. Exactly how to install this differs between operating systems. The following will install FastQC in RStudio Cloud:</p>
-<pre class="r"><code>download.file(
-    &quot;https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.8.zip&quot;,
-    destfile=&quot;fastqc.zip&quot;)
-unzip(&quot;fastqc.zip&quot;)
-system(&quot;chmod 755 FastQC/fastqc&quot;)
-
-# Test that it works
-system(&quot;FastQC/fastqc -h&quot;)
-
-# In the workshop, you will need to replace uses of:
-#    system(&quot;fastqc ...&quot;)
-# with:
-#    system(&quot;FastQC/fastqc ...&quot;)</code></pre>
-<p>We recommend <a href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects">using projects</a> in RStudio to organize your files.</p>
 </div>
 <div id="authors" class="section level2">
 <h2>Authors</h2>
