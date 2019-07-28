@@ -22,6 +22,39 @@ These are the course notes for the [Monash Data Fluency](https://www.monash.edu/
 * [Programming](topics/programming.html) ([.Rmd](topics/programming.Rmd))
 * [The Tidyverse: dplyr, ggplot2, and friends](topics/tidyverse.html) ([.Rmd](topics/tidyverse.Rmd))
 
+## Setup
+
+This workshop is designed to work with [RStudio Cloud](https://rstudio.cloud/). Go to https://rstudio.cloud/ (Monash users can log in with their Monash google account) and create a new project.
+
+Running the R code below will download files and install packages used in this workshop. This should also work for R used locally, excepting that to use FastQC you will need to have installed Java, and the FastQC steps will probably need some adjustments for Windows computers.
+
+```{r eval=FALSE}
+# Download workshop files
+download.file(
+    "https://monashdatafluency.github.io/r-progtidy/r-progtidy-files.zip",
+    "r-progtidy-files.zip")
+unzip("r-progtidy-files.zip")
+
+# Download FastQC software
+download.file(
+    "https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.8.zip",
+    "fastqc_v0.11.8.zip")
+unzip("fastqc_v0.11.8.zip")
+system("chmod u+x FastQC/fastqc")
+
+# Install Tidyverse packages
+install.packages("tidyverse")
+
+
+# Optional: install some further packages 
+# (these are mentioned but not essential to the workshop)
+install.packages("devtools")
+install.packages("usethis")
+install.packages("BiocManager")
+BiocManager::install("edgeR")
+```
+
+
 ## See also
 
 In this series:

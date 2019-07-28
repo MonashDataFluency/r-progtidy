@@ -8,10 +8,10 @@ bibliography: bibliography.bib
 
 This lesson covers packages primarily by Hadley Wickham for tidying data and then working with it in tidy form, collectively known as the "tidyverse".
 
-The packages we are using in this lesson are all from CRAN, so we can install them with `install.packages`. Don't run this if you are using our biotraining server, the packages are already installed!
+The packages we are using in this lesson are all from CRAN, so we can install them with `install.packages`. If you did this while setting up for this workshop, you won't need to do it again now.
 
 ```{r eval=FALSE}
-# install.packages(c("tidyverse", "viridis"))
+# install.packages("tidyverse")
 ```
 
 ```{r warning=FALSE, message=FALSE}
@@ -21,8 +21,6 @@ library(tidyverse) # Load all "tidyverse" libraries.
 # library(tidyr)   # Data frame tidying functions.
 # library(dplyr)   # General data frame manipulation.
 # library(ggplot2) # Flexible plotting.
-
-library(viridis)   # Viridis color scale.
 ```
 
 These packages usually have useful documentation in the form of "vignettes". These are readable on the CRAN website, or within R:
@@ -453,9 +451,13 @@ ggplot(counts_norm, aes(x=sample, y=log_norm_count)) +
 ```{r eval=FALSE}
 # For a full sized RNA-Seq dataset:
 library(edgeR)
-mat <- counts_untidy %>% select(-Feature) %>% as.matrix
+mat <- counts_untidy %>% 
+    column_to_rownames("Feature") %>% 
+    as.matrix()
 adjusted_lib_sizes <- colSums(mat) * calcNormFactors(mat)
-normalizer_by_tmm <- tibble(sample=names(adjusted_lib_sizes), norm=adjusted_lib_sizes)
+normalizer_by_tmm <- tibble(
+    sample=names(adjusted_lib_sizes), 
+    norm=adjusted_lib_sizes)
 ```
 
 ## Visualization
@@ -486,7 +488,7 @@ Heatmaps using `geom_tile` and the use of facets allow the entire dataset to be 
 ```{r fig.width=8, fig.height=8}
 ggplot(counts_norm, aes(x=sample, y=gene, fill=log_norm_count)) + 
     geom_tile() + 
-    scale_fill_viridis() + 
+    scale_fill_viridis_c() + 
     theme_minimal() +
     theme(axis.text.x=element_text(           # Vertical text on x axis
               angle=90,vjust=0.5,hjust=1))              
@@ -498,7 +500,7 @@ Facetting the heatmap makes it easier to understand.
 ggplot(counts_norm, aes(x=time, y=gene, fill=log_norm_count)) + 
     geom_tile() + 
     facet_grid(~ strain) + 
-    scale_fill_viridis() + 
+    scale_fill_viridis_c() + 
     theme_minimal()
 ```
 
@@ -508,7 +510,7 @@ We are interested in the interaction of strain and time, so we can instead set t
 ggplot(counts_norm, aes(x=time, y=strain, fill=log_norm_count)) + 
     geom_tile() + 
     facet_wrap(~ gene) + 
-    scale_fill_viridis() + 
+    scale_fill_viridis_c() + 
     theme_minimal()
 ```
 

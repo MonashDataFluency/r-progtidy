@@ -309,9 +309,7 @@ margin-top: 0;
 }
 </style>
 
-</head>
 
-<body>
 
 <style type="text/css">
 .main-container {
@@ -342,8 +340,6 @@ summary {
 </style>
 
 
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -418,6 +414,15 @@ $(document).ready(function () {
 
 
 
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
 
 <div class="fluid-row" id="header">
 
@@ -452,16 +457,14 @@ $(document).ready(function () {
 </div>
 
 <p>This lesson covers packages primarily by Hadley Wickham for tidying data and then working with it in tidy form, collectively known as the “tidyverse”.</p>
-<p>The packages we are using in this lesson are all from CRAN, so we can install them with <code>install.packages</code>. Don’t run this if you are using our biotraining server, the packages are already installed!</p>
-<pre class="r"><code># install.packages(c(&quot;tidyverse&quot;, &quot;viridis&quot;))</code></pre>
+<p>The packages we are using in this lesson are all from CRAN, so we can install them with <code>install.packages</code>. If you did this while setting up for this workshop, you won’t need to do it again now.</p>
+<pre class="r"><code># install.packages(&quot;tidyverse&quot;)</code></pre>
 <pre class="r"><code>library(tidyverse) # Load all &quot;tidyverse&quot; libraries.
 # OR
 # library(readr)   # Read tabular data.
 # library(tidyr)   # Data frame tidying functions.
 # library(dplyr)   # General data frame manipulation.
-# library(ggplot2) # Flexible plotting.
-
-library(viridis)   # Viridis color scale.</code></pre>
+# library(ggplot2) # Flexible plotting.</code></pre>
 <p>These packages usually have useful documentation in the form of “vignettes”. These are readable on the CRAN website, or within R:</p>
 <pre class="r"><code>vignette()
 vignette(package=&quot;dplyr&quot;)
@@ -669,7 +672,7 @@ unnest(nested)</code></pre>
 <div id="importing-and-tidying" class="section level2">
 <h2>Importing and tidying</h2>
 <p><b>Hint:</b> You can select from the top of a pipeline to partway through and press Ctrl-Enter or Command-Enter to see the value part-way through the pipeline.</p>
-<pre class="r"><code># Use readr's read_csv function to load the file
+<pre class="r"><code># Use readr&#39;s read_csv function to load the file
 counts_untidy &lt;- read_csv(&quot;r-progtidy-files/read-counts.csv&quot;)
 
 counts &lt;- counts_untidy %&gt;%
@@ -717,9 +720,13 @@ ggplot(counts_norm, aes(x=sample, y=log_norm_count)) +
 <p><strong>Note:</strong> Here all of the genes are potentially differentially expressed. For a full RNA-Seq data set we would probably assume most genes aren’t differentially expressed, so rather than nominating a normalizing gene we would normalize by total library size with, typically with a slight adjustment using the “TMM” method as calculated by <code>calcNormFactors</code> in <code>edgeR</code>:</p>
 <pre class="r"><code># For a full sized RNA-Seq dataset:
 library(edgeR)
-mat &lt;- counts_untidy %&gt;% select(-Feature) %&gt;% as.matrix
+mat &lt;- counts_untidy %&gt;% 
+    column_to_rownames(&quot;Feature&quot;) %&gt;% 
+    as.matrix()
 adjusted_lib_sizes &lt;- colSums(mat) * calcNormFactors(mat)
-normalizer_by_tmm &lt;- tibble(sample=names(adjusted_lib_sizes), norm=adjusted_lib_sizes)</code></pre>
+normalizer_by_tmm &lt;- tibble(
+    sample=names(adjusted_lib_sizes), 
+    norm=adjusted_lib_sizes)</code></pre>
 </div>
 <div id="visualization" class="section level2">
 <h2>Visualization</h2>
@@ -740,7 +747,7 @@ normalizer_by_tmm &lt;- tibble(sample=names(adjusted_lib_sizes), norm=adjusted_l
 <p>Heatmaps using <code>geom_tile</code> and the use of facets allow the entire dataset to be viewed at once.</p>
 <pre class="r"><code>ggplot(counts_norm, aes(x=sample, y=gene, fill=log_norm_count)) + 
     geom_tile() + 
-    scale_fill_viridis() + 
+    scale_fill_viridis_c() + 
     theme_minimal() +
     theme(axis.text.x=element_text(           # Vertical text on x axis
               angle=90,vjust=0.5,hjust=1))              </code></pre>
@@ -748,13 +755,13 @@ normalizer_by_tmm &lt;- tibble(sample=names(adjusted_lib_sizes), norm=adjusted_l
 <pre class="r"><code>ggplot(counts_norm, aes(x=time, y=gene, fill=log_norm_count)) + 
     geom_tile() + 
     facet_grid(~ strain) + 
-    scale_fill_viridis() + 
+    scale_fill_viridis_c() + 
     theme_minimal()</code></pre>
 <p>We are interested in the interaction of strain and time, so we can instead set these as the x and y axes for each gene.</p>
 <pre class="r"><code>ggplot(counts_norm, aes(x=time, y=strain, fill=log_norm_count)) + 
     geom_tile() + 
     facet_wrap(~ gene) + 
-    scale_fill_viridis() + 
+    scale_fill_viridis_c() + 
     theme_minimal()</code></pre>
 <p>A famous paper by Cleveland and McGill <span class="citation">(1984)</span> ranks color last in terms of perceptual accuracy. A more traditional way of examining the interaction between two factors is a line graph called an “interaction plot”. We can also give each gene a separate scale.</p>
 <pre class="r"><code>ggplot(counts_norm, aes(x=time, y=log_norm_count, color=strain, group=strain)) + 
@@ -777,7 +784,7 @@ normalizer_by_tmm &lt;- tibble(sample=names(adjusted_lib_sizes), norm=adjusted_l
 <p><strong>References</strong></p>
 <div id="refs" class="references">
 <div id="ref-cleveland1984">
-<p>Cleveland, William S., and Robert McGill. 1984. “Graphical Perception: Theory, Experimentation, and Application to the Development of Graphical Methods.” <em>Journal of the American Statistical Association</em> 79 (387). Taylor &amp; Francis: 531–54. <a href="https://doi.org/10.1080/01621459.1984.10478080" class="uri">https://doi.org/10.1080/01621459.1984.10478080</a>.</p>
+<p>Cleveland, William S., and Robert McGill. 1984. “Graphical Perception: Theory, Experimentation, and Application to the Development of Graphical Methods.” <em>Journal of the American Statistical Association</em> 79 (387): 531–54. <a href="https://doi.org/10.1080/01621459.1984.10478080">https://doi.org/10.1080/01621459.1984.10478080</a>.</p>
 </div>
 </div>
 </div>

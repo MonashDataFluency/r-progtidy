@@ -2,7 +2,7 @@
 
 
 
-# install.packages(c("tidyverse", "viridis"))
+# install.packages("tidyverse")
 
 
 library(tidyverse) # Load all "tidyverse" libraries.
@@ -11,8 +11,6 @@ library(tidyverse) # Load all "tidyverse" libraries.
 # library(tidyr)   # Data frame tidying functions.
 # library(dplyr)   # General data frame manipulation.
 # library(ggplot2) # Flexible plotting.
-
-library(viridis)   # Viridis color scale.
 
 
 vignette()
@@ -23,9 +21,8 @@ vignette("dplyr", package="dplyr")
 bigtab <- read_csv("r-progtidy-files/fastqc.csv")
 
 
-# =================
-# ggplot2 revisited
-# =================
+# ___________________________
+# ==== ggplot2 revisited ====
 
 ggplot(bigtab, aes(x=file,y=test,color=grade)) +
     geom_point()
@@ -35,9 +32,8 @@ ggplot(bigtab, aes(x=file,y=test,fill=grade)) +
     geom_tile()
 
 
-## --------------------------
-## Publication quality images
-## --------------------------
+## _____________________________________
+## ----> Publication quality images ----
 
 y_order <- sort(unique(bigtab$test), decreasing=T)  # y axis plots from bottom to top, so reverse
 bigtab$test <- factor(bigtab$test, levels=y_order)
@@ -66,18 +62,16 @@ ggsave("plot1.png", myplot, width=5,  height=5,  dpi=600)
 ggsave("plot2.png", myplot, width=10, height=10, dpi=300)
 
 
-# =====
-# dplyr
-# =====
+# _______________
+# ==== dplyr ====
 
 # input         +--------+        +--------+        +--------+      result
 #  data   %>%   |  verb  |  %>%   |  verb  |  %>%   |  verb  |  ->   data
 #   frame       +--------+        +--------+        +--------+        frame
 
 
-## -------
-## Tibbles
-## -------
+## __________________
+## ----> Tibbles ----
 
 bigtab
 
@@ -89,16 +83,14 @@ View(bigtab)
 print(bigtab, n=100, width=1000)
 
 
-## ---------
-## filter( )
-## ---------
+## ____________________
+## ----> filter( ) ----
 
 filter(bigtab, grade == "FAIL")
 
 
-## ----------
-## arrange( )
-## ----------
+## _____________________
+## ----> arrange( ) ----
 
 arrange(bigtab, grade)
 
@@ -106,9 +98,8 @@ arrange(bigtab, grade)
 arrange(bigtab, desc(grade))
 
 
-## -----
-## Joins
-## -----
+## ________________
+## ----> Joins ----
 
 fwp <- c("FAIL","WARN","PASS")
 scoring <- tibble(grade=factor(fwp,levels=fwp), score=c(0,0.5,1))
@@ -123,9 +114,8 @@ scoretab <- left_join(bigtab, scoring, by="grade")
 scoretab
 
 
-## ------------
-## summarize( )
-## ------------
+## _______________________
+## ----> summarize( ) ----
 
 summarize(scoretab, total=sum(score))
 
@@ -138,9 +128,8 @@ summarize(group_by(scoretab, file), average_score=mean(score))
 summarize(group_by(scoretab, grade), count=n())
 
 
-## ------------
-## The pipe %>%
-## ------------
+## _______________________
+## ----> The pipe %>% ----
 
 scoretab %>% group_by(grade) %>% summarize(count=n())
 
@@ -155,9 +144,8 @@ scoretab %>%
     summarize(count=n())
 
 
-### ---------
-### Challenge
-### ---------
+### _____________________
+### ---->> Challenge ----
 # 
 # Write a pipeline using `%>%`s that starts with `bigtab`, joins the
 # `scoring` table, and then calculates average scores for each file.
@@ -165,9 +153,8 @@ scoretab %>%
 # 
 # 
 #
-## ---------
-## mutate( )
-## ---------
+## ____________________
+## ----> mutate( ) ----
 
 mutate(scoretab, doublescore = score*2)
 
@@ -180,9 +167,8 @@ scoretab2 <- scoretab
 scoretab2$doublescore <- scoretab2$score * 2
 
 
-## ---------
-## select( )
-## ---------
+## ____________________
+## ----> select( ) ----
 
 select(bigtab, test,grade)
 select(bigtab, 2,1)
@@ -192,9 +178,8 @@ select(bigtab, foo=file, bar=test, baz=grade)
 select(bigtab, -file)
 
 
-# =====
-# tidyr
-# =====
+# _______________
+# ==== tidyr ====
 
 untidy <- read_csv(
     "country,     male-young, male-old, female-young, female-old
@@ -226,9 +211,8 @@ nested$data
 unnest(nested)
 
 
-### ---------
-### Challenge
-### ---------
+### _____________________
+### ---->> Challenge ----
 # 
 # You receive data on a set of points. The points are in two dimensions
 # (`dim`), and each point has x and y coordinates. Unfortunately it
@@ -252,13 +236,11 @@ df <- read_csv(
 # 
 # 
 #
-# ==================
-# An RNA-Seq example
-# ==================
+# ____________________________
+# ==== An RNA-Seq example ====
 
-## ---------------------
-## Importing and tidying
-## ---------------------
+## ________________________________
+## ----> Importing and tidying ----
 
 # Use readr's read_csv function to load the file
 counts_untidy <- read_csv("r-progtidy-files/read-counts.csv")
@@ -275,9 +257,8 @@ counts <- counts_untidy %>%
 summary(counts)
 
 
-## --------------------------------
-## Transformation and normalization
-## --------------------------------
+## ___________________________________________
+## ----> Transformation and normalization ----
 
 ggplot(counts, aes(x=sample, y=count)) +
     geom_boxplot() +
@@ -312,18 +293,20 @@ ggplot(counts_norm, aes(x=sample, y=log_norm_count)) +
 
 # For a full sized RNA-Seq dataset:
 library(edgeR)
-mat <- counts_untidy %>% select(-Feature) %>% as.matrix
+mat <- counts_untidy %>%
+    column_to_rownames("Feature") %>%
+    as.matrix()
 adjusted_lib_sizes <- colSums(mat) * calcNormFactors(mat)
-normalizer_by_tmm <- tibble(sample=names(adjusted_lib_sizes), norm=adjusted_lib_sizes)
+normalizer_by_tmm <- tibble(
+    sample=names(adjusted_lib_sizes),
+    norm=adjusted_lib_sizes)
 
 
-## -------------
-## Visualization
-## -------------
+## ________________________
+## ----> Visualization ----
 
-### ---------
-### Challenge
-### ---------
+### _____________________
+### ---->> Challenge ----
 # 
 # 1. Get all the rows in `counts_norm` relating to the histone gene
 # "HHT1".
@@ -345,13 +328,12 @@ ggplot( ... , aes(x= ... , y= ... , color= ... )) + ...
 # 
 # 
 #
-### ---------------------------
-### Whole dataset visualization
-### ---------------------------
+### _______________________________________
+### ---->> Whole dataset visualization ----
 
 ggplot(counts_norm, aes(x=sample, y=gene, fill=log_norm_count)) +
     geom_tile() +
-    scale_fill_viridis() +
+    scale_fill_viridis_c() +
     theme_minimal() +
     theme(axis.text.x=element_text(           # Vertical text on x axis
               angle=90,vjust=0.5,hjust=1))
@@ -360,14 +342,14 @@ ggplot(counts_norm, aes(x=sample, y=gene, fill=log_norm_count)) +
 ggplot(counts_norm, aes(x=time, y=gene, fill=log_norm_count)) +
     geom_tile() +
     facet_grid(~ strain) +
-    scale_fill_viridis() +
+    scale_fill_viridis_c() +
     theme_minimal()
 
 
 ggplot(counts_norm, aes(x=time, y=strain, fill=log_norm_count)) +
     geom_tile() +
     facet_wrap(~ gene) +
-    scale_fill_viridis() +
+    scale_fill_viridis_c() +
     theme_minimal()
 
 
@@ -376,9 +358,8 @@ ggplot(counts_norm, aes(x=time, y=log_norm_count, color=strain, group=strain)) +
     facet_wrap(~ gene, scale="free")
 
 
-### ---------
-### Exercises
-### ---------
+### _____________________
+### ---->> Exercises ----
 # 
 # 1. Which are the three most variable genes?
 # 
@@ -391,9 +372,8 @@ ggplot(counts_norm, aes(x=time, y=log_norm_count, color=strain, group=strain)) +
 # `log_norm_count`.
 # 
 #
-### 
-###
-### 
+### ____________
+### ---->>  ----
 
 sessionInfo()
 

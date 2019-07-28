@@ -14,9 +14,8 @@
 #   ))
 
 
-# =============
-# If-statements
-# =============
+# _______________________
+# ==== If-statements ====
 
 if (LOGICAL_VALUE) {
     THING_TO_DO_IF_TRUE
@@ -37,18 +36,18 @@ cat("done\n")               #       4
 
 num <- 53                            # 1
 if (num > 100) {                     #   2
-  cat("num is greater than 100\n")   #
+    cat("num is greater than 100\n") #
 }                                    #
 cat("done\n")                        #     3
                                      # --time-->
 
 
-if (num > 0) {            # line 1
-  print(1)             # line 2
-} else if (num == 0) {    # line 3
-  print(0)             # line 4
+if (num > 0) {         # line 1
+    print(1)           # line 2
+} else if (num == 0) { # line 3
+    print(0)           # line 4
 } else {
-  print(-1)            # line 5
+    print(-1)          # line 5
 }
 
 num <- -3
@@ -56,18 +55,16 @@ num <- 0
 num <- 2/3
 
 
-## ----
-## Quiz
-## ----
+## _______________
+## ----> Quiz ----
 # 
 # Which lines above are executed, and in what order, for each value of
 # `num`?
 # 
 # 
 #
-# =========
-# Functions
-# =========
+# ___________________
+# ==== Functions ====
 
 FUNCTION_NAME <- function(ARGUMENT_NAME1, ARGUMENT_NAME2, ...) {
     FUNCTION_BODY
@@ -86,9 +83,8 @@ fahr_to_kelvin(32)
 fahr_to_kelvin(212)
 
 
-## ----------
-## Variations
-## ----------
+## _____________________
+## ----> Variations ----
 
 fahr_to_kelvin <- function(temp) (temp-32) * (5/9) + 273.15
 
@@ -137,9 +133,8 @@ charmander <- function(bulbasaur) {
 }
 
 
-## -------------------
-## Composing Functions
-## -------------------
+## ______________________________
+## ----> Composing Functions ----
 
 kelvin_to_celsius <- function(temp) {
     temp - 273.15
@@ -164,9 +159,8 @@ debugonce(fahr_to_celsius)
 fahr_to_celsius(212)
 
 
-## ---------
-## Challenge
-## ---------
+## ____________________
+## ----> Challenge ----
 # 
 # Write a function to calculate the length of the hypotenuse of a right
 # angled triangle using Pythagorus's rule, given the lengths of the
@@ -185,9 +179,8 @@ fahr_to_celsius(212)
 # 
 # 
 #
-# =========
-# For-loops
-# =========
+# ___________________
+# ==== For-loops ====
 
 for(VARIABLE_NAME in VECTOR) {
   FOR_LOOP_BODY
@@ -220,9 +213,8 @@ cat("done\n")                       #                            12
                                     #   --order-of-execution-->
 
 
-## ---------
-## Challenge
-## ---------
+## ____________________
+## ----> Challenge ----
 # 
 # 1. What do you think this R code will do? Read the code and make a
 # guess, then try it in R. Try adding `cat`s or `print`s to the loop
@@ -261,13 +253,11 @@ numbers <- 1:10
 # 
 # 
 #
-# ================================
-# A practical programming exercise
-# ================================
+# __________________________________________
+# ==== A practical programming exercise ====
 
-## -------------------------
-## Running external software
-## -------------------------
+## ____________________________________
+## ----> Running external software ----
 
 uptime
 
@@ -275,16 +265,15 @@ uptime
 system("uptime")
 
 
-system("fastqc --extract --outdir . r-progtidy-files/Day0.fastq")
+system("FastQC/fastqc --extract --outdir . r-progtidy-files/Day0.fastq")
 
 
-## ----------------
-## Using a for-loop
-## ----------------
+## ___________________________
+## ----> Using a for-loop ----
 
 # construct a command to run
 day <- 0
-command <- paste0("fastqc --extract --outdir . r-progtidy-files/Day", day, ".fastq")
+command <- paste0("FastQC/fastqc --extract --outdir . r-progtidy-files/Day", day, ".fastq")
 command
 
 
@@ -293,34 +282,36 @@ command
 days <- c(0,4,7,10,15,20)
 
 for(day in days) {
-    command <- paste0("fastqc --extract --outdir . r-progtidy-files/Day", day, ".fastq")
+    command <- paste0("FastQC/fastqc --extract --outdir . r-progtidy-files/Day", day, ".fastq")
     cat("Running the command:", command, "\n")
     system(command)
 }
 
 
-## -----------------------------
-## Loading the summary.txt files
-## -----------------------------
+## ________________________________________
+## ----> Loading the summary.txt files ----
 
 library(readr)
 
 
-read_tsv("r-progtidy-files/fastqc-output/Day0_fastqc/summary.txt")
+read_tsv("Day0_fastqc/summary.txt")
 
 
-read_tsv("r-progtidy-files/fastqc-output/Day0_fastqc/summary.txt", col_names=FALSE)
+read_tsv("Day0_fastqc/summary.txt", col_names=FALSE)
 
 
-filename <- "r-progtidy-files/fastqc-output/Day0_fastqc/summary.txt"
-sumtab <- read_tsv(filename, col_names=FALSE)
+read_tsv("Day0_fastqc/summary.txt", col_names=FALSE, col_types="ccc")
+
+
+filename <- "Day0_fastqc/summary.txt"
+sumtab <- read_tsv(filename, col_names=FALSE, col_types="ccc")
 colnames(sumtab) <- c("grade", "test", "file")
 sumtab$grade <- factor(sumtab$grade, c("FAIL","WARN","PASS"))
 sumtab
 
 
 load_fastqc <- function(filename) {
-    sumtab <- read_tsv(filename, col_names=FALSE)
+    sumtab <- read_tsv(filename, col_names=FALSE, col_types="ccc")
     colnames(sumtab) <- c("grade", "test", "file")
     sumtab$grade <- factor(sumtab$grade, c("FAIL","WARN","PASS"))
     sumtab
@@ -329,12 +320,11 @@ load_fastqc <- function(filename) {
 load_fastqc("r-progtidy-files/fastqc-output/Day0_fastqc/summary.txt")
 
 
-## ---------------------
-## Applying the function
-## ---------------------
+## ________________________________
+## ----> Applying the function ----
 
 days <- c(0,4,7,10,15,20)
-filenames <- file.path("r-progtidy-files/fastqc-output", paste0("Day", days, "_fastqc/summary.txt"))
+filenames <- paste0("Day", days, "_fastqc/summary.txt")
 filenames
 
 
@@ -367,44 +357,42 @@ table(bigtab$test, bigtab$grade)
 bigtab <- do.call(rbind, sumtabs)
 
 
-## -------
-## Summary
-## -------
+## __________________
+## ----> Summary ----
 
-## ---------------------
-## Improving load_fastqc
-## ---------------------
+## ________________________________
+## ----> Improving load_fastqc ----
 
-load_fastqc("nosuchfile.txt")
+load_fastqc("Day0_fastqc/fastqc_data.txt")
 
 
 load_fastqc <- function(filename) {
-    # Check arguments are sane
-    if (!file.exists(filename)) {
-        warning("No such file: ", filename)
-        return(NULL)
+    # Load file
+    sumtab <- read_tsv(filename, col_names=FALSE, col_types="ccc")
+
+    # Check number of columns
+    if (ncol(sumtab) != 3) {
+        stop("Wrong number of columns in file!")
     }
 
-    # Load and tidy data
-    sumtab <- read_tsv(filename, col_names=FALSE)
+    # Make it nicer to work with
     colnames(sumtab) <- c("grade", "test", "file")
     sumtab$grade <- factor(sumtab$grade, c("FAIL","WARN","PASS"))
     sumtab
 }
 
-load_fastqc("nosuchfile.txt")
+load_fastqc("Day0_fastqc/fastqc_data.txt")
 
 
-# =================
-# Sourcing .R files
-# =================
+# ___________________________
+# ==== Sourcing .R files ====
 
 # fastqc.R file should contain:
 
 library(readr)
 
 load_fastqc <- function(filename) {
-    sumtab <- read_tsv(filename, col_names=FALSE)
+    sumtab <- read_tsv(filename, col_names=FALSE, col_types="ccc")
     colnames(sumtab) <- c("grade", "test", "file")
     sumtab$grade <- factor(sumtab$grade, c("FAIL","WARN","PASS"))
     sumtab
@@ -416,9 +404,8 @@ load_fastqc <- function(filename) {
 source("fastqc.R")
 
 
-## ----------
-## Discussion
-## ----------
+## _____________________
+## ----> Discussion ----
 # 
 # What other R code from this lesson could we put in a .R file? Or a
 # .Rmd file?
@@ -434,14 +421,10 @@ source("fastqc.R")
 # R](http://swcarpentry.github.io/r-novice-inflammation/06-best-
 # practices-R/)
 # 
+# 
 #
-# ================
-# Extended example
-# ================
-
-# ========
-# Packages
-# ========
+# __________________
+# ==== Packages ====
 
 library(devtools)
 library(usethis)
@@ -452,14 +435,14 @@ create_package("mypack", open=FALSE)
 # ... Edit mypack/DESCRIPTION file
 # ... Write .R files in mypack/R folder
 # For example create a file mypack/R/hello.R containing:
-#----
+# # # # #
 
 #' @export
 hello <- function() {
     cat("Hello, world.\n")
 }
 
-#----
+# # # # #
 
 # Load package. Use this during development.
 load_all("mypack")

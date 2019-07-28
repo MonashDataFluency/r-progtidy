@@ -309,9 +309,7 @@ margin-top: 0;
 }
 </style>
 
-</head>
 
-<body>
 
 <style type="text/css">
 .main-container {
@@ -342,8 +340,6 @@ summary {
 </style>
 
 
-
-<div class="container-fluid main-container">
 
 <!-- tabsets -->
 
@@ -418,6 +414,15 @@ $(document).ready(function () {
 
 
 
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
 
 <div class="fluid-row" id="header">
 
@@ -432,7 +437,7 @@ $(document).ready(function () {
 <div id="files" class="section level2">
 <h2>Files</h2>
 <ul>
-<li><a href="r-progtidy-files.zip" class="uri">r-progtidy-files.zip</a> - files used in this course</li>
+<li><a href="r-progtidy-files.zip">r-progtidy-files.zip</a> - files used in this course</li>
 </ul>
 </div>
 <div id="slides" class="section level2">
@@ -447,6 +452,34 @@ $(document).ready(function () {
 <li><a href="topics/programming.html">Programming</a> (<a href="topics/programming.Rmd">.Rmd</a>)</li>
 <li><a href="topics/tidyverse.html">The Tidyverse: dplyr, ggplot2, and friends</a> (<a href="topics/tidyverse.Rmd">.Rmd</a>)</li>
 </ul>
+</div>
+<div id="setup" class="section level2">
+<h2>Setup</h2>
+<p>This workshop is designed to work with <a href="https://rstudio.cloud/">RStudio Cloud</a>. Go to <a href="https://rstudio.cloud/" class="uri">https://rstudio.cloud/</a> (Monash users can log in with their Monash google account) and create a new project.</p>
+<p>Running the R code below will download files and install packages used in this workshop. This should also work for R used locally, excepting that to use FastQC you will need to have installed Java, and the FastQC steps will probably need some adjustments for Windows computers.</p>
+<pre class="r"><code># Download workshop files
+download.file(
+    &quot;https://monashdatafluency.github.io/r-progtidy/r-progtidy-files.zip&quot;,
+    &quot;r-progtidy-files.zip&quot;)
+unzip(&quot;r-progtidy-files.zip&quot;)
+
+# Download FastQC software
+download.file(
+    &quot;https://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.8.zip&quot;,
+    &quot;fastqc_v0.11.8.zip&quot;)
+unzip(&quot;fastqc_v0.11.8.zip&quot;)
+system(&quot;chmod u+x FastQC/fastqc&quot;)
+
+# Install Tidyverse packages
+install.packages(&quot;tidyverse&quot;)
+
+
+# Optional: install some further packages 
+# (these are mentioned but not essential to the workshop)
+install.packages(&quot;devtools&quot;)
+install.packages(&quot;usethis&quot;)
+install.packages(&quot;BiocManager&quot;)
+BiocManager::install(&quot;edgeR&quot;)</code></pre>
 </div>
 <div id="see-also" class="section level2">
 <h2>See also</h2>

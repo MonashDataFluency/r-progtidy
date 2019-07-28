@@ -2,6 +2,9 @@
 *.sublime*
 *_cache
 topics/Day*
+topics/fastqc*
+topics/FastQC*
+
 
 # History files
 .Rhistory

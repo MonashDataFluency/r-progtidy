@@ -23,10 +23,11 @@ for line in sys.stdin:
         if in_challenge:
             line = line.replace("{.challenge}","").rstrip()
         n = line.count("#")
-        banner = "#"*n + " " + ("-" if n > 1 else "=") * (len(line)-n-1)
-        print(banner)
-        print(line)
-        print(banner)
+        line = line[n:].strip()
+        left = "#"*n+" "
+        bracket = "----" if n > 1 else "===="
+        print(left+"_"*(n-1+len(line)+len(bracket)*2+2))
+        print(left+bracket+">"*(n-1)+" "+line+" "+bracket)
     elif in_challenge:
         for line2 in textwrap.wrap(line) or [""]:
             print("# " + line2)
