@@ -52,6 +52,8 @@ Communication and modelling covered in other workshops.
 
 ## Programming (scripting)
 
+Programming fills some specific needs for scientific computing. 
+
 If every step of your analysis is recorded in an R script, with no manual steps:
 
 * you have a complete record of what you have done
@@ -74,6 +76,11 @@ Elements of programming we will be looking at today:
 
 As your programs get more complicated, you will also need ways to represent complex data.
 
+Often the largest task is to get the data into the right form to apply a tool such as `ggplot`, `summarize`, or `lm`.
+
+
+## Data
+
 ### Vectors
 
 * A collection of a single kind of data:<br>numeric, character, factor, logical
@@ -85,7 +92,7 @@ As your programs get more complicated, you will also need ways to represent comp
 * A special kind of vector that can hold any kind of data, including other vectors and lists.
 * If you need to bundle together a miscelaneous collection of data, lists are your solution. For example, a function that needs to return multiple results can return a list.
 * Play the same role as both the `list` and `dict` types in Python or objects in Javascript.
-* Access individual elements with `[[ ]]`.
+* Access individual elements with `[[ ]]` or `$`.
 
 ## Data
 
@@ -97,11 +104,11 @@ As your programs get more complicated, you will also need ways to represent comp
 
 ### Others (not covered today)
 
-* **Matrices** hold tabular data all of the same type, usually numeric. Distinct from data frames in R!
+* **Matrices** hold tabular data all of the same type, usually numeric.<br>Distinct from data frames in R!<br>Can have `rownames( )` and `colnames( )`.
 
-* **"S3" objects** are (usually) a list, with a special class attribute. Example: an lm object holding a linear model.
+* **"S3" objects** are (usually) a list, with a special class attribute.<br>Example: an lm object holding a linear model.
 
-* **"S4" objects** are a more formal approach to object-orientation. Most heavily used by the Bioconductor project. Example: a GRanges object holding genomic ranges.
+* **"S4" objects** are a more formal approach to object-orientation.<br>Most heavily used by the Bioconductor project.<br>Example: a `GRanges` object holding genomic ranges.
 
 
 
@@ -134,6 +141,10 @@ Example from: [Wickham, H. (2015) Tidy data. The Journal of Statistical Software
 ["R for Data Science" by Garret Grolemund and Hadley Wickham](https://r4ds.had.co.nz/)
 
 * good general introduction, more detail on most topics covered today
+
+[RStudio's cheat sheets](https://www.rstudio.com/resources/cheatsheets/)
+
+* good to discover what exists
 
 [Hadley Wickham's website](http://hadley.nz/) 
 
