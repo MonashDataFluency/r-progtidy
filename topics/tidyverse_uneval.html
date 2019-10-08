@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -323,7 +324,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -396,18 +396,6 @@ summary {
   display: none;
 }
 </style>
-
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
 
 <!-- code folding -->
 
@@ -700,12 +688,12 @@ summary(counts)</code></pre>
 ggplot(counts, aes(x=log2(count), group=sample)) + 
     geom_line(stat=&quot;density&quot;)</code></pre>
 <p>Log transformation has greatly improved things, although now there are more outliers left of the whiskers, and some zeros we will need to be careful of. We also see one of the samples has less reads than the others.</p>
-<p>The gene SRP68 was included as a control housekeeping gene. Its expression level should be the same in all samples. We will divide counts in each sample by the count for SRP68 to correct for library size, then log-transform the data. We add a small constant when log-transforming so that zeros do not become negative infinity.</p>
+<p>The gene SRP68 was included as a control housekeeping gene. Its expression level should be the same in all samples. We will divide counts in each sample by the count for SRP68 to correct for library size, then log-transform the data. We add a small constant when log-transforming so that zeros do not become negative infinity (as if adding 1 further read count to an average sample).</p>
 <pre class="r"><code>normalizer &lt;- counts %&gt;%
     filter(gene == &quot;SRP68&quot;) %&gt;%
     select(sample, norm=count)
 
-moderation &lt;- 0.5/mean(normalizer$norm)
+moderation &lt;- 1/mean(normalizer$norm)
 
 counts_norm &lt;- counts %&gt;%
     left_join(normalizer, by=&quot;sample&quot;) %&gt;%
@@ -727,6 +715,11 @@ adjusted_lib_sizes &lt;- colSums(mat) * calcNormFactors(mat)
 normalizer_by_tmm &lt;- tibble(
     sample=names(adjusted_lib_sizes), 
     norm=adjusted_lib_sizes)</code></pre>
+<p>Whatever your data is measuring, two common themes are:</p>
+<ol style="list-style-type: decimal">
+<li><p>Measurement is usually normalized relative to <em>something</em> (housekeeping gene, overall library size, microscope image resolution, a ruler in a photograph, calibration run of a machine, …).</p></li>
+<li><p>If the measurement is by nature a positive number, consider log transformation. Two further indications this is appropriate are if you expect the effects of treatmeants to be multiplicative, or if the noise level scales with the magnitude of the measurement.</p></li>
+</ol>
 </div>
 <div id="visualization" class="section level2">
 <h2>Visualization</h2>
@@ -808,6 +801,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

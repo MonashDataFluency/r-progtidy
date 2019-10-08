@@ -3,19 +3,17 @@ title: "Programming"
 output: html_document
 ---
 
-Starting out in R, we tend to use it interactively, running one command at a time. In this section we will look at writing R code that performs repetitive task using "for-loops", packages up commonly needed sequences of operations in "functions", and makes decisions using "if-statements".
+Starting out in R, we tend to use it interactively, running one command at a time. In this section we will look at writing R code that performs repetitive tasks using "for-loops", packages up commonly needed sequences of operations in "functions", and makes decisions using "if-statements".
 
 Some comments on programming to aid in setting context when learning to program. What can computers do? They do the following:
 
 1. Store and retrieve data and instructions - for example, variables that were discussed in the introductory course.
 
-1. Perform arithemtic, including performing comparisons.
+2. Perform arithemtic, including performing comparisons.
 
-1. Execute stored instructions
+3. Execute stored instructions
 
-A programming language makes these basics accessible in convenient forms. Loops, 
-which we will meet soon, are combinations of counters (arithmetic) and comparisons to perform
-repeated execution of blocks of instructions.
+A programming language makes these accessible in convenient forms. Loops, which we will meet soon, are combinations of counters (arithmetic) and comparisons to perform repeated execution of blocks of instructions.
 
 Programming languages are collections of useful combinations of these structures that are usually
 presented in a formal style. Learning to use a specific programming language includes learning to
@@ -497,7 +495,7 @@ load_fastqc <- function(filename) {
     sumtab
 }
 
-load_fastqc("r-progtidy-files/fastqc-output/Day0_fastqc/summary.txt")
+load_fastqc("Day0_fastqc/summary.txt")
 ```
 
 
@@ -557,13 +555,6 @@ bigtab <- bind_rows(sumtabs)
 
 bigtab
 table(bigtab$test, bigtab$grade)
-```
-
-Base R has a similar idiom to do the same task. It is more flexible, but does less
-checking. I use it to bind vectors into a data.frame, which `bind_rows` refuses to do.
-
-```{r}
-bigtab <- do.call(rbind, sumtabs)
 ```
 
 ## Summary

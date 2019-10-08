@@ -277,7 +277,7 @@ normalizer <- counts %>%
     filter(gene == "SRP68") %>%
     select(sample, norm=count)
 
-moderation <- 0.5/mean(normalizer$norm)
+moderation <- 1/mean(normalizer$norm)
 
 counts_norm <- counts %>%
     left_join(normalizer, by="sample") %>%

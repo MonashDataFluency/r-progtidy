@@ -317,7 +317,7 @@ load_fastqc <- function(filename) {
     sumtab
 }
 
-load_fastqc("r-progtidy-files/fastqc-output/Day0_fastqc/summary.txt")
+load_fastqc("Day0_fastqc/summary.txt")
 
 
 ## ________________________________
@@ -352,9 +352,6 @@ bigtab <- bind_rows(sumtabs)
 
 bigtab
 table(bigtab$test, bigtab$grade)
-
-
-bigtab <- do.call(rbind, sumtabs)
 
 
 ## __________________

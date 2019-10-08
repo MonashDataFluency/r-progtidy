@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -323,7 +324,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -397,18 +397,6 @@ summary {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
 
@@ -443,14 +431,14 @@ $(document).ready(function () {
 </ul>
 </div>
 
-<p>Starting out in R, we tend to use it interactively, running one command at a time. In this section we will look at writing R code that performs repetitive task using “for-loops”, packages up commonly needed sequences of operations in “functions”, and makes decisions using “if-statements”.</p>
+<p>Starting out in R, we tend to use it interactively, running one command at a time. In this section we will look at writing R code that performs repetitive tasks using “for-loops”, packages up commonly needed sequences of operations in “functions”, and makes decisions using “if-statements”.</p>
 <p>Some comments on programming to aid in setting context when learning to program. What can computers do? They do the following:</p>
 <ol style="list-style-type: decimal">
 <li><p>Store and retrieve data and instructions - for example, variables that were discussed in the introductory course.</p></li>
 <li><p>Perform arithemtic, including performing comparisons.</p></li>
 <li><p>Execute stored instructions</p></li>
 </ol>
-<p>A programming language makes these basics accessible in convenient forms. Loops, which we will meet soon, are combinations of counters (arithmetic) and comparisons to perform repeated execution of blocks of instructions.</p>
+<p>A programming language makes these accessible in convenient forms. Loops, which we will meet soon, are combinations of counters (arithmetic) and comparisons to perform repeated execution of blocks of instructions.</p>
 <p>Programming languages are collections of useful combinations of these structures that are usually presented in a formal style. Learning to use a specific programming language includes learning to read the specific formulation, or <em>syntax</em> (the use of brackets, keywords etc), and how to utilise the language specific structures for your problem.</p>
 <p>As you gain experience you will build a mental library of <em>patterns</em> or <em>idioms</em> - small collections of code and concepts that you can apply, with minor modifications, to many problems. We’ll introduce a few patterns that we’ve found useful in a variety of applications.</p>
 <p>While <em>R</em> is known as a statistical environment, it is built around a general purpose programming language. This is part of what has made so many extensions possible. The big gains of learning to use this language are especially evident in the early stages of a data analysis problem - importing, cleaning and visualizing the data.</p>
@@ -748,7 +736,7 @@ sumtab</code></pre>
     sumtab
 }
 
-load_fastqc(&quot;r-progtidy-files/fastqc-output/Day0_fastqc/summary.txt&quot;)</code></pre>
+load_fastqc(&quot;Day0_fastqc/summary.txt&quot;)</code></pre>
 </div>
 <div id="applying-the-function" class="section level2">
 <h2>Applying the function</h2>
@@ -780,8 +768,6 @@ bigtab &lt;- bind_rows(sumtabs)
 
 bigtab
 table(bigtab$test, bigtab$grade)</code></pre>
-<p>Base R has a similar idiom to do the same task. It is more flexible, but does less checking. I use it to bind vectors into a data.frame, which <code>bind_rows</code> refuses to do.</p>
-<pre class="r"><code>bigtab &lt;- do.call(rbind, sumtabs)</code></pre>
 </div>
 <div id="summary" class="section level2">
 <h2>Summary</h2>
@@ -909,6 +895,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

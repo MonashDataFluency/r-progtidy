@@ -425,14 +425,14 @@ ggplot(counts, aes(x=log2(count), group=sample)) +
 
 Log transformation has greatly improved things, although now there are more outliers left of the whiskers, and some zeros we will need to be careful of. We also see one of the samples has less reads than the others.
 
-The gene SRP68 was included as a control housekeeping gene. Its expression level should be the same in all samples. We will divide counts in each sample by the count for SRP68 to correct for library size, then log-transform the data. We add a small constant when log-transforming so that zeros do not become negative infinity.
+The gene SRP68 was included as a control housekeeping gene. Its expression level should be the same in all samples. We will divide counts in each sample by the count for SRP68 to correct for library size, then log-transform the data. We add a small constant when log-transforming so that zeros do not become negative infinity (as if adding 1 further read count to an average sample).
 
 ```{r}
 normalizer <- counts %>%
     filter(gene == "SRP68") %>%
     select(sample, norm=count)
 
-moderation <- 0.5/mean(normalizer$norm)
+moderation <- 1/mean(normalizer$norm)
 
 counts_norm <- counts %>%
     left_join(normalizer, by="sample") %>%
@@ -459,6 +459,12 @@ normalizer_by_tmm <- tibble(
     sample=names(adjusted_lib_sizes), 
     norm=adjusted_lib_sizes)
 ```
+
+Whatever your data is measuring, two common themes are:
+
+1. Measurement is usually normalized relative to *something* (housekeeping gene, overall library size, microscope image resolution, a ruler in a photograph, calibration run of a machine, ...).
+
+2. If the measurement is by nature a positive number, consider log transformation. Two further indications this is appropriate are if you expect the effects of treatmeants to be multiplicative, or if the noise level scales with the magnitude of the measurement.
 
 ## Visualization
 
