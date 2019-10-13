@@ -5,28 +5,21 @@ output: html_document
 
 Starting out in R, we tend to use it interactively, running one command at a time. In this section we will look at writing R code that performs repetitive tasks using "for-loops", packages up commonly needed sequences of operations in "functions", and makes decisions using "if-statements".
 
-Some comments on programming to aid in setting context when learning to program. What can computers do? They do the following:
+Some comments on programming to aid in setting context when learning to program. What do computers do? They perform very simple instructions from a long list, one after the other. The instructions may be to:
 
-1. Store and retrieve data and instructions - for example, variables that were discussed in the introductory course.
+1. Load or store a number from main memory.
 
-2. Perform arithemtic, including performing comparisons.
+2. Combine numbers, such as by performing arithemtic or making comparisons.
 
-3. Execute stored instructions
+3. Jump somewhere else in the list of instructions if a condition is met.
 
-A programming language makes these accessible in convenient forms. Loops, which we will meet soon, are combinations of counters (arithmetic) and comparisons to perform repeated execution of blocks of instructions.
+This is called "machine code" and would be annoying to work with directly, so we use programming languages to specify what we want the computer to do in a more structured way. A single instruction in a programming language might translate into hundreds of simple instructions that together do something meaningful, and rather than jumping around a single long list of instructions we write code using structures like for-loops, functions, and if-statements.
 
-Programming languages are collections of useful combinations of these structures that are usually
-presented in a formal style. Learning to use a specific programming language includes learning to
-read the specific formulation, or _syntax_ (the use of brackets, keywords etc), and how to utilise
-the language specific structures for your problem.
+Learning to use a specific programming language includes learning to read its _syntax_ -- the use of brackets, keywords, etc -- and how to use the specific structures that it provides. 
 
-As you gain experience you will build a mental library of _patterns_ or _idioms_ - small collections of
-code and concepts that you can apply, with minor modifications, to many problems. We'll introduce a few patterns that we've found
-useful in a variety of applications.
+As you gain experience you will build a mental library of _patterns_ or _idioms_ - small collections of code and concepts that you can apply, with minor modifications, to many problems. We'll introduce a few patterns that we've found useful in a variety of applications.
 
-While _R_ is known as a statistical environment, it is built around a general purpose programming language. This
-is part of what has made so many extensions possible. The big gains of learning to use this language are
-especially evident in the early stages of a data analysis problem - importing, cleaning and visualizing the data.
+While R is known as a statistical environment, it is built around a general purpose programming language. This is part of what has made so many extensions possible. The big gains of learning to use this language are especially evident in the early stages of a data analysis problem - importing, cleaning and visualizing the data.
 
 We are using a couple of packages from CRAN in this tutorial, which we can install with `install.packages`. If you did this while setting up for this workshop, you won't need to do it again now.
 
