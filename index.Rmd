@@ -9,10 +9,6 @@ output:
 <br>
 These are the course notes for the [Monash Data Fluency](https://www.monash.edu/data-fluency)'s "Programming and Tidy data analysis in R" course. This is an intermediate level R workshop, for people wishing to increase their fluency in R. It covers tasks that while not specifically involved in statistical analysis are necessary when working with data: loading data and getting it into a form that is easy to work with, automating repetitive tasks, identifying problems such as the need for normalization and transformation, and properly understanding the story the data wants to tell.
 
-## Files
-
-* [r-progtidy-files.zip](r-progtidy-files.zip) - files used in this course
-
 ## Slides
 
 * [Introduction](slides/introduction.html) ([.Rmd](slides/introduction.Rmd))
@@ -53,6 +49,12 @@ install.packages("usethis")
 install.packages("BiocManager")
 BiocManager::install("edgeR")
 ```
+
+## Files
+
+The workshop files downloaded by the setup instructions above are also available here:
+
+* [r-progtidy-files.zip](r-progtidy-files.zip)
 
 
 ## See also

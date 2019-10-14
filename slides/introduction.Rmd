@@ -50,9 +50,7 @@ Data analysis isn't just statistical modelling.
 Communication and modelling covered in other workshops.
 
 
-## Programming (scripting)
-
-Programming fills some specific needs for scientific computing. 
+## Programming, from a scientist's perspective
 
 If every step of your analysis is recorded in an R script, with no manual steps:
 
@@ -60,6 +58,11 @@ If every step of your analysis is recorded in an R script, with no manual steps:
 * easy to run entire script with test data
 * changes easily tested, poor early decisions easily fixed
 * today's big project becomes a function in a package, serves as tomorrow's building block
+
+<br>
+Programming is an essential part of **reproducible research**.
+
+* other researchers can precisely understand and verify your work
 
 <!--
 Elements of programming we will be looking at today:
@@ -106,7 +109,7 @@ Often the largest task is to get the data into the right form to apply a tool su
 
 * **Matrices** hold tabular data all of the same type, usually numeric.<br>Distinct from data frames in R!<br>Can have `rownames( )` and `colnames( )`.
 
-* **"S3" objects** are (usually) a list, with a special class attribute.<br>Example: an lm object holding a linear model.
+* **"S3" objects** are (usually) a list, with a special class attribute.<br>Example: an **lm** object holding a linear model.
 
 * **"S4" objects** are a more formal approach to object-orientation.<br>Most heavily used by the Bioconductor project.<br>Example: a `GRanges` object holding genomic ranges.
 

@@ -7,6 +7,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -323,7 +324,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -397,18 +397,6 @@ summary {
 }
 </style>
 
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
-</script>
-
 <!-- code folding -->
 
 
@@ -434,12 +422,6 @@ $(document).ready(function () {
 
 
 <p><br> These are the course notes for the <a href="https://www.monash.edu/data-fluency">Monash Data Fluency</a>’s “Programming and Tidy data analysis in R” course. This is an intermediate level R workshop, for people wishing to increase their fluency in R. It covers tasks that while not specifically involved in statistical analysis are necessary when working with data: loading data and getting it into a form that is easy to work with, automating repetitive tasks, identifying problems such as the need for normalization and transformation, and properly understanding the story the data wants to tell.</p>
-<div id="files" class="section level2">
-<h2>Files</h2>
-<ul>
-<li><a href="r-progtidy-files.zip">r-progtidy-files.zip</a> - files used in this course</li>
-</ul>
-</div>
 <div id="slides" class="section level2">
 <h2>Slides</h2>
 <ul>
@@ -480,6 +462,13 @@ install.packages(&quot;devtools&quot;)
 install.packages(&quot;usethis&quot;)
 install.packages(&quot;BiocManager&quot;)
 BiocManager::install(&quot;edgeR&quot;)</code></pre>
+</div>
+<div id="files" class="section level2">
+<h2>Files</h2>
+<p>The workshop files downloaded by the setup instructions above are also available here:</p>
+<ul>
+<li><a href="r-progtidy-files.zip">r-progtidy-files.zip</a></li>
+</ul>
 </div>
 <div id="see-also" class="section level2">
 <h2>See also</h2>
@@ -531,6 +520,23 @@ $(document).ready(function () {
 
 
 </script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

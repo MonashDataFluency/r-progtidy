@@ -3168,9 +3168,7 @@ color: #048;
 
 <p>Communication and modelling covered in other workshops.</p>
 
-</article></slide><slide class=""><hgroup><h2>Programming (scripting)</h2></hgroup><article  id="programming-scripting" class="smaller ">
-
-<p>Programming fills some specific needs for scientific computing.</p>
+</article></slide><slide class=""><hgroup><h2>Programming, from a scientist’s perspective</h2></hgroup><article  id="programming-from-a-scientists-perspective" class="smaller ">
 
 <p>If every step of your analysis is recorded in an R script, with no manual steps:</p>
 
@@ -3179,6 +3177,12 @@ color: #048;
 <li>easy to run entire script with test data</li>
 <li>changes easily tested, poor early decisions easily fixed</li>
 <li>today’s big project becomes a function in a package, serves as tomorrow’s building block</li>
+</ul>
+
+<p><br> Programming is an essential part of <strong>reproducible research</strong>.</p>
+
+<ul>
+<li>other researchers can precisely understand and verify your work</li>
 </ul>
 
 <!--
@@ -3230,7 +3234,7 @@ Elements of programming we will be looking at today:
 
 <ul>
 <li><p><strong>Matrices</strong> hold tabular data all of the same type, usually numeric.<br>Distinct from data frames in R!<br>Can have <code>rownames( )</code> and <code>colnames( )</code>.</p></li>
-<li><p><strong>&ldquo;S3&rdquo; objects</strong> are (usually) a list, with a special class attribute.<br>Example: an lm object holding a linear model.</p></li>
+<li><p><strong>&ldquo;S3&rdquo; objects</strong> are (usually) a list, with a special class attribute.<br>Example: an <strong>lm</strong> object holding a linear model.</p></li>
 <li><p><strong>&ldquo;S4&rdquo; objects</strong> are a more formal approach to object-orientation.<br>Most heavily used by the Bioconductor project.<br>Example: a <code>GRanges</code> object holding genomic ranges.</p></li>
 </ul>
 
