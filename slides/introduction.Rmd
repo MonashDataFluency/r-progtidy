@@ -10,21 +10,26 @@ output:
 
 ##
 
-<img src="../figures/Rlogo.png" style="float: right">
+<div style="float: right">
+<img src="../figures/Rlogo.png">
+<br><br><br><img src="../figures/new_s.jpg" style="width: 200px">
+<br>The **new** S language,
+<br>published 1988.
+</div>
 
 R has a long history.
 
 * S - 1976
 * R - 1993
 
+<br>
 We will be focussing on the modern [Tidyverse](https://tidyverse.org) approach. 
 
 * `dplyr`, `ggplot2`, `tidyr`, `purrr`, etc
 * data frame ("tibble") is the one true data structure
+   * "tidy data"
 * mostly written by [Hadley Wickham](http://hadley.nz/)
 * simpler, safer, and less "helpful"
-   * less edge cases (eg same data type produced with 1 and many items)
-   * abort with error on unexpected input
 
 
 ## Analysis cycle
@@ -48,6 +53,36 @@ Data analysis isn't just statistical modelling.
 <img src="../figures/data-science-highlighted.png" height="285">
 
 Communication and modelling covered in other workshops.
+
+
+## Programming
+
+Use structures such as loops to automate repetitive tasks:
+
+```{r eval=F}
+for(i in 1:10) {
+    do_the_thing(i)
+}
+```
+
+"Source" R scripts:
+
+```{r eval=F}
+source("myscript.R")
+```
+
+* runs script command by command to completion (or first error)
+
+Define new functions for interactive or scripted use:
+
+```{r eval=F}
+source("myfunctions.R")
+```
+
+Variations:
+
+* Use Rmarkdown to produce a document
+* Write an R package
 
 
 ## Programming, from a scientist's perspective
@@ -77,8 +112,11 @@ Elements of programming we will be looking at today:
 
 ## Data
 
+<img src="../figures/messy.jpg" style="float: right; width: 400px;">
+
 As your programs get more complicated, you will also need ways to represent complex data.
 
+<br>
 Often the largest task is to get the data into the right form to apply a tool such as `ggplot`, `summarize`, or `lm`.
 
 
@@ -117,6 +155,8 @@ Often the largest task is to get the data into the right form to apply a tool su
 
 ## Tidy data
 
+<img src="../figures/knoll.jpg" style="float: right; width: 400px;">
+
 Tidy data doesn't mean tidy for a person to read, it means the easiest form for the computer to work with.
 
 * only use data frames
@@ -138,8 +178,11 @@ Example from: [Wickham, H. (2015) Tidy data. The Journal of Statistical Software
 
 <img src="../figures/tidy.png" height="450">
 
+("melt" = "gather" = "pivot_long")
 
 ## Learning more
+
+<img src="../figures/r4ds.png" style="float: right; width: 300px;">
 
 ["R for Data Science" by Garret Grolemund and Hadley Wickham](https://r4ds.had.co.nz/)
 
