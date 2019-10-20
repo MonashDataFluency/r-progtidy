@@ -191,8 +191,10 @@ Joins are the key tool for *integrating* different types of data, based on some 
 `summarize` lets us compute summaries of data.
 
 ```{r}
-summarize(scoretab, total=sum(score))
+summarize(scoretab, average_score=mean(score))
 ```
+
+In this, `average_score` is used to name the new column. Any summary function could be used in place of `mean`, such as `sum`, `median`, `sd`.
 
 We really want to summarize the data grouped by file, so we can see if there are any particularly bad files. This is achieved using the `group_by` "adjective". `group_by` gives the data frame a grouping using one or more columns, which modifies the subsequent call to `summarize`.
 

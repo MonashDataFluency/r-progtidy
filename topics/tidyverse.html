@@ -632,11 +632,12 @@ scoretab</code></pre>
 <div id="summarize" class="section level2">
 <h2>summarize( )</h2>
 <p><code>summarize</code> lets us compute summaries of data.</p>
-<pre class="r"><code>summarize(scoretab, total=sum(score))</code></pre>
+<pre class="r"><code>summarize(scoretab, average_score=mean(score))</code></pre>
 <pre><code>## # A tibble: 1 x 1
-##   total
-##   &lt;dbl&gt;
-## 1    60</code></pre>
+##   average_score
+##           &lt;dbl&gt;
+## 1         0.833</code></pre>
+<p>In this, <code>average_score</code> is used to name the new column. Any summary function could be used in place of <code>mean</code>, such as <code>sum</code>, <code>median</code>, <code>sd</code>.</p>
 <p>We really want to summarize the data grouped by file, so we can see if there are any particularly bad files. This is achieved using the <code>group_by</code> “adjective”. <code>group_by</code> gives the data frame a grouping using one or more columns, which modifies the subsequent call to <code>summarize</code>.</p>
 <pre class="r"><code>group_by(scoretab, file)</code></pre>
 <pre><code>## # A tibble: 72 x 4
@@ -1057,23 +1058,23 @@ normalizer_by_tmm &lt;- tibble(
 ## [9] tidyverse_1.2.1
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] tidyselect_0.2.5  xfun_0.9          reshape2_1.4.3   
+##  [1] tidyselect_0.2.5  xfun_0.10         reshape2_1.4.3   
 ##  [4] haven_2.1.1       lattice_0.20-38   colorspace_1.4-1 
 ##  [7] vctrs_0.2.0       generics_0.0.2    viridisLite_0.3.0
-## [10] htmltools_0.3.6   yaml_2.2.0        utf8_1.1.4       
+## [10] htmltools_0.4.0   yaml_2.2.0        utf8_1.1.4       
 ## [13] rlang_0.4.0       pillar_1.4.2      glue_1.3.1       
 ## [16] withr_2.1.2       modelr_0.1.5      readxl_1.3.1     
 ## [19] plyr_1.8.4        lifecycle_0.1.0   munsell_0.5.0    
 ## [22] gtable_0.3.0      cellranger_1.1.0  rvest_0.3.4      
 ## [25] evaluate_0.14     labeling_0.3      knitr_1.25       
 ## [28] fansi_0.4.0       broom_0.5.2       Rcpp_1.0.2       
-## [31] scales_1.0.0      backports_1.1.4   jsonlite_1.6     
-## [34] hms_0.5.1         digest_0.6.20     stringi_1.4.3    
+## [31] scales_1.0.0      backports_1.1.5   jsonlite_1.6     
+## [34] hms_0.5.1         digest_0.6.21     stringi_1.4.3    
 ## [37] grid_3.6.0        cli_1.1.0         tools_3.6.0      
 ## [40] magrittr_1.5      lazyeval_0.2.2    crayon_1.3.4     
-## [43] pkgconfig_2.0.2   zeallot_0.1.0     ellipsis_0.2.0.1 
+## [43] pkgconfig_2.0.3   zeallot_0.1.0     ellipsis_0.3.0   
 ## [46] xml2_1.2.2        lubridate_1.7.4   assertthat_0.2.1 
-## [49] rmarkdown_1.15    httr_1.4.1        rstudioapi_0.10  
+## [49] rmarkdown_1.16    httr_1.4.1        rstudioapi_0.10  
 ## [52] R6_2.4.0          nlme_3.1-141      compiler_3.6.0</code></pre>
 <p><strong>References</strong></p>
 <div id="refs" class="references">

@@ -117,7 +117,7 @@ scoretab
 ## _______________________
 ## ----> summarize( ) ----
 
-summarize(scoretab, total=sum(score))
+summarize(scoretab, average_score=mean(score))
 
 
 group_by(scoretab, file)

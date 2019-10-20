@@ -4,7 +4,9 @@
 topics/Day*
 topics/fastqc*
 topics/FastQC*
-
+/Day*
+/fastqc*
+/FastQC*
 
 # History files
 .Rhistory

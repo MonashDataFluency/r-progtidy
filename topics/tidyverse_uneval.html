@@ -551,7 +551,8 @@ scoretab</code></pre>
 <div id="summarize" class="section level2">
 <h2>summarize( )</h2>
 <p><code>summarize</code> lets us compute summaries of data.</p>
-<pre class="r"><code>summarize(scoretab, total=sum(score))</code></pre>
+<pre class="r"><code>summarize(scoretab, average_score=mean(score))</code></pre>
+<p>In this, <code>average_score</code> is used to name the new column. Any summary function could be used in place of <code>mean</code>, such as <code>sum</code>, <code>median</code>, <code>sd</code>.</p>
 <p>We really want to summarize the data grouped by file, so we can see if there are any particularly bad files. This is achieved using the <code>group_by</code> “adjective”. <code>group_by</code> gives the data frame a grouping using one or more columns, which modifies the subsequent call to <code>summarize</code>.</p>
 <pre class="r"><code>group_by(scoretab, file)
 
