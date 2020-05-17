@@ -313,44 +313,52 @@ untidy <- read_csv(
 untidy
 ```
 
-The first problem is that rows are not distinct units of observation, there are actually four observations per row. This is fixed using `gather`.
+The first problem is that rows are not distinct units of observation, there are actually four observations per row. This is fixed using `pivot_longer`. (This operation has in the past also been called `gather` or `melt`.)
 
 ```{r}
-gathered <- gather(untidy, key=group, value=cases, -country)
-gathered
+longer <- pivot_longer(untidy, cols=c(-country), names_to="group", values_to="cases")
+longer
 ```
 
-We give a data frame, a name for the key and value columns to be created. Remaining arguments behave like `select`, here we are saying that the country column shouldn't be gathered.
+We give a data frame, a specification of columns to use (`cols=`), a column to put the column names in (`names_to=`) and a column to put the values in (`values_to=`). The column specification inside the `c( )` behaves like `select`. We could equivalently have put `cols=2:5`, etc.
 
-`spread` is the opposite operation, spreading a column into many columns, which generally makes data less tidy but is sometimes necessary. A common application is producing a scatter plot, where the x and y axes need to be two different columns even though they measure the same type of thing. Data may also be easier to look at in a table in spread form.
+`pivot_wider` is the opposite operation, spreading two columns into many columns, which generally makes data less tidy but is sometimes necessary. A common application is producing a scatter plot, where the x and y axes need to be two different columns even though they measure the same type of thing. Data may also be easier to look at in a table in spread form.
 
 ```{r}
-spread(gathered, key=group, value=cases)
-spread(bigtab, key=file, value=grade)
+pivot_wider(longer, names_from=group, values_from=cases)
+pivot_wider(bigtab, names_from=file, values_from=grade)
 ```
 
 In our toy example, we have a further problem that the "group" column contains two pieces of data. This can be fixed with `separate`. By default `separate` splits on any non-alphanumeric characters, but different separator characters can be specified.
 
 ```{r}
-separate(gathered, col=group, into=c("gender","age"))
+separate(longer, col=group, into=c("gender","age"))
 ```
 
 All of this would typically be written as a single pipline:
 
 ```{r}
 tidied <- untidy %>%
-    gather(key=group, value=cases, -country) %>%
+    pivot_longer(cols=c(-country), names_to="group", values_to="cases") %>%
     separate(group, into=c("gender","age"))
 ```
 
-<b>Advanced:</b> `tidyr` has a number of other useful data frame manipulations. For completeness, we mention `nest`. This creates a *list column* in a tibble, the list column containing one tibble per row. Yo, Hadley put tibbles in your tibble so you can dplyr while you dplyr. The inverse operation is `unnest`. `unnest` is rather like the `bind_rows` function we saw earlier. `nest` and `unnest` go well with creating or modifying list columns in a `mutate` with `lapply` (or the `purrr` package).
+Finally, we mention that `pivot_longer` has features we haven't explored, and it is actually possible to do this in one step. [See the tidyr vignettes.](https://tidyr.tidyverse.org/articles/pivot.html)
+
+```{r}
+pivot_longer(
+    untidy, cols=c(-country), 
+    names_to=c("gender","age"), names_sep="-", values_to="cases") 
+```
+
+<b>Advanced:</b> `tidyr` has a number of other useful data frame manipulations. For completeness, we mention `nest`. This creates a *list column* in a tibble, the list column containing one tibble per row. Yo, Hadley put tibbles in your tibble so you can dplyr while you dplyr. The inverse operation is `unnest`. `unnest` is rather like the `bind_rows` function we saw earlier. `nest` and `unnest` go well with creating or modifying list columns in a `mutate` with `lapply` (or the [`purrr`](https://purrr.tidyverse.org/) package).
 
 ```{r eval=FALSE}
 # Advanced
-nested <- nest(gathered, -country)
+nested <- nest(tidied, data=c(gender, age, cases))
 nested
 nested$data
-unnest(nested)
+unnest(nested, data)
 ```
 
 
@@ -365,9 +373,9 @@ df <- read_csv(
      y,   4,   4,   2,   1,   1,   1,   2")
 ```
 
-1. Tidy the data by *gathering* all of the columns except `dim`. What what does each row now represent?
+1. Tidy the data by pivoting longer all of the columns except `dim`. What what does each row now represent?
 
-2. We want to plot the points as a scatter-plot, using either `plot` or `ggplot`. *Spread* the gathered data so that this is possible. Now what do the rows represent?
+2. We want to plot the points as a scatter-plot, using either `plot` or `ggplot`. Pivot the long data wider so that this is possible. Now what do the rows represent?
 
 3. What other tidying operation could be applied to this data?
 
@@ -392,9 +400,10 @@ Recall the diagram from the ["R for Data Science" book](http://r4ds.had.co.nz/).
 counts_untidy <- read_csv("r-progtidy-files/read-counts.csv")
 
 counts <- counts_untidy %>%
-    gather(key=sample, value=count, -Feature, factor_key=TRUE) %>%
+    pivot_longer(cols=c(-Feature), names_to="sample", values_to="count") %>%
     separate(sample, sep=":", into=c("strain","time"), convert=TRUE, remove=FALSE) %>%
     mutate(
+        sample = factor(sample, unique(sample)),
         strain = factor(strain, levels=c("WT","SET1","RRP6","SET1-RRP6"))
     ) %>%
     filter(time >= 2) %>%

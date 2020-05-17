@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -385,6 +384,7 @@ summary {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -619,25 +619,29 @@ select(bigtab, foo=file, bar=test, baz=grade)</code></pre>
      Australia,            1,        2,            3,          4
      New Zealand,          5,        6,            7,          8&quot;)
 untidy</code></pre>
-<p>The first problem is that rows are not distinct units of observation, there are actually four observations per row. This is fixed using <code>gather</code>.</p>
-<pre class="r"><code>gathered &lt;- gather(untidy, key=group, value=cases, -country)
-gathered</code></pre>
-<p>We give a data frame, a name for the key and value columns to be created. Remaining arguments behave like <code>select</code>, here we are saying that the country column shouldn’t be gathered.</p>
-<p><code>spread</code> is the opposite operation, spreading a column into many columns, which generally makes data less tidy but is sometimes necessary. A common application is producing a scatter plot, where the x and y axes need to be two different columns even though they measure the same type of thing. Data may also be easier to look at in a table in spread form.</p>
-<pre class="r"><code>spread(gathered, key=group, value=cases)
-spread(bigtab, key=file, value=grade)</code></pre>
+<p>The first problem is that rows are not distinct units of observation, there are actually four observations per row. This is fixed using <code>pivot_longer</code>. (This operation has in the past also been called <code>gather</code> or <code>melt</code>.)</p>
+<pre class="r"><code>longer &lt;- pivot_longer(untidy, cols=c(-country), names_to=&quot;group&quot;, values_to=&quot;cases&quot;)
+longer</code></pre>
+<p>We give a data frame, a specification of columns to use (<code>cols=</code>), a column to put the column names in (<code>names_to=</code>) and a column to put the values in (<code>values_to=</code>). The column specification inside the <code>c( )</code> behaves like <code>select</code>. We could equivalently have put <code>cols=2:5</code>, etc.</p>
+<p><code>pivot_wider</code> is the opposite operation, spreading two columns into many columns, which generally makes data less tidy but is sometimes necessary. A common application is producing a scatter plot, where the x and y axes need to be two different columns even though they measure the same type of thing. Data may also be easier to look at in a table in spread form.</p>
+<pre class="r"><code>pivot_wider(longer, names_from=group, values_from=cases)
+pivot_wider(bigtab, names_from=file, values_from=grade)</code></pre>
 <p>In our toy example, we have a further problem that the “group” column contains two pieces of data. This can be fixed with <code>separate</code>. By default <code>separate</code> splits on any non-alphanumeric characters, but different separator characters can be specified.</p>
-<pre class="r"><code>separate(gathered, col=group, into=c(&quot;gender&quot;,&quot;age&quot;))</code></pre>
+<pre class="r"><code>separate(longer, col=group, into=c(&quot;gender&quot;,&quot;age&quot;))</code></pre>
 <p>All of this would typically be written as a single pipline:</p>
 <pre class="r"><code>tidied &lt;- untidy %&gt;%
-    gather(key=group, value=cases, -country) %&gt;%
+    pivot_longer(cols=c(-country), names_to=&quot;group&quot;, values_to=&quot;cases&quot;) %&gt;%
     separate(group, into=c(&quot;gender&quot;,&quot;age&quot;))</code></pre>
-<p><b>Advanced:</b> <code>tidyr</code> has a number of other useful data frame manipulations. For completeness, we mention <code>nest</code>. This creates a <em>list column</em> in a tibble, the list column containing one tibble per row. Yo, Hadley put tibbles in your tibble so you can dplyr while you dplyr. The inverse operation is <code>unnest</code>. <code>unnest</code> is rather like the <code>bind_rows</code> function we saw earlier. <code>nest</code> and <code>unnest</code> go well with creating or modifying list columns in a <code>mutate</code> with <code>lapply</code> (or the <code>purrr</code> package).</p>
+<p>Finally, we mention that <code>pivot_longer</code> has features we haven’t explored, and it is actually possible to do this in one step. <a href="https://tidyr.tidyverse.org/articles/pivot.html">See the tidyr vignettes.</a></p>
+<pre class="r"><code>pivot_longer(
+    untidy, cols=c(-country), 
+    names_to=c(&quot;gender&quot;,&quot;age&quot;), names_sep=&quot;-&quot;, values_to=&quot;cases&quot;) </code></pre>
+<p><b>Advanced:</b> <code>tidyr</code> has a number of other useful data frame manipulations. For completeness, we mention <code>nest</code>. This creates a <em>list column</em> in a tibble, the list column containing one tibble per row. Yo, Hadley put tibbles in your tibble so you can dplyr while you dplyr. The inverse operation is <code>unnest</code>. <code>unnest</code> is rather like the <code>bind_rows</code> function we saw earlier. <code>nest</code> and <code>unnest</code> go well with creating or modifying list columns in a <code>mutate</code> with <code>lapply</code> (or the <a href="https://purrr.tidyverse.org/"><code>purrr</code></a> package).</p>
 <pre class="r"><code># Advanced
-nested &lt;- nest(gathered, -country)
+nested &lt;- nest(tidied, data=c(gender, age, cases))
 nested
 nested$data
-unnest(nested)</code></pre>
+unnest(nested, data)</code></pre>
 <div id="challenge-1" class="section level3 challenge">
 <h3>Challenge</h3>
 <p>You receive data on a set of points. The points are in two dimensions (<code>dim</code>), and each point has x and y coordinates. Unfortunately it looks like this:</p>
@@ -646,8 +650,8 @@ unnest(nested)</code></pre>
      x,   2,   4,   1,   2,   3,   4,   5
      y,   4,   4,   2,   1,   1,   1,   2&quot;)</code></pre>
 <ol style="list-style-type: decimal">
-<li><p>Tidy the data by <em>gathering</em> all of the columns except <code>dim</code>. What what does each row now represent?</p></li>
-<li><p>We want to plot the points as a scatter-plot, using either <code>plot</code> or <code>ggplot</code>. <em>Spread</em> the gathered data so that this is possible. Now what do the rows represent?</p></li>
+<li><p>Tidy the data by pivoting longer all of the columns except <code>dim</code>. What what does each row now represent?</p></li>
+<li><p>We want to plot the points as a scatter-plot, using either <code>plot</code> or <code>ggplot</code>. Pivot the long data wider so that this is possible. Now what do the rows represent?</p></li>
 <li><p>What other tidying operation could be applied to this data?</p></li>
 </ol>
 </div>
@@ -665,9 +669,10 @@ unnest(nested)</code></pre>
 counts_untidy &lt;- read_csv(&quot;r-progtidy-files/read-counts.csv&quot;)
 
 counts &lt;- counts_untidy %&gt;%
-    gather(key=sample, value=count, -Feature, factor_key=TRUE) %&gt;%
+    pivot_longer(cols=c(-Feature), names_to=&quot;sample&quot;, values_to=&quot;count&quot;) %&gt;%
     separate(sample, sep=&quot;:&quot;, into=c(&quot;strain&quot;,&quot;time&quot;), convert=TRUE, remove=FALSE) %&gt;%
     mutate(
+        sample = factor(sample, unique(sample)),
         strain = factor(strain, levels=c(&quot;WT&quot;,&quot;SET1&quot;,&quot;RRP6&quot;,&quot;SET1-RRP6&quot;))
     ) %&gt;%
     filter(time &gt;= 2) %&gt;%

@@ -188,27 +188,32 @@ untidy <- read_csv(
 untidy
 
 
-gathered <- gather(untidy, key=group, value=cases, -country)
-gathered
+longer <- pivot_longer(untidy, cols=c(-country), names_to="group", values_to="cases")
+longer
 
 
-spread(gathered, key=group, value=cases)
-spread(bigtab, key=file, value=grade)
+pivot_wider(longer, names_from=group, values_from=cases)
+pivot_wider(bigtab, names_from=file, values_from=grade)
 
 
-separate(gathered, col=group, into=c("gender","age"))
+separate(longer, col=group, into=c("gender","age"))
 
 
 tidied <- untidy %>%
-    gather(key=group, value=cases, -country) %>%
+    pivot_longer(cols=c(-country), names_to="group", values_to="cases") %>%
     separate(group, into=c("gender","age"))
 
 
+pivot_longer(
+    untidy, cols=c(-country),
+    names_to=c("gender","age"), names_sep="-", values_to="cases")
+
+
 # Advanced
-nested <- nest(gathered, -country)
+nested <- nest(tidied, data=c(gender, age, cases))
 nested
 nested$data
-unnest(nested)
+unnest(nested, data)
 
 
 ### _____________________
@@ -225,11 +230,11 @@ df <- read_csv(
      y,   4,   4,   2,   1,   1,   1,   2")
 
 # 
-# 1. Tidy the data by *gathering* all of the columns except `dim`. What
-# what does each row now represent?
+# 1. Tidy the data by pivoting longer all of the columns except `dim`.
+# What what does each row now represent?
 # 
 # 2. We want to plot the points as a scatter-plot, using either `plot`
-# or `ggplot`. *Spread* the gathered data so that this is possible. Now
+# or `ggplot`. Pivot the long data wider so that this is possible. Now
 # what do the rows represent?
 # 
 # 3. What other tidying operation could be applied to this data?
@@ -246,9 +251,10 @@ df <- read_csv(
 counts_untidy <- read_csv("r-progtidy-files/read-counts.csv")
 
 counts <- counts_untidy %>%
-    gather(key=sample, value=count, -Feature, factor_key=TRUE) %>%
+    pivot_longer(cols=c(-Feature), names_to="sample", values_to="count") %>%
     separate(sample, sep=":", into=c("strain","time"), convert=TRUE, remove=FALSE) %>%
     mutate(
+        sample = factor(sample, unique(sample)),
         strain = factor(strain, levels=c("WT","SET1","RRP6","SET1-RRP6"))
     ) %>%
     filter(time >= 2) %>%
