@@ -44,6 +44,7 @@ install.packages("tidyverse")
 
 # Optional: install some further packages 
 # (these are mentioned but not essential to the workshop)
+install.packages("rmarkdown")
 install.packages("devtools")
 install.packages("usethis")
 install.packages("BiocManager")

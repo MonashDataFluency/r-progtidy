@@ -427,6 +427,7 @@ summary {
 <li><a href="#for-loops">For-loops</a></li>
 <li><a href="#a-practical-programming-exercise">A practical programming exercise</a></li>
 <li><a href="#sourcing-.r-files">Sourcing .R files</a></li>
+<li><a href="#rmarkdown-reports">Rmarkdown reports</a></li>
 <li><a href="#packages">Packages</a></li>
 </ul>
 </div>
@@ -821,6 +822,28 @@ load_fastqc &lt;- function(filename) {
 source(&quot;fastqc.R&quot;)</code></pre>
 <p>Everything in the file runs as though it were typed on the console.</p>
 <p>Similarly, if you are going to be doing several different things with a data set, you could write a .R file to load the data into a tidy form, and several other .R scripts to do various different things with it.</p>
+</div>
+<div id="rmarkdown-reports" class="section level1">
+<h1>Rmarkdown reports</h1>
+<p>Another way of sharing R code and its output is to write a report in “Rmarkdown”. The idea is to write a file containing a mixture of text and R code. This is then “knit” into an HTML or PDF document, with the output from the R code and any plots also shown. This workshop is written in Rmarkdown!</p>
+<p>As an example, create a file called <code>report.Rmd</code>.</p>
+<pre><code># report.Rmd should contain:
+
+---
+title: Report
+---
+
+This is the result from running FastQC.
+
+```{r}
+source(&quot;fastqc.R&quot;)
+load_fastqc(&quot;Day0_fastqc/summary.txt&quot;)
+```</code></pre>
+<p>Press the “knit” button or type:</p>
+<pre class="r"><code># From the console:
+
+rmarkdown::render(&quot;report.Rmd&quot;)</code></pre>
+<p>All of the R code in the file is run, but now an HTML file showing the code and output is created. There is a lot more to say about Rmarkdown, which we won’t be going in to today. <a href="https://monashdatafluency.github.io/r-rep-res/">We have a full workshop on this topic.</a></p>
 <div id="discussion" class="section level2 challenge">
 <h2>Discussion</h2>
 <p>What other R code from this lesson could we put in a .R file? Or a .Rmd file?</p>
@@ -872,9 +895,9 @@ check(&quot;mypack&quot;)</code></pre>
 <li><a href="http://r-pkgs.had.co.nz/">Hadley Wickham’s “R packages” book</a></li>
 <li><a href="https://cran.r-project.org/doc/manuals/r-release/R-exts.html">Official package writing manual</a></li>
 </ul>
-<p>Packages are most easily distributed by placing them on GitHub or GitLab. They can then be installed by others using the <code>devtools</code> functions <code>install_github</code> or <code>install_gitlab</code>. Once a package is mature and well documented, it can be submitted to CRAN or Bioconductor.</p>
+<p>Packages are most easily distributed by placing them on GitHub or GitLab. They can then be installed by others using the <code>remotes</code> package functions <code>install_github</code> or <code>install_gitlab</code>. Once a package is mature and well documented, it can be submitted to CRAN or Bioconductor.</p>
 <pre class="r"><code># To install from GitHub:
-devtools::install_github(&quot;myusername/mypack&quot;)</code></pre>
+remotes::install_github(&quot;myusername/mypack&quot;)</code></pre>
 <pre class="r"><code>sessionInfo()</code></pre>
 </div>
 

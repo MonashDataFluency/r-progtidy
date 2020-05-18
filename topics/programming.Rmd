@@ -622,6 +622,38 @@ Everything in the file runs as though it were typed on the console.
 Similarly, if you are going to be doing several different things with a data set, you could write a .R file to load the data into a tidy form, and several other .R scripts to do various different things with it.
 
 
+# Rmarkdown reports
+
+Another way of sharing R code and its output is to write a report in "Rmarkdown". The idea is to write a file containing a mixture of text and R code. This is then "knit" into an HTML or PDF document, with the output from the R code and any plots also shown. This workshop is written in Rmarkdown!
+
+As an example, create a file called `report.Rmd`. 
+
+````
+# report.Rmd should contain:
+
+---
+title: Report
+---
+
+This is the result from running FastQC.
+
+`r ''````{r}
+source("fastqc.R")
+load_fastqc("Day0_fastqc/summary.txt")
+`r ''````
+````
+
+Press the "knit" button or type:
+
+```{r eval=FALSE}
+# From the console:
+
+rmarkdown::render("report.Rmd")
+```
+
+All of the R code in the file is run, but now an HTML file showing the code and output is created. There is a lot more to say about Rmarkdown, which we won't be going in to today. [We have a full workshop on this topic.](https://monashdatafluency.github.io/r-rep-res/)
+
+
 ## Discussion {.challenge}
 
 What other R code from this lesson could we put in a .R file? Or a .Rmd file?
@@ -681,11 +713,11 @@ check("mypack")
 * [Hadley Wickham's "R packages" book](http://r-pkgs.had.co.nz/)
 * [Official package writing manual](https://cran.r-project.org/doc/manuals/r-release/R-exts.html)
 
-Packages are most easily distributed by placing them on GitHub or GitLab. They can then be installed by others using the `devtools` functions `install_github` or `install_gitlab`. Once a package is mature and well documented, it can be submitted to CRAN or Bioconductor.
+Packages are most easily distributed by placing them on GitHub or GitLab. They can then be installed by others using the `remotes` package functions `install_github` or `install_gitlab`. Once a package is mature and well documented, it can be submitted to CRAN or Bioconductor.
 
 ```{r eval=FALSE}
 # To install from GitHub:
-devtools::install_github("myusername/mypack")
+remotes::install_github("myusername/mypack")
 ```
 
 

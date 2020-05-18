@@ -401,6 +401,28 @@ load_fastqc <- function(filename) {
 source("fastqc.R")
 
 
+# ___________________________
+# ==== Rmarkdown reports ====
+
+# report.Rmd should contain:
+
+---
+title: Report
+---
+
+This is the result from running FastQC.
+
+```{r}
+source("fastqc.R")
+load_fastqc("Day0_fastqc/summary.txt")
+```
+
+
+# From the console:
+
+rmarkdown::render("report.Rmd")
+
+
 ## _____________________
 ## ----> Discussion ----
 # 
@@ -456,7 +478,7 @@ check("mypack")
 
 
 # To install from GitHub:
-devtools::install_github("myusername/mypack")
+remotes::install_github("myusername/mypack")
 
 
 sessionInfo()

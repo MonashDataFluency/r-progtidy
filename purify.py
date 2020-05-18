@@ -14,8 +14,9 @@ for line in sys.stdin:
     if line.startswith("```"):
         print()
         in_code = not in_code
-        assert in_code or line == "```", line
+        assert in_code or line == "```" or line == "````", line
     elif in_code:
+        line = line.replace("`r ''`","") # Needed in quoted rmarkdown
         print(line)
     elif line.startswith("#"):
         print("#" if in_challenge else "")
