@@ -10,11 +10,21 @@ output:
 
 ##
 
-<div style="float: right">
+<div style="float: right; text-align: right">
 <img src="../figures/Rlogo.png">
-<br><br><br><img src="../figures/new_s.jpg" style="width: 200px">
+<br><br><br>
+<div style="display: inline-block; margin: 1em;">
+<img src="../figures/new_s.jpg" style="width: 150px">
 <br>The **new** S language,
-<br>published 1988.
+<br>published 1988,
+<br>introduced functions.
+</div>
+<div style="display: inline-block; margin: 1em;">
+<img src="../figures/chambers_and_hastie.jpg" style="width: 150px">
+<br>Statistical Models in S,
+<br>published 1991,
+<br>introduced data frames.
+</div>
 </div>
 
 R has a long history.
