@@ -216,9 +216,11 @@ cat("done\n")                       #                            12
 ## ____________________
 ## ----> Challenge ----
 # 
-# 1. What do you think this R code will do? Read the code and make a
-# guess, then try it in R. Try adding `cat`s or `print`s to the loop
-# body to check what is going on.
+# As a small group, compare your answers as you go.
+# 
+# 1. Write down what these lines of code do in English. Check they do
+# what you expect by running them in R. Try adding `cat`s or `print`s to
+# the for-loop body to check what is going on.
 # 
 
 myvec <- c(10,20,30,40)
@@ -231,8 +233,8 @@ for(item in myvec) {
 total
 
 # 
-# 2. What do you think this R code will do? How could it be changed to
-# work with any length of `myvec`?
+# 2. Write down what these lines of code do in English. How could this
+# be changed to work with any length of `myvec`?
 # 
 
 myvec <- c(10,20,30,40)
@@ -242,7 +244,10 @@ for(index in 1:4) {
 }
 
 # 
-# 3. Write a for-loop to calculate 10 factorial, ie `1*2*3*4* ... *10`.
+# 3. Write the steps to calculate *n* factorial in English, i.e. `1*2*3*
+# ... *n`.
+# 
+# 4. Write R code to calculate 10 factorial.
 # 
 
 numbers <- 1:10

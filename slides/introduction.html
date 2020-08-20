@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Programming and Tidy data analysis in R</title>
+  <title>Programming and tidy data analysis in R</title>
 
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="chrome=1">
@@ -19,7 +19,7 @@
     var SLIDE_CONFIG = {
       // Slide settings
       settings: {
-                title: 'Programming and Tidy data analysis in R',
+                title: 'Programming and tidy data analysis in R',
                         useBuilds: true,
         usePrettify: true,
         enableSlideAreas: true,
@@ -40,6 +40,19 @@
     };
   </script>
 
+  <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
   <style type="text/css">@font-face {
 font-family: 'Open Sans';
 font-style: normal;
@@ -3232,6 +3245,176 @@ Elements of programming we will be looking at today:
 * running external software with `system`
 * running all the code in a .R file as a "script", or to load a "library" of functions
 -->
+
+</article></slide><slide class=""><hgroup><h2>Algorithmic thinking</h2></hgroup><article  id="algorithmic-thinking" class="smaller ">
+
+<p>Programming involves two very different activities.</p>
+
+<p><br></p>
+
+<h3>1. Thinking through the problem</h3>
+
+<ul>
+<li><p>Define the problem precisely.</p></li>
+<li><p>Anticipate things that might go wrong or need special handling.</p></li>
+<li><p>Come up with a step-by-step solution, using phrases like <strong>&ldquo;for each&rdquo;</strong> and <strong>&ldquo;if&rdquo;</strong>.</p></li>
+</ul>
+
+<p>This is <strong>algorithmic thinking</strong>. It doesn’t need a computer!</p>
+
+<p><br></p>
+
+<h3>2. Turning the step-by-step solution into R code</h3>
+
+</article></slide><slide class=""><hgroup><h2>Algorithmic thinking</h2></hgroup><article  id="algorithmic-thinking-1" class="smaller ">
+
+<p>Suppose you want to add the numbers 5, 3, 9, 7.</p>
+
+<p>We can write down steps to solve this, then convert them to R code.</p>
+
+<p><br> <br></p>
+
+<table width="75%">
+
+<tr>
+
+<td>
+
+<pre >Start with a total of 0.
+
+Add 5 to the total.
+
+Add 3 to the total.
+
+Add 9 to the total.
+
+Add 7 to the total.
+
+The total now is the answer.</pre>
+
+</td>
+
+<td>
+
+<pre >total &lt;- 0
+
+total &lt;- total + 5
+
+total &lt;- total + 3
+
+total &lt;- total + 9
+
+total &lt;- total + 7
+
+total</pre>
+
+</td>
+
+</tr>
+
+</table>
+
+</article></slide><slide class=""><hgroup><h2>Algorithmic thinking</h2></hgroup><article  id="algorithmic-thinking-2" class="smaller ">
+
+<p>Suppose you want to add up a collection of numbers <strong>in general</strong>.</p>
+
+<p>We can write down steps to solve this, then convert them to R code.</p>
+
+<p><br> <br></p>
+
+<table width="75%">
+
+<tr>
+
+<td>
+
+<pre >
+
+
+
+
+Start with a total of 0.
+
+For each number x in the collection: 
+    Add x to the total.
+
+
+The answer is the final value of total.
+</pre>
+
+</td>
+
+<td>
+
+<pre >collection &lt;- c(5, 3, 9, 7)
+
+
+
+total &lt;- 0
+
+for(x in collection) {
+    total &lt;- total + x
+}
+
+total</pre>
+
+</td>
+
+</tr>
+
+</table>
+
+</article></slide><slide class=""><hgroup><h2>Algorithmic thinking</h2></hgroup><article  id="algorithmic-thinking-3" class="smaller ">
+
+<p>Like a cooking recipe or a lab protocol, we can write down the steps once, then use them whenever we need to solve this problem.</p>
+
+<p><br> <br></p>
+
+<table width="75%">
+
+<tr>
+
+<td>
+
+<pre >This is how to add up the numbers in a collection:
+
+    Start with a total of 0.
+
+    For each number x in the collection: 
+        Add x to the total.
+
+
+    The answer is the final value of total.
+
+
+
+
+Now add up 5, 3, 9, and 7.</pre>
+
+</td>
+
+<td>
+
+<pre >addup &lt;- function(collection) {
+
+    total &lt;- 0
+
+    for(x in collection) {
+        total &lt;- total + x
+    }
+
+    total
+
+}
+
+
+addup( c(3,5,9,7) )</pre>
+
+</td>
+
+</tr>
+
+</table>
 
 </article></slide><slide class=""><hgroup><h2>Data</h2></hgroup><article  id="data" class="smaller ">
 

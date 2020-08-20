@@ -1,5 +1,5 @@
 ---
-title: "Programming and Tidy data analysis in R"
+title: "Programming and tidy data analysis in R"
 author: "Monash Data Fluency"
 output: 
     ioslides_presentation:
@@ -118,6 +118,160 @@ Elements of programming we will be looking at today:
 * running external software with `system`
 * running all the code in a .R file as a "script", or to load a "library" of functions
 -->
+
+## Algorithmic thinking
+
+Programming involves two very different activities.
+
+<br>
+
+### 1. Thinking through the problem
+
+* Define the problem precisely.
+
+* Anticipate things that might go wrong or need special handling.
+
+* Come up with a step-by-step solution, using phrases like **"for each"** and **"if"**.
+
+This is **algorithmic thinking**. It doesn't need a computer!
+
+<br>
+
+### 2. Turning the step-by-step solution into R code
+
+
+
+
+## Algorithmic thinking
+
+Suppose you want to add the numbers 5, 3, 9, 7.
+
+We can write down steps to solve this, then convert them to R code.
+
+<br>
+<br>
+
+<table width="75%">
+<tr><td>
+```
+Start with a total of 0.
+
+Add 5 to the total.
+
+Add 3 to the total.
+
+Add 9 to the total.
+
+Add 7 to the total.
+
+The total now is the answer.
+```
+</td><td>
+```
+total <- 0
+
+total <- total + 5
+
+total <- total + 3
+
+total <- total + 9
+
+total <- total + 7
+
+total
+```
+</td></tr>
+</table>
+
+## Algorithmic thinking
+
+Suppose you want to add up a collection of numbers **in general**.
+
+We can write down steps to solve this, then convert them to R code.
+
+<br>
+<br>
+
+<table width="75%">
+<tr><td>
+```
+
+
+
+
+
+Start with a total of 0.
+
+For each number x in the collection: 
+    Add x to the total.
+
+
+The answer is the final value of total.
+
+```
+</td><td>
+```
+collection <- c(5, 3, 9, 7)
+
+
+
+total <- 0
+
+for(x in collection) {
+    total <- total + x
+}
+
+total
+```
+</td>
+</tr>
+</table>
+
+## Algorithmic thinking
+
+Like a cooking recipe or a lab protocol, we can write down the steps once, then use them whenever we need to solve this problem.
+
+<br>
+<br>
+
+<table width="75%">
+<tr><td>
+```
+This is how to add up the numbers in a collection:
+
+    Start with a total of 0.
+
+    For each number x in the collection: 
+        Add x to the total.
+
+
+    The answer is the final value of total.
+
+
+
+
+Now add up 5, 3, 9, and 7.
+```
+</td><td>
+```
+addup <- function(collection) {
+
+    total <- 0
+
+    for(x in collection) {
+        total <- total + x
+    }
+
+    total
+
+}
+
+
+addup( c(3,5,9,7) )
+```
+</td></tr>
+</table>
+
 
 
 ## Data

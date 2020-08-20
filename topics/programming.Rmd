@@ -17,7 +17,7 @@ This is called "machine code" and would be annoying to work with directly, so we
 
 Learning to use a specific programming language includes learning to read its _syntax_ -- the use of brackets, keywords, etc -- and how to use the specific structures that it provides. 
 
-As you gain experience you will build a mental library of _patterns_ or _idioms_ - small collections of code and concepts that you can apply, with minor modifications, to many problems. We'll introduce a few patterns that we've found useful in a variety of applications.
+As you gain experience you will build a mental library of _patterns_ or _idioms_ - small collections of code and concepts that you can apply, with minor modifications, to many problems. Educators call this _algorithmic thinking_. We'll introduce a few patterns that we've found useful in a variety of applications.
 
 While R is known as a statistical environment, it is built around a general purpose programming language. This is part of what has made so many extensions possible. The big gains of learning to use this language are especially evident in the early stages of a data analysis problem - importing, cleaning and visualizing the data.
 
@@ -342,7 +342,9 @@ The loop variable `i` is assigned each element in the vector in turn, and then t
 
 ## Challenge {.challenge}
 
-1. What do you think this R code will do? Read the code and make a guess, then try it in R. Try adding `cat`s or `print`s to the loop body to check what is going on.
+As a small group, compare your answers as you go.
+
+1. Write down what these lines of code do in English. Check they do what you expect by running them in R. Try adding `cat`s or `print`s to the for-loop body to check what is going on.
 
 ```{r eval=FALSE}
 myvec <- c(10,20,30,40)
@@ -355,7 +357,7 @@ for(item in myvec) {
 total
 ```
 
-2. What do you think this R code will do? How could it be changed to work with any length of `myvec`?
+2. Write down what these lines of code do in English. How could this be changed to work with any length of `myvec`?
 
 ```{r eval=FALSE}
 myvec <- c(10,20,30,40)
@@ -365,7 +367,9 @@ for(index in 1:4) {
 }
 ```
 
-3. Write a for-loop to calculate 10 factorial, ie `1*2*3*4* ... *10`.
+3. Write the steps to calculate *n* factorial in English, i.e. `1*2*3* ... *n`.
+
+4. Write R code to calculate 10 factorial.
 
 ```{r eval=FALSE}
 numbers <- 1:10
