@@ -35,9 +35,11 @@ ggplot(bigtab, aes(x=file,y=test,fill=grade)) +
 ## _____________________________________
 ## ----> Publication quality images ----
 
-y_order <- sort(unique(bigtab$test), decreasing=T)  # y axis plots from bottom to top, so reverse
+# y axis plots from bottom to top, so use reverse order
+y_order <- sort(unique(bigtab$test), decreasing=TRUE)
 bigtab$test <- factor(bigtab$test, levels=y_order)
 
+# Put x axis in order first found in data frame
 x_order <- unique(bigtab$file)
 bigtab$file <- factor(bigtab$file, levels=x_order)
 
@@ -104,9 +106,6 @@ arrange(bigtab, desc(grade))
 fwp <- c("FAIL","WARN","PASS")
 scoring <- tibble(grade=factor(fwp,levels=fwp), score=c(0,0.5,1))
 
-# Or:
-# scoring <- data.frame(grade=factor(fwp,levels=fwp), score=c(0,0.5,1))
-
 scoring
 
 
@@ -148,7 +147,7 @@ scoretab %>%
 ### ---->> Challenge ----
 # 
 # Write a pipeline using `%>%`s that starts with `bigtab`, joins the
-# `scoring` table, and then calculates average scores for each file.
+# `scoring` table, and then calculates the average score for each test.
 # 
 # 
 # 
@@ -175,7 +174,8 @@ select(bigtab, 2,1)
 select(bigtab, foo=file, bar=test, baz=grade)
 
 
-select(bigtab, -file)
+# See https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html
+select(bigtab, !file)
 
 
 # _______________
@@ -188,7 +188,7 @@ untidy <- read_csv(
 untidy
 
 
-longer <- pivot_longer(untidy, cols=c(-country), names_to="group", values_to="cases")
+longer <- pivot_longer(untidy, cols=!country, names_to="group", values_to="cases")
 longer
 
 
@@ -200,12 +200,12 @@ separate(longer, col=group, into=c("gender","age"))
 
 
 tidied <- untidy %>%
-    pivot_longer(cols=c(-country), names_to="group", values_to="cases") %>%
+    pivot_longer(cols=!country, names_to="group", values_to="cases") %>%
     separate(group, into=c("gender","age"))
 
 
 pivot_longer(
-    untidy, cols=c(-country),
+    untidy, cols=!country,
     names_to=c("gender","age"), names_sep="-", values_to="cases")
 
 
@@ -231,7 +231,7 @@ df <- read_csv(
 
 # 
 # 1. Tidy the data by pivoting longer all of the columns except `dim`.
-# What what does each row now represent?
+# What does each row now represent?
 # 
 # 2. We want to plot the points as a scatter-plot, using either `plot`
 # or `ggplot`. Pivot the long data wider so that this is possible. Now

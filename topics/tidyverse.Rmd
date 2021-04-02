@@ -62,9 +62,11 @@ ggplot(bigtab, aes(x=file,y=test,fill=grade)) +
 `ggplot2` offers a very wide variety of ways to adjust a plot. For categorical aesthetics, usually the first step is ensuring the relevant column is a factor with a meaningful level order.
 
 ```{r}
-y_order <- sort(unique(bigtab$test), decreasing=T)  # y axis plots from bottom to top, so reverse
+# y axis plots from bottom to top, so use reverse order
+y_order <- sort(unique(bigtab$test), decreasing=TRUE)  
 bigtab$test <- factor(bigtab$test, levels=y_order)
 
+# Put x axis in order first found in data frame
 x_order <- unique(bigtab$file)
 bigtab$file <- factor(bigtab$file, levels=x_order)
 
@@ -116,7 +118,7 @@ Some of these verbs are covered in our [introductory R workshop](https://monashd
 bigtab
 ```
 
-As we used `readr` to read the data, `bigtab` is a "tibble", which is the Tidyverse's improved data frame. The `dplyr` verbs also all return their results as tibbles. You can also create tibbles explicitly with the `tibble` function (or `data_frame`). One convenient feature is that it only shows a few rows of the data frame when you print it. If you do want to see the whole table, you can use `as.data.frame`, or use the `View` function to view it in a tab.
+As we used `readr` to read the data, `bigtab` is a "tibble", which is the Tidyverse's improved data frame. The `dplyr` verbs also all return their results as tibbles. You can also create tibbles explicitly with the `tibble` function. One convenient feature is that it only shows a few rows of the data frame when you print it. If you do want to see the whole table, you can use `as.data.frame`, or use the `View` function to view it in a tab.
 
 ```{r eval=FALSE}
 as.data.frame(bigtab)
@@ -161,9 +163,6 @@ Say we want to convert PASS/WARN/FAIL into a numeric score, so we can produce so
 fwp <- c("FAIL","WARN","PASS")
 scoring <- tibble(grade=factor(fwp,levels=fwp), score=c(0,0.5,1))
 
-# Or: 
-# scoring <- data.frame(grade=factor(fwp,levels=fwp), score=c(0,0.5,1))
-
 scoring
 ```
 
@@ -176,11 +175,11 @@ scoretab <- left_join(bigtab, scoring, by="grade")
 scoretab
 ```
 
-The grade columns is here acting as the *key*, allowing corresponding rows in the data frames to be joined together.
+The grade columns act as the *keys* of the two data frames, allowing corresponding rows in the data frames to be joined together.
 
 One important thing that all the join functions do: if multiple rows have the same key in either data frame, all ways of combining the two sets of rows will be included in the result. So, here, rows from the scoring data frame have been copied many times in the output. 
 
-Joins are the key tool for *integrating* different types of data, based on some common key such as gene id.
+Joins are the key tool for *integrating* different types of data, based on some common key such as gene ID.
 
 <b>See also:</b> `match` and `merge` in base R.
 
@@ -246,7 +245,7 @@ The idea of adding geoms in `ggplot2` is rather like the `dplyr` pipe. The only 
 
 ### Challenge {.challenge}
 
-Write a pipeline using `%>%`s that starts with `bigtab`, joins the `scoring` table, and then calculates average scores for each file.
+Write a pipeline using `%>%`s that starts with `bigtab`, joins the `scoring` table, and then calculates the average score for each test.
 
 
 
@@ -284,13 +283,12 @@ select(bigtab, 2,1)
 select(bigtab, foo=file, bar=test, baz=grade)
 ```
 
-You can also remove specific columns like this:
+`select` has a special syntax for more complicated column selections. Read about it [here](https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html). For example, you can remove a specific column like this:
 
 ```{r}
-select(bigtab, -file)
+# See https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html
+select(bigtab, !file)
 ```
-
-The magic here is that column variables refer to their column number. `select` subsets columns rather like subsetting vectors with `[ ]`. So `-file` becomes `-1`, and negative numbers remove items. We can also refer to ranges of columns, such as `grade:file`, which would become `1:3`, which is `c(1,2,3)`.
 
 With `filter`, `arrange`, `mutate`, `select`, `group_by`, `summarize`, and joins, we have a core vocabulary for manipulating data frames in pipelines.
 
@@ -303,7 +301,7 @@ With `filter`, `arrange`, `mutate`, `select`, `group_by`, `summarize`, and joins
 * each column is a single piece of information
 * each column is a distinct kind of information
 
-I'm not convinced `tidyr` is a great package, but the *ideas* behind it are very important. `dplyr` uses magic arguments to produces very beautiful R code, but in `tidyr` it gets a bit confusing. Anyway, let's work through a toy example:
+I'm not convinced `tidyr` is a great package, but the *ideas* behind it are very important. `dplyr` uses magic arguments to produce beautiful R code, but in `tidyr` it gets a bit confusing. Anyway, let's work through a toy example:
 
 ```{r}
 untidy <- read_csv(
@@ -316,11 +314,11 @@ untidy
 The first problem is that rows are not distinct units of observation, there are actually four observations per row. This is fixed using `pivot_longer`. (This operation has in the past also been called `gather` or `melt`.)
 
 ```{r}
-longer <- pivot_longer(untidy, cols=c(-country), names_to="group", values_to="cases")
+longer <- pivot_longer(untidy, cols=!country, names_to="group", values_to="cases")
 longer
 ```
 
-We give a data frame, a specification of columns to use (`cols=`), a column to put the column names in (`names_to=`) and a column to put the values in (`values_to=`). The column specification inside the `c( )` behaves like `select`. We could equivalently have put `cols=2:5`, etc.
+We give a data frame, a specification of columns to use (`cols=`), a column to put the column names in (`names_to=`) and a column to put the values in (`values_to=`). The column specification [behaves like `select`](https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html). Here we've asked to used all columns except `country`. We could equivalently have put `cols=2:5`.
 
 `pivot_wider` is the opposite operation, spreading two columns into many columns, which generally makes data less tidy but is sometimes necessary. A common application is producing a scatter plot, where the x and y axes need to be two different columns even though they measure the same type of thing. Data may also be easier to look at in a table in spread form.
 
@@ -339,7 +337,7 @@ All of this would typically be written as a single pipline:
 
 ```{r}
 tidied <- untidy %>%
-    pivot_longer(cols=c(-country), names_to="group", values_to="cases") %>%
+    pivot_longer(cols=!country, names_to="group", values_to="cases") %>%
     separate(group, into=c("gender","age"))
 ```
 
@@ -347,7 +345,7 @@ Finally, we mention that `pivot_longer` has features we haven't explored, and it
 
 ```{r}
 pivot_longer(
-    untidy, cols=c(-country), 
+    untidy, cols=!country, 
     names_to=c("gender","age"), names_sep="-", values_to="cases") 
 ```
 
@@ -373,7 +371,7 @@ df <- read_csv(
      y,   4,   4,   2,   1,   1,   1,   2")
 ```
 
-1. Tidy the data by pivoting longer all of the columns except `dim`. What what does each row now represent?
+1. Tidy the data by pivoting longer all of the columns except `dim`. What does each row now represent?
 
 2. We want to plot the points as a scatter-plot, using either `plot` or `ggplot`. Pivot the long data wider so that this is possible. Now what do the rows represent?
 

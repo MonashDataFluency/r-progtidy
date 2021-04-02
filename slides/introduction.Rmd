@@ -272,7 +272,9 @@ addup( c(3,5,9,7) )
 </td></tr>
 </table>
 
+##
 
+(do programming section)
 
 ## Data
 
@@ -295,7 +297,7 @@ Often the largest task is to get the data into the right form to apply a tool su
 ### Lists
 
 * A special kind of vector that can hold any kind of data, including other vectors and lists.
-* If you need to bundle together a miscelaneous collection of data, lists are your solution. For example, a function that needs to return multiple results can return a list.
+* If you need to bundle together a miscellaneous collection of data, lists are your solution. For example, a function that needs to return multiple results can return a list.
 * Play the same role as both the `list` and `dict` types in Python or objects in Javascript.
 * Access individual elements with `[[ ]]` or `$`.
 
@@ -364,6 +366,10 @@ Example from: [Wickham, H. (2015) Tidy data. The Journal of Statistical Software
 
 * complete description of the R language
 
+
+##
+
+(do tidyverse section)
 
 
 

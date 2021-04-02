@@ -63,7 +63,7 @@ The workshop files downloaded by the setup instructions above are also available
 In this series:
 
 * [Introduction to R (version 2)](https://monashdatafluency.github.io/r-intro-2/)
-* [Linear models in R](https://monashbioinformaticsplatform.github.io/r-linear/)
+* [Linear models in R](https://monashdatafluency.github.io/r-linear/)
 * [Reproducible Research in R](https://monashdatafluency.github.io/r-rep-res/)
 
 Other resources:

@@ -337,8 +337,8 @@ sumtabs <- lapply(filenames, load_fastqc)
 
 
 sumtabs <- list()
-for (idx in 1:length(filenames)) {
-  sumtabs[[idx]] <- load_fastqc(filenames[idx])
+for(idx in 1:length(filenames)) {
+    sumtabs[[idx]] <- load_fastqc(filenames[idx])
 }
 
 
@@ -394,7 +394,15 @@ load_fastqc("Day0_fastqc/fastqc_data.txt")
 library(readr)
 
 load_fastqc <- function(filename) {
+    # Load file
     sumtab <- read_tsv(filename, col_names=FALSE, col_types="ccc")
+
+    # Check number of columns
+    if (ncol(sumtab) != 3) {
+        stop("Wrong number of columns in file!")
+    }
+
+    # Make it nicer to work with
     colnames(sumtab) <- c("grade", "test", "file")
     sumtab$grade <- factor(sumtab$grade, c("FAIL","WARN","PASS"))
     sumtab
@@ -461,6 +469,13 @@ create_package("mypack", open=FALSE)
 # For example create a file mypack/R/hello.R containing:
 # # # # #
 
+#' Greeting function
+#'
+#' This function displays a greeting message.
+#'
+#' @examples
+#' hello()
+#'
 #' @export
 hello <- function() {
     cat("Hello, world.\n")
@@ -468,13 +483,13 @@ hello <- function() {
 
 # # # # #
 
-# Load package. Use this during development.
-load_all("mypack")
-hello()
-
 # Build package documentation, converting inline documentation to .Rd files using roxygen2.
 # Update NAMESPACE file (lists functions the package exports for public consumption).
 document("mypack")
+
+# Load package. Use this during development.
+load_all("mypack")
+hello()
 
 # Check for common problems and missing documentation.
 # This also automatically runs document( ).
@@ -486,5 +501,6 @@ check("mypack")
 remotes::install_github("myusername/mypack")
 
 
+# (Recording the R version and versions of packages used improves reproducibility.)
 sessionInfo()
 
