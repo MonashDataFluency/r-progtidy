@@ -34,6 +34,15 @@ The amount of material is good, with a good amount of time available for challen
 
 A weakness with this material is that the datasets (Richard's cell data, Paul's RNA-seq data) are best presented by people thoroughly familiar with them, so it may be difficult to transfer to different instructors.
 
+----
 
+Zoom run of r-progtidy, 2021-06-22/23
 
+We scheduled this to run 9:15am-1:15pm on two days. We allowed for a 5-10 minute break every hour. Instructors were present from 9am for any problems. 
+
+This was good for the programming section on the first day, but a little long for the second day and we ended up finishing at 12:20pm on the second day.
+
+Noting also 9:15am Melbourn time is quite early for Malaysia students.
+
+Next time, run 10am-1:30pm. (Instructors present from 9:45am.)
 

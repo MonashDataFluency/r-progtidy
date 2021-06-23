@@ -479,25 +479,6 @@ Whatever your data is measuring, two common themes are:
 
 The data is now suitably transformed and normalized for visualization. `ggplot2` gives us a lot of freedom to juxtapose information from different columns.
 
-### Challenge {.challenge}
-
-1. Get all the rows in `counts_norm` relating to the histone gene "HHT1".
-
-2. Plot this data with ggplot2. Use `time` as the x-axis, `log_norm_count` as the y-axis, and color the data by `strain`. Try using geoms: `geom_point()`, `geom_line()`.
-
-```{r eval=FALSE}
-ggplot( ... , aes(x= ... , y= ... , color= ... )) + ...
-```
-
-Extensions: 
-
-Compare plots of `log_norm_count`, `norm_count`, and `count`.
-
-Experiment with other geoms and other ways to assign columns to aesthetics.
-
-
-### Whole dataset visualization
-
 Heatmaps using `geom_tile` and the use of facets allow the entire dataset to be viewed at once.
 
 ```{r fig.width=8, fig.height=8}

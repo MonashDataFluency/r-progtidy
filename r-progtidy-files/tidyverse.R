@@ -311,32 +311,6 @@ normalizer_by_tmm <- tibble(
 ## ________________________
 ## ----> Visualization ----
 
-### _____________________
-### ---->> Challenge ----
-# 
-# 1. Get all the rows in `counts_norm` relating to the histone gene
-# "HHT1".
-# 
-# 2. Plot this data with ggplot2. Use `time` as the x-axis,
-# `log_norm_count` as the y-axis, and color the data by `strain`. Try
-# using geoms: `geom_point()`, `geom_line()`.
-# 
-
-ggplot( ... , aes(x= ... , y= ... , color= ... )) + ...
-
-# 
-# Extensions:
-# 
-# Compare plots of `log_norm_count`, `norm_count`, and `count`.
-# 
-# Experiment with other geoms and other ways to assign columns to
-# aesthetics.
-# 
-# 
-#
-### _______________________________________
-### ---->> Whole dataset visualization ----
-
 ggplot(counts_norm, aes(x=sample, y=gene, fill=log_norm_count)) +
     geom_tile() +
     scale_fill_viridis_c() +

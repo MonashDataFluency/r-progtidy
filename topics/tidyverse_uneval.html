@@ -731,19 +731,6 @@ normalizer_by_tmm &lt;- tibble(
 <div id="visualization" class="section level2">
 <h2>Visualization</h2>
 <p>The data is now suitably transformed and normalized for visualization. <code>ggplot2</code> gives us a lot of freedom to juxtapose information from different columns.</p>
-<div id="challenge-2" class="section level3 challenge">
-<h3 class="challenge">Challenge</h3>
-<ol style="list-style-type: decimal">
-<li><p>Get all the rows in <code>counts_norm</code> relating to the histone gene “HHT1”.</p></li>
-<li><p>Plot this data with ggplot2. Use <code>time</code> as the x-axis, <code>log_norm_count</code> as the y-axis, and color the data by <code>strain</code>. Try using geoms: <code>geom_point()</code>, <code>geom_line()</code>.</p></li>
-</ol>
-<pre class="r"><code>ggplot( ... , aes(x= ... , y= ... , color= ... )) + ...</code></pre>
-<p>Extensions:</p>
-<p>Compare plots of <code>log_norm_count</code>, <code>norm_count</code>, and <code>count</code>.</p>
-<p>Experiment with other geoms and other ways to assign columns to aesthetics.</p>
-</div>
-<div id="whole-dataset-visualization" class="section level3">
-<h3>Whole dataset visualization</h3>
 <p>Heatmaps using <code>geom_tile</code> and the use of facets allow the entire dataset to be viewed at once.</p>
 <pre class="r"><code>ggplot(counts_norm, aes(x=sample, y=gene, fill=log_norm_count)) + 
     geom_tile() + 
@@ -767,7 +754,6 @@ normalizer_by_tmm &lt;- tibble(
 <pre class="r"><code>ggplot(counts_norm, aes(x=time, y=log_norm_count, color=strain, group=strain)) + 
     geom_line() + 
     facet_wrap(~ gene, scale=&quot;free&quot;)</code></pre>
-</div>
 <div id="exercises" class="section level3 challenge">
 <h3 class="challenge">Exercises</h3>
 <ol style="list-style-type: decimal">
