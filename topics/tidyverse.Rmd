@@ -6,7 +6,7 @@ output:
 bibliography: bibliography.bib
 ---
 
-This lesson covers packages primarily by Hadley Wickham for tidying data and then working with it in tidy form, collectively known as the "tidyverse".
+<!---->This lesson covers packages primarily by Hadley Wickham for tidying data and then working with it in tidy form, collectively known as the "tidyverse".
 
 The packages we are using in this lesson are all from CRAN, so we can install them with `install.packages`. If you did this while setting up for this workshop, you won't need to do it again now.
 
@@ -23,7 +23,7 @@ library(tidyverse) # Load all "tidyverse" libraries.
 # library(ggplot2) # Flexible plotting.
 ```
 
-These packages usually have useful documentation in the form of "vignettes". These are readable on the CRAN website, or within R:
+<!---->These packages usually have useful documentation in the form of "vignettes". These are readable on the CRAN website, or within R:
 
 ```{r eval=FALSE}
 vignette()
@@ -32,7 +32,7 @@ vignette("dplyr", package="dplyr")
 ```
 
 
-Let's continue our examination of the FastQC output. If you're starting fresh for this lesson, you can load the necessary data frame with:
+<!---->Let's continue our examination of the FastQC output. If you're starting fresh for this lesson, you can load the necessary data frame with:
 
 ```{r}
 bigtab <- read_csv("r-progtidy-files/fastqc.csv")
@@ -40,9 +40,9 @@ bigtab <- read_csv("r-progtidy-files/fastqc.csv")
 
 # ggplot2 revisited
 
-We [saw ggplot2 in the introductory R day](https://monashdatafluency.github.io/r-intro-2/plotting-with-ggplot2.html). Recall that we could assign columns of a data frame to aesthetics--x and y position, color, etc--and then add "geom"s to draw the data.
+[ggplot2 is covered in our introductory R workshop](https://monashdatafluency.github.io/r-intro-2/plotting-with-ggplot2.html). Recall that we could assign columns of a data frame to aesthetics--x and y position, color, etc--and then add "geom"s to draw the data.
 
-With `ggplot2` we can easily view the whole data set.
+<!---->With `ggplot2` we can view the whole data set.
 
 ```{r}
 ggplot(bigtab, aes(x=file,y=test,color=grade)) + 
@@ -59,7 +59,7 @@ ggplot(bigtab, aes(x=file,y=test,fill=grade)) +
 
 ## Publication quality images
 
-`ggplot2` offers a very wide variety of ways to adjust a plot. For categorical aesthetics, usually the first step is ensuring the relevant column is a factor with a meaningful level order.
+<!---->`ggplot2` offers a very wide variety of ways to adjust a plot. For categorical aesthetics, usually the first step is ensuring the relevant column is a factor with a meaningful level order.
 
 ```{r}
 # y axis plots from bottom to top, so use reverse order
@@ -87,21 +87,21 @@ myplot <- ggplot(bigtab, aes(x=file, y=test, fill=grade)) +
 myplot
 ```
 
-Plots can be saved with ``ggsave``. Width and height are given in inches, and an image resolution in Dots Per Inch should also be given. The width and height will determine the relative size of text and graphics, so increasing the resolution is best done by adjusting the DPI. Compare the files produced by:
+<!---->Plots can be saved with ``ggsave``. Width and height are given in inches, and an image resolution in Dots Per Inch should also be given. The width and height will determine the relative size of text and graphics, so increasing the resolution is best done by adjusting the DPI. Compare the files produced by:
 
 ```{r, eval=FALSE}
 ggsave("plot1.png", myplot, width=5,  height=5,  dpi=600)
 ggsave("plot2.png", myplot, width=10, height=10, dpi=300)
 ```
 
-It may be necessary to edit a plot further in a program such as Inkscape or Adobe Illustrator. To allow this, the image needs to be saved in a "vector" format such as SVG, EPS, or PDF. In this case, the DPI argument isn't needed.
+<!---->It may be necessary to edit a plot further in a program such as Inkscape or Adobe Illustrator. To allow this, the image needs to be saved in a "vector" format such as SVG, EPS, or PDF. In this case, the DPI argument isn't needed.
 
 
 # dplyr
 
-`dplyr` gives us a collection of convenient "verbs" for manipulating data frames. The name is a contraction of "Data frame apPLYeR", as some of these verbs have a similar flavour to `apply`/`lapply`/`tapply`/etc.
+<!---->`dplyr` gives us a collection of convenient "verbs" for manipulating data frames. The name is a contraction of "Data frame apPLYeR", as some of these verbs have a similar flavour to `apply`/`lapply`/`tapply`/etc.
 
-Each verb takes a data frame as input and returns a modified version of it. The idea is that complex operations can be performed by stringing together a series of simpler operations in a pipeline.
+<!---->Each verb takes a data frame as input and returns a modified version of it. The idea is that complex operations can be performed by stringing together a series of simpler operations in a pipeline.
 
 ```
 # input         +--------+        +--------+        +--------+      result
@@ -114,18 +114,20 @@ Some of these verbs are covered in our [introductory R workshop](https://monashd
 
 ## Tibbles
 
+<!---->Because we used `readr` to read the data, `bigtab` is a "tibble", which is the Tidyverse's improved data frame. 
+
 ```{r}
 bigtab
 ```
 
-As we used `readr` to read the data, `bigtab` is a "tibble", which is the Tidyverse's improved data frame. The `dplyr` verbs also all return their results as tibbles. You can also create tibbles explicitly with the `tibble` function. One convenient feature is that it only shows a few rows of the data frame when you print it. If you do want to see the whole table, you can use `as.data.frame`, or use the `View` function to view it in a tab.
+You can also create tibbles explicitly with the `tibble` function. One convenient feature is that it only shows a few rows of the data frame when you print it. If you do want to see the whole table, you can use `as.data.frame`, or use the `View` function to view it in a tab.
 
 ```{r eval=FALSE}
 as.data.frame(bigtab)
 View(bigtab)
 ```
 
-The `n` and `width` arguments to `print` can also be used to print more rows or columns respectively.
+<!---->The `n` and `width` arguments to `print` can also be used to print more rows or columns respectively.
 
 ```{r eval=FALSE}
 print(bigtab, n=100, width=1000)
@@ -134,7 +136,7 @@ print(bigtab, n=100, width=1000)
 
 ## filter( )
 
-Say we want to know all the tests that failed. `filter` provides a convenient way to get these.
+<!---->Say we want to know all the tests that failed. `filter` provides a convenient way to get rows matching a query.
 
 ```{r}
 filter(bigtab, grade == "FAIL")
@@ -145,7 +147,7 @@ Something is magic here: we do not have `grade` in our environment, only within 
 
 ## arrange( )
 
-Rather than filtering, we might instead want to sort the data so the most important rows are at the top. `arrange` sorts a data frame by one or more columns.
+<!---->Rather than filtering, we might instead want to sort the data so the most important rows are at the top. `arrange` sorts a data frame by one or more columns.
 
 ```{r}
 arrange(bigtab, grade)
@@ -157,7 +159,7 @@ arrange(bigtab, desc(grade))
 
 ## Joins
 
-Say we want to convert PASS/WARN/FAIL into a numeric score, so we can produce some numerical summaries. The scoring scheme will be:
+<!---->Say we want to convert PASS/WARN/FAIL into a numeric score, so we can produce some numerical summaries. The scoring scheme will be:
 
 ```{r}
 fwp <- c("FAIL","WARN","PASS")
@@ -168,14 +170,14 @@ scoring
 
 `dplyr` has several join functions, including `left_join`, `right_join`, `inner_join`, `full_join`, and `anti_join`. The difference between these functions is what happens when there is a row in one data frame without a corresponding row in the other data frame. `inner_join` discards such rows. `full_join` always keeps them, filling in missing data with NA. `left_join` always keeps rows from the first data frame. `right_join` always keeps rows from the second data frame. `anti_join` is a bit different, it gives you rows from the first data frame that *aren't* in the second data frame.
 
-Often we use a join to augment a data frame with some extra information. `left_join` is a good default choice for this as it will never delete rows from the data frame that is being augmented.
+<!---->We can use a join to augment a data frame with some extra information. `left_join` is a good default choice for this as it will never delete rows from the data frame that is being augmented.
 
 ```{r}
 scoretab <- left_join(bigtab, scoring, by="grade")
 scoretab
 ```
 
-The grade columns act as the *keys* of the two data frames, allowing corresponding rows in the data frames to be joined together.
+<!---->The grade columns act as the *keys* of the two data frames, allowing corresponding rows in the data frames to be joined together.
 
 One important thing that all the join functions do: if multiple rows have the same key in either data frame, all ways of combining the two sets of rows will be included in the result. So, here, rows from the scoring data frame have been copied many times in the output. 
 
@@ -187,7 +189,7 @@ Joins are the key tool for *integrating* different types of data, based on some 
 
 ## summarize( )
 
-`summarize` lets us compute summaries of data.
+<!---->`summarize` lets us compute summaries of data.
 
 ```{r}
 summarize(scoretab, average_score=mean(score))
@@ -196,6 +198,8 @@ summarize(scoretab, average_score=mean(score))
 In this, `average_score` is used to name the new column. Any summary function could be used in place of `mean`, such as `sum`, `median`, `sd`.
 
 We really want to summarize the data grouped by file, so we can see if there are any particularly bad files. This is achieved using the `group_by` "adjective". `group_by` gives the data frame a grouping using one or more columns, which modifies the subsequent call to `summarize`.
+
+<!---->`summarize` when used with `group_by` turns each group of rows into a single row:
 
 ```{r}
 group_by(scoretab, file)
@@ -209,22 +213,28 @@ The special function `n()` can be used within `summarize` to get the number of r
 summarize(group_by(scoretab, grade), count=n())
 ```
 
-<b>See also:</b> shortcut functions for simple uses of summarize `count` and `distinct`.
+**See also:** shortcut functions for simple uses of summarize `count` and `distinct`.
 
-<b>See also:</b> `table` and `tapply` in base R.
+**See also:** `table` and `tapply` in base R.
 
-<b>Tip:</b> `group_by` also affects other verbs, such as mutate. This is more advanced than we will be going into today. Grouping can be removed with `ungroup`.
+**Tip:** `group_by` also affects other verbs, such as mutate. This is more advanced than we will be going into today. Grouping can be removed with `ungroup`.
 
 
 ## The pipe %>%
 
-We often want to string together a series of `dplyr` functions. This is achieved using `dplyr`'s pipe operator, `%>%`. This takes the value on the left, and passes it as the first argument to the function call on the right. So the previous summarization could be written:
+<!---->We often want to string together a series of `dplyr` functions. This is achieved using `dplyr`'s pipe operator, `%>%` (actually defined in the `magrittr` package). This takes the value on the left, and passes it as the first argument to the function call on the right. So the previous summarization could be written:
 
 ```{r eval=FALSE}
 scoretab %>% group_by(grade) %>% summarize(count=n())
 ```
 
-`%>%` isn't limited to `dplyr` functions. It's an alternative way of writing any R code.
+<!---->With R version 4, pipes are also part of base R as the `|>` operator:
+
+```{r eval=FALSE}
+scoretab |> group_by(grade) |> summarize(count=n())
+```
+
+<!---->`%>%` (or `|>`) isn't limited to `dplyr` functions. It's an alternative way of writing any R code.
 
 ```{r}
 rep(paste("hello", "world"), 5)
@@ -232,7 +242,7 @@ rep(paste("hello", "world"), 5)
 "hello" %>% paste("world") %>% rep(5)
 ```
 
-Often for readability we will write a pipeline over several lines:
+<!---->Often for readability we will write a pipeline over several lines:
 
 ```{r eval=FALSE}
 scoretab %>% 
@@ -251,31 +261,32 @@ Write a pipeline using `%>%`s that starts with `bigtab`, joins the `scoring` tab
 
 ## mutate( )
 
-A couple more verbs will complete our core vocabulary. `mutate` lets us add or overwrite columns by computing a new value for them.
+<!---->A couple more verbs will complete our core vocabulary. `mutate` lets us add or overwrite columns by computing a new value for them.
 
 ```{r eval=F}
 mutate(scoretab, doublescore = score*2)
 ```
 
-Equivalently:
+<!---->Equivalently:
 
 ```{r}
 scoretab %>%
     mutate(doublescore = score*2)
 ```
 
-Even though this is called "mutate", it is not literally modifying the input. Rather it is producing a copy of the data frame that has the modifiction.
+<!---->Even though this is called "mutate", it is not literally modifying the input. Rather it is producing a copy of the data frame that has the modifiction.
 
-This is equivalent to:
+<!---->The above is equivalent to:
 
 ```{r eval=FALSE}
 scoretab2 <- scoretab
 scoretab2$doublescore <- scoretab2$score * 2
 ```
 
+
 ## select( )
 
-dplyr's `select` function is for subsetting, renaming, and reordering *columns*. Old columns can be referred to by name or by number.
+<!---->dplyr's `select` function is for subsetting, renaming, and reordering *columns*. Old columns can be referred to by name or by number.
 
 ```{r}
 select(bigtab, test,grade) 
@@ -283,10 +294,9 @@ select(bigtab, 2,1)
 select(bigtab, foo=file, bar=test, baz=grade)
 ```
 
-`select` has a special syntax for more complicated column selections. Read about it [here](https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html). For example, you can remove a specific column like this:
+<!---->`select` has a special syntax for more complicated column selections. Read about it [here](https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html). For example, you can remove a specific column like this:
 
 ```{r}
-# See https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html
 select(bigtab, !file)
 ```
 
@@ -295,11 +305,11 @@ With `filter`, `arrange`, `mutate`, `select`, `group_by`, `summarize`, and joins
 
 # tidyr
 
-`tidyr` is the Tidyverse package for getting data frames to tidy. Recall that in a tidy data frame:
+<!---->`tidyr` is the Tidyverse package for getting data frames to tidy. In a tidy data frame:
 
-* each row is a single unit of observation
-* each column is a single piece of information
-* each column is a distinct kind of information
+<!---->* each row is a single unit of observation
+<!---->* each column is a single piece of information
+<!---->* each column is a distinct kind of information
 
 I'm not convinced `tidyr` is a great package, but the *ideas* behind it are very important. `dplyr` uses magic arguments to produce beautiful R code, but in `tidyr` it gets a bit confusing. Anyway, let's work through a toy example:
 
@@ -311,7 +321,7 @@ untidy <- read_csv(
 untidy
 ```
 
-The first problem is that rows are not distinct units of observation, there are actually four observations per row. This is fixed using `pivot_longer`. (This operation has in the past also been called `gather` or `melt`.)
+<!---->In this example, the first problem is that rows are not distinct units of observation, there are actually four observations per row. This is fixed using `pivot_longer`. (This operation has in the past also been called `gather` or `melt`.)
 
 ```{r}
 longer <- pivot_longer(untidy, cols=!country, names_to="group", values_to="cases")
@@ -320,20 +330,21 @@ longer
 
 We give a data frame, a specification of columns to use (`cols=`), a column to put the column names in (`names_to=`) and a column to put the values in (`values_to=`). The column specification [behaves like `select`](https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html). Here we've asked to used all columns except `country`. We could equivalently have put `cols=2:5`.
 
-`pivot_wider` is the opposite operation, spreading two columns into many columns, which generally makes data less tidy but is sometimes necessary. A common application is producing a scatter plot, where the x and y axes need to be two different columns even though they measure the same type of thing. Data may also be easier to look at in a table in spread form.
+<!---->`pivot_wider` is the opposite operation, spreading two columns into many columns, which generally makes data less tidy but is sometimes necessary. 
+A common application is producing a scatter plot, where the x and y axes need to be two different columns even though they measure the same type of thing. Data may also be easier to look at in a table in spread form.
 
 ```{r}
 pivot_wider(longer, names_from=group, values_from=cases)
 pivot_wider(bigtab, names_from=file, values_from=grade)
 ```
 
-In our toy example, we have a further problem that the "group" column contains two pieces of data. This can be fixed with `separate`. By default `separate` splits on any non-alphanumeric characters, but different separator characters can be specified.
+<!---->In our toy example, we have a further problem that the "group" column contains two pieces of data. This can be fixed with `separate`. By default `separate` splits on any non-alphanumeric characters, but different separator characters can be specified.
 
 ```{r}
 separate(longer, col=group, into=c("gender","age"))
 ```
 
-All of this would typically be written as a single pipline:
+<!---->All of this would typically be written as a single pipline:
 
 ```{r}
 tidied <- untidy %>%
@@ -341,7 +352,7 @@ tidied <- untidy %>%
     separate(group, into=c("gender","age"))
 ```
 
-Finally, we mention that `pivot_longer` has features we haven't explored, and it is actually possible to do this in one step. [See the tidyr vignettes.](https://tidyr.tidyverse.org/articles/pivot.html)
+<!---->Finally, we mention that `pivot_longer` has features we haven't explored, and it is actually possible to do this in one step. [See the tidyr vignettes.](https://tidyr.tidyverse.org/articles/pivot.html)
 
 ```{r}
 pivot_longer(
@@ -391,7 +402,7 @@ Recall the diagram from the ["R for Data Science" book](http://r4ds.had.co.nz/).
 
 ## Importing and tidying
 
-<b>Hint:</b> You can select from the top of a pipeline to partway through and press Ctrl-Enter or Command-Enter to see the value part-way through the pipeline.
+<!---->**Hint:** You can select from the top of a pipeline to partway through and press Ctrl-Enter or Command-Enter to see the value part-way through the pipeline.
 
 ```{r}
 # Use readr's read_csv function to load the file
@@ -421,7 +432,9 @@ ggplot(counts, aes(x=sample, y=count)) +
     coord_flip()
 ```
 
-We immediately see from a [Tukey](https://www.amazon.com/Exploratory-Data-Analysis-John-Tukey/dp/0201076160/ref=sr_1_1?s=books&ie=UTF8&qid=1469077563&sr=1-1) box plot that the data is far from normal -- there are outliers many box-widths to the right of the box. Perhaps a log transformation is in order.
+We immediately see from a [Tukey](https://www.amazon.com/Exploratory-Data-Analysis-John-Tukey/dp/0201076160/ref=sr_1_1?s=books&ie=UTF8&qid=1469077563&sr=1-1) box plot that the data is far from normal -- there are outliers many box-widths to the right of the box. 
+
+<!---->Perhaps a log transformation is in order.
 
 ```{r}
 ggplot(counts, aes(x=sample, y=log2(count))) + 
@@ -432,9 +445,9 @@ ggplot(counts, aes(x=log2(count), group=sample)) +
     geom_line(stat="density")
 ```
 
-Log transformation has greatly improved things, although now there are more outliers left of the whiskers, and some zeros we will need to be careful of. We also see one of the samples has less reads than the others.
+<!---->Log transformation has greatly improved things, although now there are more outliers left of the whiskers, and some zeros we will need to be careful of. We also see one of the samples has less reads than the others.
 
-The gene SRP68 was included as a control housekeeping gene. Its expression level should be the same in all samples. We will divide counts in each sample by the count for SRP68 to correct for library size, then log-transform the data. We add a small constant when log-transforming so that zeros do not become negative infinity (as if adding 1 further read count to an average sample).
+<!---->The gene SRP68 was included as a control housekeeping gene. Its expression level should be the same in all samples. We will divide counts in each sample by the count for SRP68 to correct for library size, then log-transform the data. We add a small constant when log-transforming so that zeros do not become negative infinity (as if adding 1 further read count to an average sample).
 
 ```{r}
 normalizer <- counts %>%
@@ -469,17 +482,19 @@ normalizer_by_tmm <- tibble(
     norm=adjusted_lib_sizes)
 ```
 
-Whatever your data is measuring, two common themes are:
+<!---->(In practice, with a full size RNA-Seq dataset I would use the `edgeR` function `cpm`, which performs the same type of normalization and log transformation as above.)
 
-1. Measurement is usually normalized relative to *something* (housekeeping gene, overall library size, microscope image resolution, a ruler in a photograph, calibration run of a machine, ...).
+<!---->Whatever your data is measuring, two common themes are:
 
-2. If the measurement is by nature a positive number, consider log transformation. Two further indications this is appropriate are if you expect the effects of treatmeants to be multiplicative, or if the noise level scales with the magnitude of the measurement.
+<!---->1. Measurement is usually normalized relative to *something* (housekeeping gene, overall library size, microscope image resolution, a ruler in a photograph, calibration run of a machine, ...).
+
+<!---->2. If the measurement is by nature a positive number, consider log transformation. Two further indications this is appropriate are if you expect the effects of treatmeants to be multiplicative, or if the noise level scales with the magnitude of the measurement.
 
 ## Visualization
 
-The data is now suitably transformed and normalized for visualization. `ggplot2` gives us a lot of freedom to juxtapose information from different columns.
+<!---->The data is now suitably transformed and normalized for visualization. `ggplot2` gives us a lot of freedom to juxtapose information from different columns.
 
-Heatmaps using `geom_tile` and the use of facets allow the entire dataset to be viewed at once.
+<!---->Heatmaps using `geom_tile` and the use of facets allow the entire dataset to be viewed at once.
 
 ```{r fig.width=8, fig.height=8}
 ggplot(counts_norm, aes(x=sample, y=gene, fill=log_norm_count)) + 
@@ -490,7 +505,7 @@ ggplot(counts_norm, aes(x=sample, y=gene, fill=log_norm_count)) +
               angle=90,vjust=0.5,hjust=1))              
 ```
 
-Facetting the heatmap makes it easier to understand.
+<!---->Facetting the heatmap makes it easier to understand.
 
 ```{r fig.width=8, fig.height=8}
 ggplot(counts_norm, aes(x=time, y=gene, fill=log_norm_count)) + 
@@ -500,7 +515,7 @@ ggplot(counts_norm, aes(x=time, y=gene, fill=log_norm_count)) +
     theme_minimal()
 ```
 
-We are interested in the interaction of strain and time, so we can instead set these as the x and y axes for each gene.
+<!---->We are interested in the interaction of strain and time, so we can instead set these as the x and y axes for each gene.
 
 ```{r fig.width=10, fig.height=8}
 ggplot(counts_norm, aes(x=time, y=strain, fill=log_norm_count)) + 
@@ -510,7 +525,9 @@ ggplot(counts_norm, aes(x=time, y=strain, fill=log_norm_count)) +
     theme_minimal()
 ```
 
-A famous paper by Cleveland and McGill [-@cleveland1984] ranks color last in terms of perceptual accuracy. A more traditional way of examining the interaction between two factors is a line graph called an "interaction plot". We can also give each gene a separate scale.
+A famous paper by Cleveland and McGill [-@cleveland1984] ranks color last in terms of perceptual accuracy. 
+<!---->A more traditional way of examining the interaction between two factors is a line graph called an "interaction plot". 
+We can also give each gene a separate scale.
 
 ```{r fig.width=10, fig.height=8}
 ggplot(counts_norm, aes(x=time, y=log_norm_count, color=strain, group=strain)) + 

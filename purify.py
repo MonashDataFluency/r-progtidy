@@ -29,6 +29,11 @@ for line in sys.stdin:
         bracket = "----" if n > 1 else "===="
         print(left+"_"*(n-1+len(line)+len(bracket)*2+2))
         print(left+bracket+">"*(n-1)+" "+line+" "+bracket)
+    elif line.startswith("<!---->"):
+        # Hack to include some text.
+        print()
+        for line2 in textwrap.wrap(line[7:]) or [""]:
+            print("# " + line2)
     elif in_challenge:
         for line2 in textwrap.wrap(line) or [""]:
             print("# " + line2)

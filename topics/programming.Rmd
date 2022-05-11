@@ -43,7 +43,7 @@ One fundamental programming concept is the "if-statement". An if-statement lets 
 
 In the introductory R day, we used logical vectors to query a data frame. Everything we learned about making and manipulating logical vectors is applicable here, but with the restriction that we need a single logical value, i.e. a logical vector of length 1.
 
-The general pattern of an if statement is:
+<!---->The general pattern of an if statement is:
 
 ```
 if (LOGICAL_VALUE) {
@@ -53,7 +53,7 @@ if (LOGICAL_VALUE) {
 }
 ```
 
-Here is an example:
+<!---->Here is an example:
 
 ```{r, results="hold"}
 num <- 37                   # 1
@@ -71,7 +71,7 @@ Only one or the other is ever executed.
 
 In the example above, the test `num > 100` returns the value `FALSE`, which is why the code inside the `if` block was skipped and the code inside the `else` block was run instead.
 
-If-statements don't have to include an `else`. If there isn't one, R simply does nothing if the test is FALSE:
+<!---->If-statements don't have to include an `else`. If there isn't one, R simply does nothing if the test is FALSE:
 
 ```{r results="hold"}
 num <- 53                            # 1
@@ -83,7 +83,7 @@ cat("done\n")                        #     3
 ```
 
 
-We can also chain several tests together when there are more than two options. As an example, here is some code that works out the sign of a number:
+<!---->We can also chain several tests together when there are more than two options. As an example, here is some code that works out the sign of a number:
 
 ```{r}
 if (num > 0) {         # line 1
@@ -108,7 +108,9 @@ Which lines above are executed, and in what order, for each value of `num`?
 
 Functions are blocks of code stored in a special structure. They are modelled on the concept of a mathematical function - they receive inputs (arguments), perform operations on the inputs, and return results.
 
-Starting out in R mostly involves using functions that other people had written. We're now going to see how to create our own functions. The general pattern of a function is:
+Starting out in R mostly involves using functions that other people had written. We're now going to see how to create our own functions. 
+
+<!---->The general pattern of a function is:
 
 ```
 FUNCTION_NAME <- function(ARGUMENT_NAME1, ARGUMENT_NAME2, ...) {
@@ -116,7 +118,7 @@ FUNCTION_NAME <- function(ARGUMENT_NAME1, ARGUMENT_NAME2, ...) {
 }
 ```
 
-Here is an example:
+<!---->Here is an example:
 
 ```{r}
 fahr_to_kelvin <- function(temp) {
@@ -133,7 +135,7 @@ Note that there is a very important difference between _defining_ a function and
 When we call the function, the values we pass to it are assigned to those variables so that we can use them inside the function.
 The expression inside the function is evaluated and the result is "returned" back to whoever asked for it.
 
-Let's try running our function. Calling our own function is no different from calling any other function:
+<!---->Let's try running our function. Calling our own function is no different from calling any other function:
 
 ```{r}
 # freezing point of water
@@ -293,7 +295,9 @@ There are three common approaches to repetitive tasks in R:
 
 Method 1 is error prone, and also hard to fix if you find a mistake in your code.
 
-We will now look at method 2, using for-loops. The general pattern of a loop is:
+We will now look at method 2, using for-loops. 
+
+<!---->The general pattern of a loop is:
 
 ```
 for(VARIABLE_NAME in VECTOR) {
@@ -301,7 +305,7 @@ for(VARIABLE_NAME in VECTOR) {
 }
 ```
 
-Let's look at an example. Suppose we have a calculation we need to perform on a series of numbers. 
+<!---->Let's look at an example. Suppose we have a calculation we need to perform on a series of numbers. 
 
 ```{r results="hold"}
 i <- 10
@@ -321,7 +325,7 @@ cat("i is",i,"\n")
 cat("i squared is",i*i,"\n")
 ```
 
-Apart from the `i <- ...` lines, the code is the same each time. This can be re-written as a for-loop:
+<!---->Apart from the `i <- ...` lines, the code is the same each time. This can be re-written as a for-loop:
 
 ```{r results="hold"}
 for(i in c(10,20,30,40,50)) {       #    1
@@ -389,19 +393,19 @@ FASTQ is a text format containg a series of DNA sequences and associated quality
 
 Software outside of R is normally run from a "terminal" window, which is rather like the console in RStudio. You type in a command and the operating system runs it for you. The commands you type in are interpreted by something called a "shell", because it acts like a shell around the operating system. For more information, see the [Software Carpentry](http://software-carpentry.org/lessons/) course on the Unix shell.
 
-In RStudio, you can open a terminal using "Tools/Terminal/New Terminal". Try this and type in:
+<!---->In RStudio, you can open a terminal using "Tools/Terminal/New Terminal". Try this and type in:
 
 ```
 uptime
 ```
 
-The "uptime" command tells you how long the computer has been running for. R can give a command to the shell using the `system` function. 
+<!---->The "uptime" command tells you how long the computer has been running for. R can give a command to the shell using the `system` function. 
 
 ```{r}
 system("uptime")
 ```
 
-Here is how we want to run FastQC for day 0. To R the command has no meaning beyond being a character string. It will be interpreted by the shell, which is external to R. The shell will then run FastQC for us.
+<!---->Here is how we want to run FastQC for day 0. To R the command has no meaning beyond being a character string. It will be interpreted by the shell, which is external to R. The shell will then run FastQC for us.
 
 ```{r cache=TRUE}
 system("FastQC/fastqc --extract --outdir . r-progtidy-files/Day0.fastq")
@@ -409,7 +413,7 @@ system("FastQC/fastqc --extract --outdir . r-progtidy-files/Day0.fastq")
 
 In the "Files" tab of the bottom right pane in RStudio, you should see that some new files and a directory have been created. Click on "Day0_fastqc.html" to examine it. Also examine the file in the "Day0_fastqc" folder called "summary.txt".
 
-<b>If you don't have FastQC, or it failed to run for some reason:</b> The expected output files can be found in the folder "r-progtidy-files/fastqc-output".
+<!---->**If you don't have FastQC, or it failed to run for some reason:** The expected output files can be found in the folder "r-progtidy-files/fastqc-output".
 
 
 ## Using a for-loop
@@ -440,7 +444,7 @@ for(day in days) {
 
 ## Loading the summary.txt files
 
-**Note:** If you weren't able to run FastQC earlier, the expected output files can be found in the folder "r-progtidy-files/fastqc-output". You will need to adjust the filenames appropriately in the R code below.
+<!---->**Note:** If you weren't able to run FastQC earlier, the expected output files can be found in the folder "r-progtidy-files/fastqc-output". You will need to adjust the filenames appropriately in the R code below.
 
 The summary.txt files are in "tab separated value" format. This is similar to comma separated value format we've seen in the introductory R day, but instead of using a comma it uses a special character called a tab to delimit columns. Tabs show up as variable amounts of space in a text editor. In R, they can be written `"\t"`.
 
@@ -468,7 +472,7 @@ Finally, `readr` is nudging us to specify the column types. Otherwise it has to 
 read_tsv("Day0_fastqc/summary.txt", col_names=FALSE, col_types="ccc")
 ```
 
-We should tidy this up a bit before using it. Columns should have meaningful names, and the PASS/WARN/FAIL grading looks like it should be a factor:
+<!---->We should tidy this up a bit before using it. Columns should have meaningful names, and the PASS/WARN/FAIL grading looks like it should be a factor:
 
 ```{r}
 filename <- "Day0_fastqc/summary.txt"
@@ -478,7 +482,7 @@ sumtab$grade <- factor(sumtab$grade, c("FAIL","WARN","PASS"))
 sumtab
 ```
 
-We expect to have to examine many FastQC reports in future. It will be convenient to have this as a function!
+<!---->We expect to have to examine many FastQC reports in future. It will be convenient to have this as a function!
 
 `filename` is going to be different each time we use this code, so it wants to be an argument to the function. The rest of the code goes in the body of the function. The returned value will be `sumtab`.
 
@@ -500,7 +504,7 @@ We now want to load each of the `summary.txt` files we created earlier. One perf
 
 The flavour of apply we need here is `lapply`, which takes a vector and calls a function on each element in turn of that vector (i.e. the "subsets" here are simply individual elements). The result is a list containing the returned values, hence the name `lapply`.
 
-First let's work out the names of the files we want to load.
+<!---->First let's work out the names of the files we want to load.
 
 ```{r}
 days <- c(0,4,7,10,15,20)
@@ -508,13 +512,13 @@ filenames <- paste0("Day", days, "_fastqc/summary.txt")
 filenames
 ```
 
-Now we can use `lapply` to apply our function to each of the filenames.
+<!---->Now we can use `lapply` to apply our function to each of the filenames.
 
 ```{r message=F}
 sumtabs <- lapply(filenames, load_fastqc)
 ```
 
-This example is equivalent to:
+<!---->The above is equivalent to:
 
 ```{r}
 sumtabs <- list()
@@ -523,10 +527,7 @@ for(idx in 1:length(filenames)) {
 }
 ```
 
-We now have a list of data frames. Lists are a little different from the vectors we usually work with. See section 20.5 in the ["R for data science" book](http://r4ds.had.co.nz/vectors.html) for a comprehensive explanation. Here are some ways to examine this object:
-
-Basic differences are that lists can contain things of different types and different
-sizes. In this case, we have a list of data.frames, which are not a basic R type (a vector of something)
+<!---->`sumtabs` is a list. Lists can contain things of different types and different sizes. Here we have a list of data frames. Lists are a little different from the vectors we usually work with. See section 20.5 in the ["R for data science"](http://r4ds.had.co.nz/vectors.html) book for a comprehensive explanation. Here are some ways to examine this object:
 
 ```{r eval=FALSE}
 sumtabs
@@ -553,24 +554,24 @@ table(bigtab$test, bigtab$grade)
 ```
 
 ## Summary
-What we've just done is:
+<!---->What we've just done is:
 
-1. Create a custom reader tool that sets up each file inside R
+<!---->1. Create a custom reader tool that sets up each file inside R
 
-1. Use a looping tool to apply that function to a collection of file names
+<!---->2. Use a looping tool to apply that function to a collection of file names
 
-1. Transform the results produced by the looping tool into a data.frame that we can use for other purposes.
+<!---->3. Transform the results produced by the looping tool into a data frame that we can use for other purposes.
 
 
 ## Improving load_fastqc
 
-Our `load_fastqc` function will currently fail in a confusing way if it is given the wrong file:
+<!---->Our `load_fastqc` function will currently fail in a confusing way if it is given the wrong file:
 
 ```{r error=TRUE}
 load_fastqc("Day0_fastqc/fastqc_data.txt")
 ```
 
-It's best to stop as soon as something goes wrong, and with an informative error message.
+<!---->It's best to stop as soon as something goes wrong, and with an informative error message.
 
 ```{r error=TRUE}
 load_fastqc <- function(filename) {
@@ -591,12 +592,12 @@ load_fastqc <- function(filename) {
 load_fastqc("Day0_fastqc/fastqc_data.txt")
 ```
 
-Checking input arguments before proceeding is a common pattern when writing R functions.
+<!---->Checking input arguments before proceeding is a common pattern when writing R functions.
 
 
 # Sourcing .R files
 
-Having developed some useful functions, we might want to re-use them in a future project or share them with a friend. We can store R code in a file, usually with extension ".R", and load it with the `source` function.
+<!---->Having developed some useful functions, we might want to re-use them in a future project or share them with a friend. We can store R code in a file, usually with extension ".R", and load it with the `source` function.
 
 Put your `load_fastqc` function in a file called "fastqc.R". It uses the `readr` library, so be sure to load the library in the file as well.
 
@@ -653,11 +654,9 @@ load_fastqc("Day0_fastqc/summary.txt")
 `r ''````
 ````
 
-Press the "knit" button or type:
+<!---->Press the "knit" button or type:
 
 ```{r eval=FALSE}
-# From the console:
-
 rmarkdown::render("report.Rmd")
 ```
 
@@ -679,11 +678,11 @@ How should we share a project with others?
 
 # Packages
 
-Packages are the next step up from sourcing .R files. They let you write code that other people can install and then load with `library`. 
+<!---->Packages are the next step up from sourcing .R files. They let you write code that other people can install and then load with `library`. 
 
-Hadley Wickham has a package called [devtools](https://cran.r-project.org/web/packages/devtools/index.html) that takes a lot of the pain out of package writing. Also useful is the package [usethis](https://cran.r-project.org/web/packages/usethis/index.html), which automates creation of a package directory and basic files, and can set up various other parts of a package.
+<!---->Hadley Wickham has a package called [devtools](https://cran.r-project.org/web/packages/devtools/index.html) that takes a lot of the pain out of package writing. Also useful is the package [usethis](https://cran.r-project.org/web/packages/usethis/index.html), which automates creation of a package directory and basic files, and can set up various other parts of a package.
 
-Packages generally contain documentation and example code for all functions, and one or more vignettes describing how to use the package. Function documentation is usually written as specially formatted comments before each function using [roxygen2](https://cran.r-project.org/web/packages/roxygen2/index.html).
+<!---->Packages generally contain documentation and example code for all functions, and one or more vignettes describing how to use the package. Function documentation is usually written as specially formatted comments before each function using [roxygen2](https://cran.r-project.org/web/packages/roxygen2/index.html).
 
 ```{r, eval=FALSE}
 library(devtools)
@@ -730,13 +729,18 @@ check("mypack")
 * [Hadley Wickham's "R packages" book](http://r-pkgs.had.co.nz/)
 * [Official package writing manual](https://cran.r-project.org/doc/manuals/r-release/R-exts.html)
 
-Packages are most easily distributed by placing them on GitHub or GitLab. They can then be installed by others using the `remotes` package functions `install_github` or `install_gitlab`. Once a package is mature and well documented, it can be submitted to CRAN or Bioconductor.
+<!---->Packages are most easily distributed by placing them on GitHub or GitLab. They can then be installed by others using the `remotes` package functions `install_github` or `install_gitlab`.
 
 ```{r eval=FALSE}
 # To install from GitHub:
 remotes::install_github("myusername/mypack")
 ```
 
+<!---->Once a package is mature and well documented, it can be submitted to CRAN or Bioconductor.
+
+<!---->**CRAN submissions:** CRAN is quite strict about packages passing automated checks, and they will also manually review your package. Submission is by uploading the package tarball using a web form. Each new version also gets a brief manual review.
+
+<!---->**Bioconductor submissions:** Bioconductor is for packages that deal with large biology-related datasets. Packages should make use of existing Bioconductor data types and infrastructure where possible. Bioconductor has some additional automated checks you will need to pass. The initial review process is more intensive than CRAN's and happens in GitHub, so some familiarity with git will be necessary. Once the package is accepted, changes can be pushed to the Bioconductor git repositories without further manual review. You are also expected to be available to answer questions on their Stack Overflow-style support site and subscribe to the developer mailing list.
 
 ```{r}
 # (Recording the R version and versions of packages used improves reproducibility.)

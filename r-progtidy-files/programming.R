@@ -17,12 +17,16 @@
 # _______________________
 # ==== If-statements ====
 
+# The general pattern of an if statement is:
+
 if (LOGICAL_VALUE) {
     THING_TO_DO_IF_TRUE
 } else {
     THING_TO_DO_IF_FALSE
 }
 
+
+# Here is an example:
 
 num <- 37                   # 1
 if (num > 100) {            #   2
@@ -34,6 +38,9 @@ cat("done\n")               #       4
                             # --time-->
 
 
+# If-statements don't have to include an `else`. If there isn't one, R
+# simply does nothing if the test is FALSE:
+
 num <- 53                            # 1
 if (num > 100) {                     #   2
     cat("num is greater than 100\n") #
@@ -41,6 +48,10 @@ if (num > 100) {                     #   2
 cat("done\n")                        #     3
                                      # --time-->
 
+
+# We can also chain several tests together when there are more than two
+# options. As an example, here is some code that works out the sign of a
+# number:
 
 if (num > 0) {         # line 1
     print(1)           # line 2
@@ -66,15 +77,22 @@ num <- 2/3
 # ___________________
 # ==== Functions ====
 
+# The general pattern of a function is:
+
 FUNCTION_NAME <- function(ARGUMENT_NAME1, ARGUMENT_NAME2, ...) {
     FUNCTION_BODY
 }
 
 
+# Here is an example:
+
 fahr_to_kelvin <- function(temp) {
     (temp-32) * (5/9) + 273.15
 }
 
+
+# Let's try running our function. Calling our own function is no
+# different from calling any other function:
 
 # freezing point of water
 fahr_to_kelvin(32)
@@ -182,10 +200,15 @@ fahr_to_celsius(212)
 # ___________________
 # ==== For-loops ====
 
+# The general pattern of a loop is:
+
 for(VARIABLE_NAME in VECTOR) {
   FOR_LOOP_BODY
 }
 
+
+# Let's look at an example. Suppose we have a calculation we need to
+# perform on a series of numbers.
 
 i <- 10
 cat("i is",i,"\n")
@@ -203,6 +226,9 @@ i <- 50
 cat("i is",i,"\n")
 cat("i squared is",i*i,"\n")
 
+
+# Apart from the `i <- ...` lines, the code is the same each time. This
+# can be re-written as a for-loop:
 
 for(i in c(10,20,30,40,50)) {       #    1
     cat("i is",i,"\n")              #      2   4   6   8   10
@@ -264,14 +290,28 @@ numbers <- 1:10
 ## ____________________________________
 ## ----> Running external software ----
 
+# In RStudio, you can open a terminal using "Tools/Terminal/New
+# Terminal". Try this and type in:
+
 uptime
 
+
+# The "uptime" command tells you how long the computer has been running
+# for. R can give a command to the shell using the `system` function.
 
 system("uptime")
 
 
+# Here is how we want to run FastQC for day 0. To R the command has no
+# meaning beyond being a character string. It will be interpreted by the
+# shell, which is external to R. The shell will then run FastQC for us.
+
 system("FastQC/fastqc --extract --outdir . r-progtidy-files/Day0.fastq")
 
+
+# **If you don't have FastQC, or it failed to run for some reason:** The
+# expected output files can be found in the folder "r-progtidy-
+# files/fastqc-output".
 
 ## ___________________________
 ## ----> Using a for-loop ----
@@ -296,6 +336,11 @@ for(day in days) {
 ## ________________________________________
 ## ----> Loading the summary.txt files ----
 
+# **Note:** If you weren't able to run FastQC earlier, the expected
+# output files can be found in the folder "r-progtidy-files/fastqc-
+# output". You will need to adjust the filenames appropriately in the R
+# code below.
+
 library(readr)
 
 
@@ -308,12 +353,19 @@ read_tsv("Day0_fastqc/summary.txt", col_names=FALSE)
 read_tsv("Day0_fastqc/summary.txt", col_names=FALSE, col_types="ccc")
 
 
+# We should tidy this up a bit before using it. Columns should have
+# meaningful names, and the PASS/WARN/FAIL grading looks like it should
+# be a factor:
+
 filename <- "Day0_fastqc/summary.txt"
 sumtab <- read_tsv(filename, col_names=FALSE, col_types="ccc")
 colnames(sumtab) <- c("grade", "test", "file")
 sumtab$grade <- factor(sumtab$grade, c("FAIL","WARN","PASS"))
 sumtab
 
+
+# We expect to have to examine many FastQC reports in future. It will be
+# convenient to have this as a function!
 
 load_fastqc <- function(filename) {
     sumtab <- read_tsv(filename, col_names=FALSE, col_types="ccc")
@@ -328,19 +380,33 @@ load_fastqc("Day0_fastqc/summary.txt")
 ## ________________________________
 ## ----> Applying the function ----
 
+# First let's work out the names of the files we want to load.
+
 days <- c(0,4,7,10,15,20)
 filenames <- paste0("Day", days, "_fastqc/summary.txt")
 filenames
 
 
+# Now we can use `lapply` to apply our function to each of the
+# filenames.
+
 sumtabs <- lapply(filenames, load_fastqc)
 
+
+# The above is equivalent to:
 
 sumtabs <- list()
 for(idx in 1:length(filenames)) {
     sumtabs[[idx]] <- load_fastqc(filenames[idx])
 }
 
+
+# `sumtabs` is a list. Lists can contain things of different types and
+# different sizes. Here we have a list of data frames. Lists are a
+# little different from the vectors we usually work with. See section
+# 20.5 in the ["R for data science"](http://r4ds.had.co.nz/vectors.html)
+# book for a comprehensive explanation. Here are some ways to examine
+# this object:
 
 sumtabs
 class(sumtabs)
@@ -362,11 +428,27 @@ table(bigtab$test, bigtab$grade)
 ## __________________
 ## ----> Summary ----
 
+# What we've just done is:
+
+# 1. Create a custom reader tool that sets up each file inside R
+
+# 2. Use a looping tool to apply that function to a collection of file
+# names
+
+# 3. Transform the results produced by the looping tool into a data
+# frame that we can use for other purposes.
+
 ## ________________________________
 ## ----> Improving load_fastqc ----
 
+# Our `load_fastqc` function will currently fail in a confusing way if
+# it is given the wrong file:
+
 load_fastqc("Day0_fastqc/fastqc_data.txt")
 
+
+# It's best to stop as soon as something goes wrong, and with an
+# informative error message.
 
 load_fastqc <- function(filename) {
     # Load file
@@ -386,8 +468,16 @@ load_fastqc <- function(filename) {
 load_fastqc("Day0_fastqc/fastqc_data.txt")
 
 
+# Checking input arguments before proceeding is a common pattern when
+# writing R functions.
+
 # ___________________________
 # ==== Sourcing .R files ====
+
+# Having developed some useful functions, we might want to re-use them
+# in a future project or share them with a friend. We can store R code
+# in a file, usually with extension ".R", and load it with the `source`
+# function.
 
 # fastqc.R file should contain:
 
@@ -431,7 +521,7 @@ load_fastqc("Day0_fastqc/summary.txt")
 ```
 
 
-# From the console:
+# Press the "knit" button or type:
 
 rmarkdown::render("report.Rmd")
 
@@ -457,6 +547,22 @@ rmarkdown::render("report.Rmd")
 #
 # __________________
 # ==== Packages ====
+
+# Packages are the next step up from sourcing .R files. They let you
+# write code that other people can install and then load with `library`.
+
+# Hadley Wickham has a package called [devtools](https://cran.r-project.
+# org/web/packages/devtools/index.html) that takes a lot of the pain out
+# of package writing. Also useful is the package
+# [usethis](https://cran.r-project.org/web/packages/usethis/index.html),
+# which automates creation of a package directory and basic files, and
+# can set up various other parts of a package.
+
+# Packages generally contain documentation and example code for all
+# functions, and one or more vignettes describing how to use the
+# package. Function documentation is usually written as specially
+# formatted comments before each function using [roxygen2](https://cran.
+# r-project.org/web/packages/roxygen2/index.html).
 
 library(devtools)
 library(usethis)
@@ -497,9 +603,33 @@ hello()
 check("mypack")
 
 
+# Packages are most easily distributed by placing them on GitHub or
+# GitLab. They can then be installed by others using the `remotes`
+# package functions `install_github` or `install_gitlab`.
+
 # To install from GitHub:
 remotes::install_github("myusername/mypack")
 
+
+# Once a package is mature and well documented, it can be submitted to
+# CRAN or Bioconductor.
+
+# **CRAN submissions:** CRAN is quite strict about packages passing
+# automated checks, and they will also manually review your package.
+# Submission is by uploading the package tarball using a web form. Each
+# new version also gets a brief manual review.
+
+# **Bioconductor submissions:** Bioconductor is for packages that deal
+# with large biology-related datasets. Packages should make use of
+# existing Bioconductor data types and infrastructure where possible.
+# Bioconductor has some additional automated checks you will need to
+# pass. The initial review process is more intensive than CRAN's and
+# happens in GitHub, so some familiarity with git will be necessary.
+# Once the package is accepted, changes can be pushed to the
+# Bioconductor git repositories without further manual review. You are
+# also expected to be available to answer questions on their Stack
+# Overflow-style support site and subscribe to the developer mailing
+# list.
 
 # (Recording the R version and versions of packages used improves reproducibility.)
 sessionInfo()

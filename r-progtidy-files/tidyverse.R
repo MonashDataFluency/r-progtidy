@@ -2,6 +2,10 @@
 
 
 
+# This lesson covers packages primarily by Hadley Wickham for tidying
+# data and then working with it in tidy form, collectively known as the
+# "tidyverse".
+
 # install.packages("tidyverse")
 
 
@@ -13,16 +17,25 @@ library(tidyverse) # Load all "tidyverse" libraries.
 # library(ggplot2) # Flexible plotting.
 
 
+# These packages usually have useful documentation in the form of
+# "vignettes". These are readable on the CRAN website, or within R:
+
 vignette()
 vignette(package="dplyr")
 vignette("dplyr", package="dplyr")
 
+
+# Let's continue our examination of the FastQC output. If you're
+# starting fresh for this lesson, you can load the necessary data frame
+# with:
 
 bigtab <- read_csv("r-progtidy-files/fastqc.csv")
 
 
 # ___________________________
 # ==== ggplot2 revisited ====
+
+# With `ggplot2` we can view the whole data set.
 
 ggplot(bigtab, aes(x=file,y=test,color=grade)) +
     geom_point()
@@ -34,6 +47,10 @@ ggplot(bigtab, aes(x=file,y=test,fill=grade)) +
 
 ## _____________________________________
 ## ----> Publication quality images ----
+
+# `ggplot2` offers a very wide variety of ways to adjust a plot. For
+# categorical aesthetics, usually the first step is ensuring the
+# relevant column is a factor with a meaningful level order.
 
 # y axis plots from bottom to top, so use reverse order
 y_order <- sort(unique(bigtab$test), decreasing=TRUE)
@@ -60,12 +77,32 @@ myplot <- ggplot(bigtab, aes(x=file, y=test, fill=grade)) +
 myplot
 
 
+# Plots can be saved with ``ggsave``. Width and height are given in
+# inches, and an image resolution in Dots Per Inch should also be given.
+# The width and height will determine the relative size of text and
+# graphics, so increasing the resolution is best done by adjusting the
+# DPI. Compare the files produced by:
+
 ggsave("plot1.png", myplot, width=5,  height=5,  dpi=600)
 ggsave("plot2.png", myplot, width=10, height=10, dpi=300)
 
 
+# It may be necessary to edit a plot further in a program such as
+# Inkscape or Adobe Illustrator. To allow this, the image needs to be
+# saved in a "vector" format such as SVG, EPS, or PDF. In this case, the
+# DPI argument isn't needed.
+
 # _______________
 # ==== dplyr ====
+
+# `dplyr` gives us a collection of convenient "verbs" for manipulating
+# data frames. The name is a contraction of "Data frame apPLYeR", as
+# some of these verbs have a similar flavour to
+# `apply`/`lapply`/`tapply`/etc.
+
+# Each verb takes a data frame as input and returns a modified version
+# of it. The idea is that complex operations can be performed by
+# stringing together a series of simpler operations in a pipeline.
 
 # input         +--------+        +--------+        +--------+      result
 #  data   %>%   |  verb  |  %>%   |  verb  |  %>%   |  verb  |  ->   data
@@ -75,6 +112,9 @@ ggsave("plot2.png", myplot, width=10, height=10, dpi=300)
 ## __________________
 ## ----> Tibbles ----
 
+# Because we used `readr` to read the data, `bigtab` is a "tibble",
+# which is the Tidyverse's improved data frame.
+
 bigtab
 
 
@@ -82,17 +122,27 @@ as.data.frame(bigtab)
 View(bigtab)
 
 
+# The `n` and `width` arguments to `print` can also be used to print
+# more rows or columns respectively.
+
 print(bigtab, n=100, width=1000)
 
 
 ## ____________________
 ## ----> filter( ) ----
 
+# Say we want to know all the tests that failed. `filter` provides a
+# convenient way to get rows matching a query.
+
 filter(bigtab, grade == "FAIL")
 
 
 ## _____________________
 ## ----> arrange( ) ----
+
+# Rather than filtering, we might instead want to sort the data so the
+# most important rows are at the top. `arrange` sorts a data frame by
+# one or more columns.
 
 arrange(bigtab, grade)
 
@@ -103,21 +153,36 @@ arrange(bigtab, desc(grade))
 ## ________________
 ## ----> Joins ----
 
+# Say we want to convert PASS/WARN/FAIL into a numeric score, so we can
+# produce some numerical summaries. The scoring scheme will be:
+
 fwp <- c("FAIL","WARN","PASS")
 scoring <- tibble(grade=factor(fwp,levels=fwp), score=c(0,0.5,1))
 
 scoring
 
 
+# We can use a join to augment a data frame with some extra information.
+# `left_join` is a good default choice for this as it will never delete
+# rows from the data frame that is being augmented.
+
 scoretab <- left_join(bigtab, scoring, by="grade")
 scoretab
 
 
+# The grade columns act as the *keys* of the two data frames, allowing
+# corresponding rows in the data frames to be joined together.
+
 ## _______________________
 ## ----> summarize( ) ----
 
+# `summarize` lets us compute summaries of data.
+
 summarize(scoretab, average_score=mean(score))
 
+
+# `summarize` when used with `group_by` turns each group of rows into a
+# single row:
 
 group_by(scoretab, file)
 
@@ -130,13 +195,29 @@ summarize(group_by(scoretab, grade), count=n())
 ## _______________________
 ## ----> The pipe %>% ----
 
+# We often want to string together a series of `dplyr` functions. This
+# is achieved using `dplyr`'s pipe operator, `%>%` (actually defined in
+# the `magrittr` package). This takes the value on the left, and passes
+# it as the first argument to the function call on the right. So the
+# previous summarization could be written:
+
 scoretab %>% group_by(grade) %>% summarize(count=n())
 
+
+# With R version 4, pipes are also part of base R as the `|>` operator:
+
+scoretab |> group_by(grade) |> summarize(count=n())
+
+
+# `%>%` (or `|>`) isn't limited to `dplyr` functions. It's an
+# alternative way of writing any R code.
 
 rep(paste("hello", "world"), 5)
 
 "hello" %>% paste("world") %>% rep(5)
 
+
+# Often for readability we will write a pipeline over several lines:
 
 scoretab %>%
     group_by(grade) %>%
@@ -155,12 +236,23 @@ scoretab %>%
 ## ____________________
 ## ----> mutate( ) ----
 
+# A couple more verbs will complete our core vocabulary. `mutate` lets
+# us add or overwrite columns by computing a new value for them.
+
 mutate(scoretab, doublescore = score*2)
 
+
+# Equivalently:
 
 scoretab %>%
     mutate(doublescore = score*2)
 
+
+# Even though this is called "mutate", it is not literally modifying the
+# input. Rather it is producing a copy of the data frame that has the
+# modifiction.
+
+# The above is equivalent to:
 
 scoretab2 <- scoretab
 scoretab2$doublescore <- scoretab2$score * 2
@@ -169,17 +261,33 @@ scoretab2$doublescore <- scoretab2$score * 2
 ## ____________________
 ## ----> select( ) ----
 
+# dplyr's `select` function is for subsetting, renaming, and reordering
+# *columns*. Old columns can be referred to by name or by number.
+
 select(bigtab, test,grade)
 select(bigtab, 2,1)
 select(bigtab, foo=file, bar=test, baz=grade)
 
 
-# See https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html
+# `select` has a special syntax for more complicated column selections.
+# Read about it
+# [here](https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html).
+# For example, you can remove a specific column like this:
+
 select(bigtab, !file)
 
 
 # _______________
 # ==== tidyr ====
+
+# `tidyr` is the Tidyverse package for getting data frames to tidy. In a
+# tidy data frame:
+
+# * each row is a single unit of observation
+
+# * each column is a single piece of information
+
+# * each column is a distinct kind of information
 
 untidy <- read_csv(
     "country,     male-young, male-old, female-young, female-old
@@ -188,21 +296,41 @@ untidy <- read_csv(
 untidy
 
 
+# In this example, the first problem is that rows are not distinct units
+# of observation, there are actually four observations per row. This is
+# fixed using `pivot_longer`. (This operation has in the past also been
+# called `gather` or `melt`.)
+
 longer <- pivot_longer(untidy, cols=!country, names_to="group", values_to="cases")
 longer
 
+
+# `pivot_wider` is the opposite operation, spreading two columns into
+# many columns, which generally makes data less tidy but is sometimes
+# necessary.
 
 pivot_wider(longer, names_from=group, values_from=cases)
 pivot_wider(bigtab, names_from=file, values_from=grade)
 
 
+# In our toy example, we have a further problem that the "group" column
+# contains two pieces of data. This can be fixed with `separate`. By
+# default `separate` splits on any non-alphanumeric characters, but
+# different separator characters can be specified.
+
 separate(longer, col=group, into=c("gender","age"))
 
+
+# All of this would typically be written as a single pipline:
 
 tidied <- untidy %>%
     pivot_longer(cols=!country, names_to="group", values_to="cases") %>%
     separate(group, into=c("gender","age"))
 
+
+# Finally, we mention that `pivot_longer` has features we haven't
+# explored, and it is actually possible to do this in one step. [See the
+# tidyr vignettes.](https://tidyr.tidyverse.org/articles/pivot.html)
 
 pivot_longer(
     untidy, cols=!country,
@@ -247,6 +375,10 @@ df <- read_csv(
 ## ________________________________
 ## ----> Importing and tidying ----
 
+# **Hint:** You can select from the top of a pipeline to partway through
+# and press Ctrl-Enter or Command-Enter to see the value part-way
+# through the pipeline.
+
 # Use readr's read_csv function to load the file
 counts_untidy <- read_csv("r-progtidy-files/read-counts.csv")
 
@@ -271,6 +403,8 @@ ggplot(counts, aes(x=sample, y=count)) +
     coord_flip()
 
 
+# Perhaps a log transformation is in order.
+
 ggplot(counts, aes(x=sample, y=log2(count))) +
     geom_boxplot() +
     coord_flip()
@@ -278,6 +412,18 @@ ggplot(counts, aes(x=sample, y=log2(count))) +
 ggplot(counts, aes(x=log2(count), group=sample)) +
     geom_line(stat="density")
 
+
+# Log transformation has greatly improved things, although now there are
+# more outliers left of the whiskers, and some zeros we will need to be
+# careful of. We also see one of the samples has less reads than the
+# others.
+
+# The gene SRP68 was included as a control housekeeping gene. Its
+# expression level should be the same in all samples. We will divide
+# counts in each sample by the count for SRP68 to correct for library
+# size, then log-transform the data. We add a small constant when log-
+# transforming so that zeros do not become negative infinity (as if
+# adding 1 further read count to an average sample).
 
 normalizer <- counts %>%
     filter(gene == "SRP68") %>%
@@ -308,8 +454,30 @@ normalizer_by_tmm <- tibble(
     norm=adjusted_lib_sizes)
 
 
+# (In practice, with a full size RNA-Seq dataset I would use the `edgeR`
+# function `cpm`, which performs the same type of normalization and log
+# transformation as above.)
+
+# Whatever your data is measuring, two common themes are:
+
+# 1. Measurement is usually normalized relative to *something*
+# (housekeeping gene, overall library size, microscope image resolution,
+# a ruler in a photograph, calibration run of a machine, ...).
+
+# 2. If the measurement is by nature a positive number, consider log
+# transformation. Two further indications this is appropriate are if you
+# expect the effects of treatmeants to be multiplicative, or if the
+# noise level scales with the magnitude of the measurement.
+
 ## ________________________
 ## ----> Visualization ----
+
+# The data is now suitably transformed and normalized for visualization.
+# `ggplot2` gives us a lot of freedom to juxtapose information from
+# different columns.
+
+# Heatmaps using `geom_tile` and the use of facets allow the entire
+# dataset to be viewed at once.
 
 ggplot(counts_norm, aes(x=sample, y=gene, fill=log_norm_count)) +
     geom_tile() +
@@ -319,6 +487,8 @@ ggplot(counts_norm, aes(x=sample, y=gene, fill=log_norm_count)) +
               angle=90,vjust=0.5,hjust=1))
 
 
+# Facetting the heatmap makes it easier to understand.
+
 ggplot(counts_norm, aes(x=time, y=gene, fill=log_norm_count)) +
     geom_tile() +
     facet_grid(~ strain) +
@@ -326,12 +496,18 @@ ggplot(counts_norm, aes(x=time, y=gene, fill=log_norm_count)) +
     theme_minimal()
 
 
+# We are interested in the interaction of strain and time, so we can
+# instead set these as the x and y axes for each gene.
+
 ggplot(counts_norm, aes(x=time, y=strain, fill=log_norm_count)) +
     geom_tile() +
     facet_wrap(~ gene) +
     scale_fill_viridis_c() +
     theme_minimal()
 
+
+# A more traditional way of examining the interaction between two
+# factors is a line graph called an "interaction plot".
 
 ggplot(counts_norm, aes(x=time, y=log_norm_count, color=strain, group=strain)) +
     geom_line() +
