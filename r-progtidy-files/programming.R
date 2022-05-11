@@ -404,9 +404,10 @@ for(idx in 1:length(filenames)) {
 # `sumtabs` is a list. Lists can contain things of different types and
 # different sizes. Here we have a list of data frames. Lists are a
 # little different from the vectors we usually work with. See section
-# 20.5 in the ["R for data science"](http://r4ds.had.co.nz/vectors.html)
-# book for a comprehensive explanation. Here are some ways to examine
-# this object:
+# 20.5 in the "R for data science" book for a comprehensive explanation.
+# http://r4ds.had.co.nz/vectors.html
+
+# Here are some ways to examine this object:
 
 sumtabs
 class(sumtabs)
@@ -539,9 +540,8 @@ rmarkdown::render("report.Rmd")
 # 
 # How should we share a project with others?
 # 
-# * [Software Carpentry's list of best practices in
-# R](http://swcarpentry.github.io/r-novice-inflammation/06-best-
-# practices-R/)
+# * Software Carpentry's list of best practices in R
+# http://swcarpentry.github.io/r-novice-inflammation/06-best-practices-R/
 # 
 # 
 #
@@ -551,18 +551,18 @@ rmarkdown::render("report.Rmd")
 # Packages are the next step up from sourcing .R files. They let you
 # write code that other people can install and then load with `library`.
 
-# Hadley Wickham has a package called [devtools](https://cran.r-project.
-# org/web/packages/devtools/index.html) that takes a lot of the pain out
-# of package writing. Also useful is the package
-# [usethis](https://cran.r-project.org/web/packages/usethis/index.html),
-# which automates creation of a package directory and basic files, and
-# can set up various other parts of a package.
+# Hadley Wickham has a package called devtools that takes a lot of the
+# pain out of package writing. Also useful is the package usethis, which
+# automates creation of a package directory and basic files, and can set
+# up various other parts of a package.
+# https://cran.r-project.org/web/packages/devtools/index.html
+# https://cran.r-project.org/web/packages/usethis/index.html
 
 # Packages generally contain documentation and example code for all
 # functions, and one or more vignettes describing how to use the
 # package. Function documentation is usually written as specially
-# formatted comments before each function using [roxygen2](https://cran.
-# r-project.org/web/packages/roxygen2/index.html).
+# formatted comments before each function using roxygen2.
+# https://cran.r-project.org/web/packages/roxygen2/index.html
 
 library(devtools)
 library(usethis)

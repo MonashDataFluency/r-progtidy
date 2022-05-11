@@ -1,7 +1,7 @@
 
 # Extract code blocks from an .Rmd file
 
-import sys, textwrap
+import sys, textwrap, re
 
 print("# This file is generated from the corresponding .Rmd file")
 print()
@@ -29,11 +29,16 @@ for line in sys.stdin:
         bracket = "----" if n > 1 else "===="
         print(left+"_"*(n-1+len(line)+len(bracket)*2+2))
         print(left+bracket+">"*(n-1)+" "+line+" "+bracket)
-    elif line.startswith("<!---->"):
-        # Hack to include some text.
-        print()
-        for line2 in textwrap.wrap(line[7:]) or [""]:
-            print("# " + line2)
-    elif in_challenge:
+    elif line.startswith("<!---->") or in_challenge:
+        # Hack to include some text. Text to be included is marked by an empty comment.
+        if line.startswith("<!---->"):
+            line = line[7:]
+
+        urls = re.findall(r"\[.*?\]\((.*?)\)", line)
+        line = re.sub(r"\[(.*?)\]\(.*?\)", r"\1", line)
+        if not in_challenge:
+            print()
         for line2 in textwrap.wrap(line) or [""]:
             print("# " + line2)
+        for url in urls:
+            print("# " + url)

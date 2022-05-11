@@ -270,9 +270,9 @@ select(bigtab, foo=file, bar=test, baz=grade)
 
 
 # `select` has a special syntax for more complicated column selections.
-# Read about it
-# [here](https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html).
-# For example, you can remove a specific column like this:
+# Read about it here. For example, you can remove a specific column like
+# this:
+# https://dplyr.tidyverse.org/reference/dplyr_tidy_select.html
 
 select(bigtab, !file)
 
@@ -329,8 +329,9 @@ tidied <- untidy %>%
 
 
 # Finally, we mention that `pivot_longer` has features we haven't
-# explored, and it is actually possible to do this in one step. [See the
-# tidyr vignettes.](https://tidyr.tidyverse.org/articles/pivot.html)
+# explored, and it is actually possible to do this in one step. See the
+# tidyr vignettes.
+# https://tidyr.tidyverse.org/articles/pivot.html
 
 pivot_longer(
     untidy, cols=!country,

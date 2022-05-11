@@ -527,7 +527,9 @@ for(idx in 1:length(filenames)) {
 }
 ```
 
-<!---->`sumtabs` is a list. Lists can contain things of different types and different sizes. Here we have a list of data frames. Lists are a little different from the vectors we usually work with. See section 20.5 in the ["R for data science"](http://r4ds.had.co.nz/vectors.html) book for a comprehensive explanation. Here are some ways to examine this object:
+<!---->`sumtabs` is a list. Lists can contain things of different types and different sizes. Here we have a list of data frames. Lists are a little different from the vectors we usually work with. See section 20.5 in the ["R for data science"](http://r4ds.had.co.nz/vectors.html) book for a comprehensive explanation. 
+
+<!---->Here are some ways to examine this object:
 
 ```{r eval=FALSE}
 sumtabs

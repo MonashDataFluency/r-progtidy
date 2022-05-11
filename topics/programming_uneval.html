@@ -531,7 +531,9 @@ for(idx in 1:length(filenames)) {
     sumtabs[[idx]] &lt;- load_fastqc(filenames[idx])
 }</code></pre>
 <!---->
-<p><code>sumtabs</code> is a list. Lists can contain things of different types and different sizes. Here we have a list of data frames. Lists are a little different from the vectors we usually work with. See section 20.5 in the <a href="http://r4ds.had.co.nz/vectors.html">“R for data science”</a> book for a comprehensive explanation. Here are some ways to examine this object:</p>
+<p><code>sumtabs</code> is a list. Lists can contain things of different types and different sizes. Here we have a list of data frames. Lists are a little different from the vectors we usually work with. See section 20.5 in the <a href="http://r4ds.had.co.nz/vectors.html">“R for data science”</a> book for a comprehensive explanation.</p>
+<!---->
+<p>Here are some ways to examine this object:</p>
 <pre class="r"><code>sumtabs
 class(sumtabs)
 length(sumtabs)
