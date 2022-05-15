@@ -1,4 +1,8 @@
 
-h1,h2,h3 {
-    color: #048;
+h1,h2,h3, .title-slide hgroup h1 {
+    color: #08f;
+}
+
+strong, b {
+    color: #0b8;
 }

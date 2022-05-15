@@ -8,9 +8,9 @@ output:
         css: style.css
 ---
 
-##
+## R history
 
-<div style="float: right; text-align: right">
+<div style="float: right; margin-top: -2cm; text-align: right">
 <img src="../figures/Rlogo.png">
 <br><br><br>
 <div style="display: inline-block; margin: 1em;">
@@ -27,17 +27,14 @@ output:
 </div>
 </div>
 
-R has a long history.
-
-* S - 1976
-* R - 1993
+### S - 1976
+### R - 1993
 
 <br>
 We will be focussing on the modern [Tidyverse](https://tidyverse.org) approach. 
 
+* **"tidy data"**: the data frame ("tibble") is the one true data structure
 * `dplyr`, `ggplot2`, `tidyr`, `purrr`, etc
-* data frame ("tibble") is the one true data structure
-   * "tidy data"
 * mostly written by [Hadley Wickham](http://hadley.nz/)
 * simpler, safer, and less "helpful"
 
@@ -67,7 +64,7 @@ Communication and modelling covered in other workshops.
 
 ## Programming
 
-Use structures such as loops to automate repetitive tasks:
+### Use structures such as loops to automate repetitive tasks
 
 ```{r eval=F}
 for(i in 1:10) {
@@ -75,24 +72,23 @@ for(i in 1:10) {
 }
 ```
 
-"Source" R scripts:
+### Follow a script
 
 ```{r eval=F}
 source("myscript.R")
 ```
 
-* runs script command by command to completion (or first error)
+* Runs script, command by command, to completion (or first error).
 
-Define new functions for interactive or scripted use:
+Or: use Rmarkdown to produce a document.
+
+### Define new functions for interactive or scripted use
 
 ```{r eval=F}
 source("myfunctions.R")
 ```
 
-Variations:
-
-* Use Rmarkdown to produce a document
-* Write an R package
+Or: write an R package.
 
 
 ## Programming, from a scientist's perspective
@@ -278,7 +274,7 @@ addup( c(3,5,9,7) )
 
 ## Data
 
-<img src="../figures/messy.jpg" style="float: right; width: 400px;">
+<img src="../figures/square.png" style="float: right; width: 320px;">
 
 As your programs get more complicated, you will also need ways to represent complex data.
 
@@ -294,12 +290,20 @@ Often the largest task is to get the data into the right form to apply a tool su
 * Single numbers are a vector of length 1.
 * Can have `names( )`.
 
+```{r eval=FALSE}
+c(x=1, y=2, z=3)
+```
+
 ### Lists
 
 * A special kind of vector that can hold any kind of data, including other vectors and lists.
 * If you need to bundle together a miscellaneous collection of data, lists are your solution. For example, a function that needs to return multiple results can return a list.
 * Play the same role as both the `list` and `dict` types in Python or objects in Javascript.
 * Access individual elements with `[[ ]]` or `$`.
+
+```{r eval=FALSE}
+list(x=TRUE, y="two", z=c(1,2,3))
+```
 
 ## Data
 
@@ -313,7 +317,7 @@ Often the largest task is to get the data into the right form to apply a tool su
 
 * **Matrices** hold tabular data all of the same type, usually numeric.<br>Distinct from data frames in R!<br>Can have `rownames( )` and `colnames( )`.
 
-* **"S3" objects** are (usually) a list, with a special class attribute.<br>Example: an **lm** object holding a linear model.
+* **"S3" objects** are (usually) a list, with a special class attribute.<br>Example: an `lm` object holding a linear model.
 
 * **"S4" objects** are a more formal approach to object-orientation.<br>Most heavily used by the Bioconductor project.<br>Example: a `GRanges` object holding genomic ranges.
 
@@ -321,7 +325,7 @@ Often the largest task is to get the data into the right form to apply a tool su
 
 ## Tidy data
 
-<img src="../figures/knoll.jpg" style="float: right; width: 400px;">
+<img src="../figures/square.gif" style="float: right;">
 
 Tidy data doesn't mean tidy for a person to read, it means the easiest form for the computer to work with.
 
