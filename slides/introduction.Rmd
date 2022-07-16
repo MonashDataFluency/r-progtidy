@@ -330,13 +330,16 @@ list(x=TRUE, y="two", z=c(1,2,3))
 Tidy data doesn't mean tidy for a person to read, it means the easiest form for the computer to work with.
 
 * only use data frames
+* put all the data in a single data frame
 * each row is a single unit of observation
 * each column is a single piece of information
-* each column is a distinct kind of information
 
 Similar to database design.
 
 The experimental design is in the body of the table alongside the data, *not* in row names or column names.
+
+If you have multiple columns containing the same kind of information, this is a hint the data is not tidy.
+
 
 ## Not tidy ...
 

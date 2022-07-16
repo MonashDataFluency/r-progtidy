@@ -3,8 +3,6 @@
 
 import sys, textwrap, re
 
-print("# This file is generated from the corresponding .Rmd file")
-print()
 print()
 
 in_code = False
@@ -38,7 +36,7 @@ for line in sys.stdin:
         line = re.sub(r"\[(.*?)\]\(.*?\)", r"\1", line)
         if not in_challenge:
             print()
-        for line2 in textwrap.wrap(line) or [""]:
+        for line2 in textwrap.wrap(line, break_on_hyphens=False, break_long_words=False) or [""]:
             print("# " + line2)
         for url in urls:
             print("# " + url)

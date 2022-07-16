@@ -7,6 +7,7 @@ topics/FastQC*
 /Day*
 /fastqc*
 /FastQC*
+.vscode
 
 # History files
 .Rhistory

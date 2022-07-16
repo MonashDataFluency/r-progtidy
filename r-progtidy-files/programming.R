@@ -1,5 +1,3 @@
-# This file is generated from the corresponding .Rmd file
-
 
 
 # Install the entire Tidyverse collection of packages with:
@@ -310,8 +308,8 @@ system("FastQC/fastqc --extract --outdir . r-progtidy-files/Day0.fastq")
 
 
 # **If you don't have FastQC, or it failed to run for some reason:** The
-# expected output files can be found in the folder "r-progtidy-
-# files/fastqc-output".
+# expected output files can be found in the folder
+# "r-progtidy-files/fastqc-output".
 
 ## ___________________________
 ## ----> Using a for-loop ----
@@ -337,9 +335,9 @@ for(day in days) {
 ## ----> Loading the summary.txt files ----
 
 # **Note:** If you weren't able to run FastQC earlier, the expected
-# output files can be found in the folder "r-progtidy-files/fastqc-
-# output". You will need to adjust the filenames appropriately in the R
-# code below.
+# output files can be found in the folder
+# "r-progtidy-files/fastqc-output". You will need to adjust the
+# filenames appropriately in the R code below.
 
 library(readr)
 
@@ -393,7 +391,14 @@ filenames
 sumtabs <- lapply(filenames, load_fastqc)
 
 
-# The above is equivalent to:
+# Using `lapply` is "functional programming", where we define a series
+# of objects by using functions on earlier objects. In this approach
+# objects are never modified once created. Sometimes the objects used
+# are themselves functions.
+
+# An alternative would be to use a for loop. Using a for loop is
+# "procedural programming", where the result is modified step by step
+# until we obtain the value we want:
 
 sumtabs <- list()
 for(idx in 1:length(filenames)) {
@@ -503,28 +508,6 @@ load_fastqc <- function(filename) {
 # From the console:
 
 source("fastqc.R")
-
-
-# ___________________________
-# ==== Rmarkdown reports ====
-
-# report.Rmd should contain:
-
----
-title: Report
----
-
-This is the result from running FastQC.
-
-```{r}
-source("fastqc.R")
-load_fastqc("Day0_fastqc/summary.txt")
-```
-
-
-# Press the "knit" button or type:
-
-rmarkdown::render("report.Rmd")
 
 
 ## _____________________

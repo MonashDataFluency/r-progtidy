@@ -184,6 +184,7 @@ pre code {
 <h2>Topics</h2>
 <ul>
 <li><a href="topics/programming.html">Programming</a> (<a href="topics/programming.Rmd">.Rmd</a>)</li>
+<li><a href="topics/communication.html">Communicating your results</a> (<a href="topics/communication.Rmd">.Rmd</a>)</li>
 <li><a href="topics/tidyverse.html">The Tidyverse: dplyr, ggplot2, and friends</a> (<a href="topics/tidyverse.Rmd">.Rmd</a>)</li>
 </ul>
 </div>
@@ -204,16 +205,12 @@ download.file(
 unzip(&quot;fastqc_v0.11.8.zip&quot;)
 system(&quot;chmod u+x FastQC/fastqc&quot;)
 
-# Install Tidyverse packages
-install.packages(&quot;tidyverse&quot;)
-
+# Install tidyverse packages and rmarkdown
+install.packages(c(&quot;tidyverse&quot;, &quot;rmarkdown&quot;))
 
 # Optional: install some further packages 
 # (these are mentioned but not essential to the workshop)
-install.packages(&quot;rmarkdown&quot;)
-install.packages(&quot;devtools&quot;)
-install.packages(&quot;usethis&quot;)
-install.packages(&quot;BiocManager&quot;)
+install.packages(c(&quot;devtools&quot;, &quot;usethis&quot;, &quot;Biocmanager&quot;))
 BiocManager::install(&quot;edgeR&quot;)</code></pre>
 </div>
 <div id="files" class="section level2">

@@ -1,5 +1,3 @@
-# This file is generated from the corresponding .Rmd file
-
 
 
 # This lesson covers packages primarily by Hadley Wickham for tidying
@@ -25,72 +23,11 @@ vignette(package="dplyr")
 vignette("dplyr", package="dplyr")
 
 
-# Let's continue our examination of the FastQC output. If you're
-# starting fresh for this lesson, you can load the necessary data frame
-# with:
+# We will continue using the FastQC output data frame. If you're
+# starting fresh for this lesson, load it with:
 
 bigtab <- read_csv("r-progtidy-files/fastqc.csv")
 
-
-# ___________________________
-# ==== ggplot2 revisited ====
-
-# With `ggplot2` we can view the whole data set.
-
-ggplot(bigtab, aes(x=file,y=test,color=grade)) +
-    geom_point()
-
-
-ggplot(bigtab, aes(x=file,y=test,fill=grade)) +
-    geom_tile()
-
-
-## _____________________________________
-## ----> Publication quality images ----
-
-# `ggplot2` offers a very wide variety of ways to adjust a plot. For
-# categorical aesthetics, usually the first step is ensuring the
-# relevant column is a factor with a meaningful level order.
-
-# y axis plots from bottom to top, so use reverse order
-y_order <- sort(unique(bigtab$test), decreasing=TRUE)
-bigtab$test <- factor(bigtab$test, levels=y_order)
-
-# Put x axis in order first found in data frame
-x_order <- unique(bigtab$file)
-bigtab$file <- factor(bigtab$file, levels=x_order)
-
-# Only necessary if not continuing from previous lesson on programming!
-color_order <- c("FAIL", "WARN", "PASS")
-bigtab$grade <- factor(bigtab$grade, levels=color_order)
-
-myplot <- ggplot(bigtab, aes(x=file, y=test, fill=grade)) +
-    geom_tile(color="black", size=0.5) +           # Black border on tiles
-    scale_fill_manual(                             # Colors, as color hex codes
-        values=c("#ee0000","#ffee00","#00aa00")) +
-    labs(x="", y="", fill="") +                    # Remove axis labels
-    coord_fixed() +                                # Square tiles
-    theme_minimal() +                              # Minimal theme, no grey background
-    theme(panel.grid=element_blank(),              # No underlying grid lines
-          axis.text.x=element_text(                # Vertical text on x axis
-              angle=90,vjust=0.5,hjust=0))
-myplot
-
-
-# Plots can be saved with ``ggsave``. Width and height are given in
-# inches, and an image resolution in Dots Per Inch should also be given.
-# The width and height will determine the relative size of text and
-# graphics, so increasing the resolution is best done by adjusting the
-# DPI. Compare the files produced by:
-
-ggsave("plot1.png", myplot, width=5,  height=5,  dpi=600)
-ggsave("plot2.png", myplot, width=10, height=10, dpi=300)
-
-
-# It may be necessary to edit a plot further in a program such as
-# Inkscape or Adobe Illustrator. To allow this, the image needs to be
-# saved in a "vector" format such as SVG, EPS, or PDF. In this case, the
-# DPI argument isn't needed.
 
 # _______________
 # ==== dplyr ====
@@ -250,7 +187,7 @@ scoretab %>%
 
 # Even though this is called "mutate", it is not literally modifying the
 # input. Rather it is producing a copy of the data frame that has the
-# modifiction.
+# modification.
 
 # The above is equivalent to:
 
@@ -287,8 +224,6 @@ select(bigtab, !file)
 
 # * each column is a single piece of information
 
-# * each column is a distinct kind of information
-
 untidy <- read_csv(
     "country,     male-young, male-old, female-young, female-old
      Australia,            1,        2,            3,          4
@@ -310,6 +245,7 @@ longer
 # necessary.
 
 pivot_wider(longer, names_from=group, values_from=cases)
+
 pivot_wider(bigtab, names_from=file, values_from=grade)
 
 
@@ -354,7 +290,7 @@ unnest(nested, data)
 # 
 
 df <- read_csv(
-    "dim, A_1, A_2, B_1, B_2, B_3, B_4, B_5
+    "dim, E_1, E_2, M_1, M_2, M_3, M_4, M_5
      x,   2,   4,   1,   2,   3,   4,   5
      y,   4,   4,   2,   1,   1,   1,   2")
 
@@ -366,7 +302,8 @@ df <- read_csv(
 # or `ggplot`. Pivot the long data wider so that this is possible. Now
 # what do the rows represent?
 # 
-# 3. What other tidying operation could be applied to this data?
+# 3. The data seems to be divided into "E" and "M" points. How could we
+# make a column containing "E"s and "M"s?
 # 
 # 
 #
@@ -384,7 +321,7 @@ df <- read_csv(
 counts_untidy <- read_csv("r-progtidy-files/read-counts.csv")
 
 counts <- counts_untidy %>%
-    pivot_longer(cols=c(-Feature), names_to="sample", values_to="count") %>%
+    pivot_longer(cols=!Feature, names_to="sample", values_to="count") %>%
     separate(sample, sep=":", into=c("strain","time"), convert=TRUE, remove=FALSE) %>%
     mutate(
         sample = factor(sample, unique(sample)),
@@ -422,8 +359,8 @@ ggplot(counts, aes(x=log2(count), group=sample)) +
 # The gene SRP68 was included as a control housekeeping gene. Its
 # expression level should be the same in all samples. We will divide
 # counts in each sample by the count for SRP68 to correct for library
-# size, then log-transform the data. We add a small constant when log-
-# transforming so that zeros do not become negative infinity (as if
+# size, then log-transform the data. We add a small constant when
+# log-transforming so that zeros do not become negative infinity (as if
 # adding 1 further read count to an average sample).
 
 normalizer <- counts %>%

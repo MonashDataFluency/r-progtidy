@@ -500,7 +500,7 @@ load_fastqc("Day0_fastqc/summary.txt")
 
 ## Applying the function
 
-We now want to load each of the `summary.txt` files we created earlier. One perfectly valid way would be to use a for-loop. However here we're going to use an "apply"-style function. "apply"-style functions are functions that call some other function repeatedly on subsets of a data set. Some examples are `apply`, `lapply`, `vapply`, and `tapply`. `apply` itself is for use with matrices and usually produces a vector as output. Other functions in this family have different input and output types.
+We now want to load each of the `summary.txt` files we created earlier. To do this we're going to use an "apply"-style function. "apply"-style functions are functions that call some other function repeatedly on subsets of a data set. Some examples are `apply`, `lapply`, `vapply`, and `tapply`. `apply` itself is for use with matrices and usually produces a vector as output. Other functions in this family have different input and output types. Writing code that makes use of this type of function is called "functional programming".
 
 The flavour of apply we need here is `lapply`, which takes a vector and calls a function on each element in turn of that vector (i.e. the "subsets" here are simply individual elements). The result is a list containing the returned values, hence the name `lapply`.
 
@@ -512,13 +512,16 @@ filenames <- paste0("Day", days, "_fastqc/summary.txt")
 filenames
 ```
 
-<!---->Now we can use `lapply` to apply our function to each of the filenames.
+<!---->Now we can use `lapply` to apply our function to each of the filenames. 
+
 
 ```{r message=F}
 sumtabs <- lapply(filenames, load_fastqc)
 ```
 
-<!---->The above is equivalent to:
+<!---->Using `lapply` is "functional programming", where we define a series of objects by using functions on earlier objects. In this approach objects are never modified once created. Sometimes the objects used are themselves functions.
+
+<!---->An alternative would be to use a for loop. Using a for loop is "procedural programming", where the result is modified step by step until we obtain the value we want:
 
 ```{r}
 sumtabs <- list()
@@ -634,35 +637,6 @@ Everything in the file runs as though it were typed on the console.
 
 Similarly, if you are going to be doing several different things with a data set, you could write a .R file to load the data into a tidy form, and several other .R scripts to do various different things with it.
 
-
-# Rmarkdown reports
-
-Another way of sharing R code and its output is to write a report in "Rmarkdown". The idea is to write a file containing a mixture of text and R code. This is then "knit" into an HTML or PDF document, with the output from the R code and any plots also shown. This workshop is written in Rmarkdown!
-
-As an example, create a file called `report.Rmd`. 
-
-````
-# report.Rmd should contain:
-
----
-title: Report
----
-
-This is the result from running FastQC.
-
-`r ''````{r}
-source("fastqc.R")
-load_fastqc("Day0_fastqc/summary.txt")
-`r ''````
-````
-
-<!---->Press the "knit" button or type:
-
-```{r eval=FALSE}
-rmarkdown::render("report.Rmd")
-```
-
-All of the R code in the file is run, but now an HTML file showing the code and output is created. There is a lot more to say about Rmarkdown, which we won't be going in to today. [We have a full workshop on this topic.](https://monashdatafluency.github.io/r-rep-res/)
 
 
 ## Discussion {.challenge}

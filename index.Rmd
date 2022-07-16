@@ -16,6 +16,7 @@ These are the course notes for the [Monash Data Fluency](https://www.monash.edu/
 ## Topics
 
 * [Programming](topics/programming.html) ([.Rmd](topics/programming.Rmd))
+* [Communicating your results](topics/communication.html) ([.Rmd](topics/communication.Rmd))
 * [The Tidyverse: dplyr, ggplot2, and friends](topics/tidyverse.html) ([.Rmd](topics/tidyverse.Rmd))
 
 ## Setup
@@ -38,16 +39,12 @@ download.file(
 unzip("fastqc_v0.11.8.zip")
 system("chmod u+x FastQC/fastqc")
 
-# Install Tidyverse packages
-install.packages("tidyverse")
-
+# Install tidyverse packages and rmarkdown
+install.packages(c("tidyverse", "rmarkdown"))
 
 # Optional: install some further packages 
 # (these are mentioned but not essential to the workshop)
-install.packages("rmarkdown")
-install.packages("devtools")
-install.packages("usethis")
-install.packages("BiocManager")
+install.packages(c("devtools", "usethis", "Biocmanager"))
 BiocManager::install("edgeR")
 ```
 

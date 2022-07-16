@@ -179,7 +179,6 @@ pre code {
 <li><a href="#for-loops">For-loops</a></li>
 <li><a href="#a-practical-programming-exercise">A practical programming exercise</a></li>
 <li><a href="#sourcing-.r-files">Sourcing .R files</a></li>
-<li><a href="#rmarkdown-reports">Rmarkdown reports</a></li>
 <li><a href="#packages">Packages</a></li>
 </ul>
 </div>
@@ -514,7 +513,7 @@ load_fastqc(&quot;Day0_fastqc/summary.txt&quot;)</code></pre>
 </div>
 <div id="applying-the-function" class="section level2">
 <h2>Applying the function</h2>
-<p>We now want to load each of the <code>summary.txt</code> files we created earlier. One perfectly valid way would be to use a for-loop. However here we’re going to use an “apply”-style function. “apply”-style functions are functions that call some other function repeatedly on subsets of a data set. Some examples are <code>apply</code>, <code>lapply</code>, <code>vapply</code>, and <code>tapply</code>. <code>apply</code> itself is for use with matrices and usually produces a vector as output. Other functions in this family have different input and output types.</p>
+<p>We now want to load each of the <code>summary.txt</code> files we created earlier. To do this we’re going to use an “apply”-style function. “apply”-style functions are functions that call some other function repeatedly on subsets of a data set. Some examples are <code>apply</code>, <code>lapply</code>, <code>vapply</code>, and <code>tapply</code>. <code>apply</code> itself is for use with matrices and usually produces a vector as output. Other functions in this family have different input and output types. Writing code that makes use of this type of function is called “functional programming”.</p>
 <p>The flavour of apply we need here is <code>lapply</code>, which takes a vector and calls a function on each element in turn of that vector (i.e. the “subsets” here are simply individual elements). The result is a list containing the returned values, hence the name <code>lapply</code>.</p>
 <!---->
 <p>First let’s work out the names of the files we want to load.</p>
@@ -525,7 +524,9 @@ filenames</code></pre>
 <p>Now we can use <code>lapply</code> to apply our function to each of the filenames.</p>
 <pre class="r"><code>sumtabs &lt;- lapply(filenames, load_fastqc)</code></pre>
 <!---->
-<p>The above is equivalent to:</p>
+<p>Using <code>lapply</code> is “functional programming”, where we define a series of objects by using functions on earlier objects. In this approach objects are never modified once created. Sometimes the objects used are themselves functions.</p>
+<!---->
+<p>An alternative would be to use a for loop. Using a for loop is “procedural programming”, where the result is modified step by step until we obtain the value we want:</p>
 <pre class="r"><code>sumtabs &lt;- list()
 for(idx in 1:length(filenames)) {
     sumtabs[[idx]] &lt;- load_fastqc(filenames[idx])
@@ -620,27 +621,6 @@ load_fastqc &lt;- function(filename) {
 source(&quot;fastqc.R&quot;)</code></pre>
 <p>Everything in the file runs as though it were typed on the console.</p>
 <p>Similarly, if you are going to be doing several different things with a data set, you could write a .R file to load the data into a tidy form, and several other .R scripts to do various different things with it.</p>
-</div>
-<div id="rmarkdown-reports" class="section level1">
-<h1>Rmarkdown reports</h1>
-<p>Another way of sharing R code and its output is to write a report in “Rmarkdown”. The idea is to write a file containing a mixture of text and R code. This is then “knit” into an HTML or PDF document, with the output from the R code and any plots also shown. This workshop is written in Rmarkdown!</p>
-<p>As an example, create a file called <code>report.Rmd</code>.</p>
-<pre><code># report.Rmd should contain:
-
----
-title: Report
----
-
-This is the result from running FastQC.
-
-```{r}
-source(&quot;fastqc.R&quot;)
-load_fastqc(&quot;Day0_fastqc/summary.txt&quot;)
-```</code></pre>
-<!---->
-<p>Press the “knit” button or type:</p>
-<pre class="r"><code>rmarkdown::render(&quot;report.Rmd&quot;)</code></pre>
-<p>All of the R code in the file is run, but now an HTML file showing the code and output is created. There is a lot more to say about Rmarkdown, which we won’t be going in to today. <a href="https://monashdatafluency.github.io/r-rep-res/">We have a full workshop on this topic.</a></p>
 <div id="discussion" class="section level2 challenge">
 <h2 class="challenge">Discussion</h2>
 <p>What other R code from this lesson could we put in a .R file? Or a .Rmd file?</p>

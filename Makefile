@@ -2,16 +2,19 @@
 RMDS=index.Rmd \
      slides/introduction.Rmd \
      topics/programming.Rmd \
+	 topics/communication.Rmd \
      topics/tidyverse.Rmd
 
 HTMLS=$(patsubst %.Rmd,%.html,$(RMDS))
 
 # Create stripped down versions of .Rmd files
 RS=r-progtidy-files/programming.R \
+   r-progtidy-files/communication.R \
    r-progtidy-files/tidyverse.R
 
 # Create unevaluated versions (compact teacher's notes)
 UNEVALS=topics/programming_uneval.html \
+        topics/communication_uneval.html \
         topics/tidyverse_uneval.html
 
 
