@@ -82,7 +82,7 @@ ggsave("plot-good.png", myplot, width=5,  height=5,  dpi=600)
 # * Communicate with your colleagues or supervisor.
 
 # * Write a thesis, book, or journal article (but also consider using
-# LaTeX for these).
+# LaTeX directly).
 
 # Create a file called `report.Rmd` containing:
 
@@ -94,9 +94,11 @@ This is the result from running FastQC.
 
 ```{r}
 library(tidyverse)
+library(knitr)
 
 bigtab <- read_csv("r-progtidy-files/fastqc.csv")
-bigtab
+
+kable(bigtab)
 ```
 
 
@@ -116,6 +118,9 @@ rmarkdown::render("report.Rmd")
 # Code chunks can have options included in the curly brackets. In
 # RStudio, click on the gear icon in the upper right of the code chunk
 # to seem some options.
+
+# More on chunk options:
+# https://bookdown.org/yihui/rmarkdown/r-code.html
 
 ### ____________________
 ### ---->> Exercise ----
@@ -171,9 +176,6 @@ $$
 
 # References can included, with details given in a BibTeX file.
 
-# BibTeX format is a little quirky. Sometimes you need to surround text
-# in { } to prevent it being converted to lower case.
-
 ---
 bibliography: r-progtidy-files/bibliography.bib
 ---
@@ -222,27 +224,59 @@ output: html_notebook
 # `saveRDS()` and load them in an R Markdown file with `readRDS()`. Your
 # R Markdown documents should knit quickly.
 
-## _______________________________________
-## ----> More control over the output ----
+## _________________________
+## ----> Under the hood ----
 
-# R Markdown has layers, like an onion. To really understand what is
-# going on and fully control the appearance of the output, you may need
-# to understand these underlying layers.
+# The process of turning R Markdown into the final output has several
+# steps.
 
-           rmarkdown and knitr                   pandoc
-.Rmd input --------------------> .md (markdown) --------> .html output
-
-
-            rmarkdown and knitr                 pandox and latex
-.Rmd input ---------------------> .tex (latex) ------------------> .pdf output
+            rmarkdown and knitr                   pandoc
+.Rmd input ---------------------> .md (markdown) --------> .html output
 
 
-# For HTML output, you can directly include HTML tags.
+            rmarkdown and knitr                   pandoc                latex
+.Rmd input ---------------------> .md (markdown) -------> .tex (latex) -------> .pdf output
 
-# For HTML output, CSS can be used to customize the look of the output.
 
-# For larger documents, `bookdown` or `quarto` can be used.
+# For HTML output, a CSS file can be used to customize the appearance of
+# the output, and you can also directly include HTML tags in the R
+# Markdown document. For PDF output, you can directly use LaTeX
+# commands. By learning HTML and CSS, or LaTeX, you can gain a lot more
+# control over the appearance of the output.
+
+# For larger documents, the `bookdown` package can be used.
 
 # If your aim is to produce a PDF document such as a thesis or journal
-# article, you may prefer to write LaTeX directly. R can still be used
-# to produce plots!
+# article, you may prefer to write LaTeX directly.
+
+## ________________________________
+## ----> Languages and formats ----
+
+# **R Markdown** is a language for including R code and outputs in a
+# document. It is based on Markdown. It is implemented in the R package
+# `rmarkdown`, and builds on a package called `knitr` by Yihui Xie.
+
+# **Markdown** is a concise language for producing nicely formatted
+# documents. It can be converted to formats such as HTML and PDF, using
+# a command line program called pandoc. Markdown in various forms is
+# widely used on the internet.
+
+# **HTML** (Hyper-Text Markup Language) is the language for documents on
+# the web. You can write your own HTML, but it is more verbose than
+# Markdown.
+
+# **CSS** (Cascadings Style Sheets) is a language that defines how HTML
+# appears on screen.
+
+# **LaTeX** is a venerable language for producing high quality
+# documents. These days, the output is usually PDF. LaTeX is built on
+# top of an earlier system called TeX written by Donald Knuth.
+
+# **BibTeX** is a format for bibliographic information, created
+# alongside TeX.
+
+# **MathJax** is a Javascript library that lets LaTeX-style math be used
+# in HTML documents.
+
+# **PDF** (Portable Document Format) is a binary format for documents.
+# You can't edit it directly.
