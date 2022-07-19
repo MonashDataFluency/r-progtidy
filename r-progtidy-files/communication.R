@@ -230,12 +230,12 @@ output: html_notebook
 # The process of turning R Markdown into the final output has several
 # steps.
 
-            rmarkdown and knitr                   pandoc
-.Rmd input ---------------------> .md (markdown) --------> .html output
+      rmarkdown and knitr                   pandoc
+.Rmd ---------------------> .md (markdown) --------> .html
 
 
-            rmarkdown and knitr                   pandoc                latex
-.Rmd input ---------------------> .md (markdown) -------> .tex (latex) -------> .pdf output
+      rmarkdown and knitr                   pandoc                latex
+.Rmd ---------------------> .md (markdown) -------> .tex (latex) -------> .pdf
 
 
 # For HTML output, a CSS file can be used to customize the appearance of

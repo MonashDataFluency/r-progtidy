@@ -510,24 +510,36 @@ load_fastqc <- function(filename) {
 source("fastqc.R")
 
 
-## _____________________
-## ----> Discussion ----
-# 
-# What other R code from this lesson could we put in a .R file? Or a
-# .Rmd file?
-# 
-# How should we break up a large project (paper/thesis/software package)
-# into files?
-# 
-# What about managing data files?
-# 
-# How should we share a project with others?
-# 
-# * Software Carpentry's list of best practices in R
+# ______________________________
+# ==== Organizing a project ====
+
+# I like to organize large projects into multiple folders:
+
+/raw        Raw data (do not edit!)
+/output     Output files
+/scripts    R scripts
+/reports    Reports in R Markdown
+README.txt
+
+
+# Some tips I've gathered:
+
+# * Working on a project is iterative. Sometimes we put code for
+# multiple approaches side by side. Sometimes we use version control
+# such as git.
+
+# * Coming back to a project, we've regretted not writing down the order
+# things need to be run to fully reproduce outputs and reports, and what
+# the preferred approach was if we tried many things.
+
+# * Some people like `workflowr`, which automates working on a large
+# project.
+
+# * The `here` package is useful when you have multiple folders.
+
+# * Software Carpentry's list of best practices in R:
 # http://swcarpentry.github.io/r-novice-inflammation/06-best-practices-R/
-# 
-# 
-#
+
 # __________________
 # ==== Packages ====
 
