@@ -1,5 +1,5 @@
 ---
-title: "Programming and Tidy data analysis in R"
+title: "Programming and Tidy Data Analysis in R"
 output: 
     html_document:
         theme: cerulean
