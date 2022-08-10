@@ -191,6 +191,10 @@ An experiment by @cleveland1984 compared different types of visual information.
 # Get BibTeX entry from a DOI:
 # https://www.bibtex.com/c/doi-to-bibtex-converter/
 
+# Gotcha: For some bibliography styles, BibTeX will convert some
+# upper-case letters in titles to lower-case. Surround letters or the
+# entire title in an extra { } to prevent this.
+
 ## _________________________
 ## ----> Output formats ----
 
