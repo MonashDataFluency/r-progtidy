@@ -47,19 +47,7 @@ pre {
     background: #ddf;
 }
 
-.challenge > :first-child {
+.challenge h1, .challenge h2, .challenge h3, .challenge h4, .challenge h5, .challenge h6 {
     margin-top: 0;
 }
 
-
-.objectives {
-    margin: 4em;
-    padding: 2em;
-    border: 1px solid black;
-    border-radius: 5px;
-    background: #fed;
-}
-
-.objectives > :first-child {
-    margin-top: 0;
-}

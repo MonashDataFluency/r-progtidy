@@ -1389,17 +1389,7 @@ border: 1px solid black;
 border-radius: 5px;
 background: #ddf;
 }
-.challenge > :first-child {
-margin-top: 0;
-}
-.objectives {
-margin: 4em;
-padding: 2em;
-border: 1px solid black;
-border-radius: 5px;
-background: #fed;
-}
-.objectives > :first-child {
+.challenge h1, .challenge h2, .challenge h3, .challenge h4, .challenge h5, .challenge h6 {
 margin-top: 0;
 }
 </style>
@@ -1616,7 +1606,7 @@ vignette(&quot;dplyr&quot;, package=&quot;dplyr&quot;)</code></pre>
 starting fresh for this lesson, load it with:</p>
 <pre class="r"><code>bigtab &lt;- read_csv(&quot;r-progtidy-files/fastqc.csv&quot;)</code></pre>
 <pre><code>## Rows: 72 Columns: 3
-## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ───────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (3): grade, test, file
 ## 
@@ -2025,7 +2015,7 @@ it gets a bit confusing. Anyway, let’s work through a toy example:</p>
      Australia,            1,        2,            3,          4
      New Zealand,          5,        6,            7,          8&quot;)</code></pre>
 <pre><code>## Rows: 2 Columns: 5
-## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ───────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (1): country
 ## dbl (4): male-young, male-old, female-young, female-old
@@ -2078,20 +2068,22 @@ table in spread form.</p>
 ## 2 New Zealand            5          6              7            8</code></pre>
 <pre class="r"><code>pivot_wider(bigtab, names_from=file, values_from=grade)</code></pre>
 <pre><code>## # A tibble: 12 × 7
-##    test     Day0.fastq Day4.fastq Day7.fastq Day10.fastq Day15.fastq Day20.fastq
-##    &lt;chr&gt;    &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;       &lt;chr&gt;       &lt;chr&gt;      
-##  1 Basic S… PASS       PASS       PASS       PASS        PASS        PASS       
-##  2 Per bas… PASS       PASS       PASS       PASS        PASS        PASS       
-##  3 Per til… PASS       PASS       PASS       PASS        PASS        PASS       
-##  4 Per seq… PASS       PASS       PASS       PASS        PASS        PASS       
-##  5 Per bas… FAIL       FAIL       FAIL       FAIL        FAIL        FAIL       
-##  6 Per seq… WARN       WARN       FAIL       WARN        WARN        FAIL       
-##  7 Per bas… PASS       PASS       PASS       PASS        PASS        PASS       
-##  8 Sequenc… PASS       PASS       PASS       PASS        PASS        PASS       
-##  9 Sequenc… PASS       PASS       PASS       PASS        PASS        PASS       
-## 10 Overrep… WARN       PASS       PASS       WARN        WARN        WARN       
-## 11 Adapter… PASS       PASS       PASS       PASS        PASS        PASS       
-## 12 Kmer Co… PASS       PASS       PASS       PASS        PASS        PASS</code></pre>
+##    test                         Day0.f…¹ Day4.…² Day7.…³ Day10…⁴ Day15…⁵ Day20…⁶
+##    &lt;chr&gt;                        &lt;chr&gt;    &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;   &lt;chr&gt;  
+##  1 Basic Statistics             PASS     PASS    PASS    PASS    PASS    PASS   
+##  2 Per base sequence quality    PASS     PASS    PASS    PASS    PASS    PASS   
+##  3 Per tile sequence quality    PASS     PASS    PASS    PASS    PASS    PASS   
+##  4 Per sequence quality scores  PASS     PASS    PASS    PASS    PASS    PASS   
+##  5 Per base sequence content    FAIL     FAIL    FAIL    FAIL    FAIL    FAIL   
+##  6 Per sequence GC content      WARN     WARN    FAIL    WARN    WARN    FAIL   
+##  7 Per base N content           PASS     PASS    PASS    PASS    PASS    PASS   
+##  8 Sequence Length Distribution PASS     PASS    PASS    PASS    PASS    PASS   
+##  9 Sequence Duplication Levels  PASS     PASS    PASS    PASS    PASS    PASS   
+## 10 Overrepresented sequences    WARN     PASS    PASS    WARN    WARN    WARN   
+## 11 Adapter Content              PASS     PASS    PASS    PASS    PASS    PASS   
+## 12 Kmer Content                 PASS     PASS    PASS    PASS    PASS    PASS   
+## # … with abbreviated variable names ¹​Day0.fastq, ²​Day4.fastq, ³​Day7.fastq,
+## #   ⁴​Day10.fastq, ⁵​Day15.fastq, ⁶​Day20.fastq</code></pre>
 <!---->
 <p>In our toy example, we have a further problem that the “group” column
 contains two pieces of data. This can be fixed with
@@ -2157,7 +2149,7 @@ Unfortunately it looks like this:</p>
      x,   2,   4,   1,   2,   3,   4,   5
      y,   4,   4,   2,   1,   1,   1,   2&quot;)</code></pre>
 <pre><code>## Rows: 2 Columns: 8
-## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ───────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (1): dim
 ## dbl (7): E_1, E_2, M_1, M_2, M_3, M_4, M_5
@@ -2201,7 +2193,7 @@ part-way through the pipeline.</p>
 <pre class="r"><code># Use readr&#39;s read_csv function to load the file
 counts_untidy &lt;- read_csv(&quot;r-progtidy-files/read-counts.csv&quot;)</code></pre>
 <pre><code>## Rows: 45 Columns: 41
-## ── Column specification ─────────────────────────────────────────────────────────────────────────────────────────────────
+## ── Column specification ───────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr  (1): Feature
 ## dbl (40): WT:1, WT:2, WT:3, WT:4, WT:5, WT:6, WT:7, WT:8, WT:9, WT:10, SET1:...
@@ -2397,27 +2389,33 @@ data by subtracting the average for each gene from
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] forcats_0.5.1   stringr_1.4.0   dplyr_1.0.9     purrr_0.3.4    
-## [5] readr_2.1.2     tidyr_1.2.0     tibble_3.1.7    ggplot2_3.3.6  
-## [9] tidyverse_1.3.1
+## [1] forcats_0.5.2   stringr_1.4.1   dplyr_1.0.9     purrr_0.3.4    
+## [5] readr_2.1.2     tidyr_1.2.0     tibble_3.1.8    ggplot2_3.3.6  
+## [9] tidyverse_1.3.2
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] lubridate_1.8.0   assertthat_0.2.1  digest_0.6.29     utf8_1.2.2       
-##  [5] R6_2.5.1          cellranger_1.1.0  backports_1.4.1   reprex_2.0.1     
-##  [9] evaluate_0.15     httr_1.4.3        highr_0.9         pillar_1.7.0     
-## [13] rlang_1.0.4       readxl_1.4.0      rstudioapi_0.13   jquerylib_0.1.4  
-## [17] rmarkdown_2.14    labeling_0.4.2    bit_4.0.4         munsell_0.5.0    
-## [21] broom_1.0.0       compiler_4.2.1    modelr_0.1.8      xfun_0.31        
-## [25] pkgconfig_2.0.3   htmltools_0.5.2   tidyselect_1.1.2  viridisLite_0.4.0
-## [29] fansi_1.0.3       crayon_1.5.1      tzdb_0.3.0        dbplyr_2.2.1     
-## [33] withr_2.5.0       grid_4.2.1        jsonlite_1.8.0    gtable_0.3.0     
-## [37] lifecycle_1.0.1   DBI_1.1.3         magrittr_2.0.3    scales_1.2.0     
-## [41] cli_3.3.0         stringi_1.7.6     vroom_1.5.7       farver_2.1.1     
-## [45] fs_1.5.2          xml2_1.3.3        bslib_0.3.1       ellipsis_0.3.2   
-## [49] generics_0.1.3    vctrs_0.4.1       tools_4.2.1       bit64_4.0.5      
-## [53] glue_1.6.2        hms_1.1.1         parallel_4.2.1    fastmap_1.1.0    
-## [57] yaml_2.3.5        colorspace_2.0-3  rvest_1.0.2       knitr_1.39       
-## [61] haven_2.5.0       sass_0.4.1</code></pre>
+##  [1] lubridate_1.8.0     assertthat_0.2.1    digest_0.6.29      
+##  [4] utf8_1.2.2          R6_2.5.1            cellranger_1.1.0   
+##  [7] backports_1.4.1     reprex_2.0.2        evaluate_0.16      
+## [10] highr_0.9           httr_1.4.4          pillar_1.8.1       
+## [13] rlang_1.0.4         googlesheets4_1.0.1 readxl_1.4.1       
+## [16] jquerylib_0.1.4     rmarkdown_2.16      labeling_0.4.2     
+## [19] googledrive_2.0.0   bit_4.0.4           munsell_0.5.0      
+## [22] broom_1.0.0         compiler_4.2.1      modelr_0.1.9       
+## [25] xfun_0.32           pkgconfig_2.0.3     htmltools_0.5.3    
+## [28] tidyselect_1.1.2    viridisLite_0.4.1   fansi_1.0.3        
+## [31] crayon_1.5.1        tzdb_0.3.0          dbplyr_2.2.1       
+## [34] withr_2.5.0         grid_4.2.1          jsonlite_1.8.0     
+## [37] gtable_0.3.0        lifecycle_1.0.1     DBI_1.1.3          
+## [40] magrittr_2.0.3      scales_1.2.1        cli_3.3.0          
+## [43] stringi_1.7.8       vroom_1.5.7         cachem_1.0.6       
+## [46] farver_2.1.1        fs_1.5.2            xml2_1.3.3         
+## [49] bslib_0.4.0         ellipsis_0.3.2      generics_0.1.3     
+## [52] vctrs_0.4.1         tools_4.2.1         bit64_4.0.5        
+## [55] glue_1.6.2          hms_1.1.2           parallel_4.2.1     
+## [58] fastmap_1.1.0       yaml_2.3.5          colorspace_2.0-3   
+## [61] gargle_1.2.0        rvest_1.0.3         knitr_1.40         
+## [64] haven_2.5.1         sass_0.4.2</code></pre>
 <p><strong>References</strong></p>
 <div id="refs" class="references csl-bib-body hanging-indent">
 <div id="ref-cleveland1984" class="csl-entry">
