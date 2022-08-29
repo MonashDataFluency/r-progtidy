@@ -17,13 +17,13 @@ output:
 <img src="../figures/new_s.jpg" style="width: 150px">
 <br>The **new** S language,
 <br>published 1988,
-<br>introduced functions.
+<br>introduced functions, ...
 </div>
 <div style="display: inline-block; margin: 1em;">
 <img src="../figures/chambers_and_hastie.jpg" style="width: 150px">
 <br>Statistical Models in S,
 <br>published 1991,
-<br>introduced data frames.
+<br>introduced data frames, ...
 </div>
 </div>
 
