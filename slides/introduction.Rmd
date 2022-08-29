@@ -57,9 +57,9 @@ Data analysis isn't just statistical modelling.
 
 <br>
 
-<img src="../figures/data-science-highlighted.png" height="285">
+<img src="../figures/data-science-highlighted-with-communication.png" height="285">
 
-Communication and modelling covered in other workshops.
+For modelling, get started with Data Fluency's "Linear Models in R" workshop.
 
 
 ## Programming
