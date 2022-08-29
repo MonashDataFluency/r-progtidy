@@ -44,7 +44,7 @@ install.packages(c("tidyverse", "rmarkdown"))
 
 # Optional: install some further packages 
 # (these are mentioned but not essential to the workshop)
-install.packages(c("devtools", "usethis", "Biocmanager"))
+install.packages(c("devtools", "usethis", "BiocManager"))
 BiocManager::install("edgeR")
 ```
 
