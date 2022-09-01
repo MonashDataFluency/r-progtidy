@@ -301,7 +301,7 @@ c(x=1, y=2, z=3)
 
 * A special kind of vector that can hold any kind of data, including other vectors and lists.
 * If you need to bundle together a miscellaneous collection of data, lists are your solution. For example, a function that needs to return multiple results can return a list.
-* Play the same role as both the `list` and `dict` types in Python or objects in Javascript.
+* Play the same role as both the `list` and `dict` types in Python, or `object` and `Array` types in Javascript.
 * Access individual elements with `[[ ]]` or `$`.
 
 ```{r eval=FALSE}
@@ -328,7 +328,7 @@ list(x=TRUE, y="two", z=c(1,2,3))
 
 
 ## Tidy data
-<img src="../figures/square.gif" style="float: right; margin: 10px; margin-top: -80px; width: 200px">
+<img src="../figures/square-small.jpg" style="float: right; margin: 10px; margin-top: -80px; width: 200px"/>
 
 Tidy data doesn't mean tidy for a person to read, it means the easiest form for the computer to work with.
 

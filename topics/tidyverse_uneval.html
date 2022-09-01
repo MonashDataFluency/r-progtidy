@@ -1939,7 +1939,7 @@ counts &lt;- counts_untidy %&gt;%
     pivot_longer(cols=!Feature, names_to=&quot;sample&quot;, values_to=&quot;count&quot;) %&gt;%
     separate(sample, sep=&quot;:&quot;, into=c(&quot;strain&quot;,&quot;time&quot;), convert=TRUE, remove=FALSE) %&gt;%
     mutate(
-        sample = factor(sample, unique(sample)),
+        sample = factor(sample, levels=unique(sample)),
         strain = factor(strain, levels=c(&quot;WT&quot;,&quot;SET1&quot;,&quot;RRP6&quot;,&quot;SET1-RRP6&quot;))
     ) %&gt;%
     filter(time &gt;= 2) %&gt;%

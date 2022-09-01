@@ -58,7 +58,9 @@ myplot <- ggplot(bigtab, aes(x=file, y=test, fill=grade)) +
 myplot
 ```
 
-Colors from: https://davidmathlogic.com/colorblind/
+<!---->Colors from: https://davidmathlogic.com/colorblind/
+
+<!---->See also: `forcats` package for factor manipulation.
 
 
 ## Publication quality images
@@ -130,7 +132,7 @@ Further code chunks can be included:
 <!---->More on chunk options: https://bookdown.org/yihui/rmarkdown/r-code.html
 
 
-### Exercise {.challenge}
+### Challenge {.challenge}
 
 1. Add a code chunk to produce the plot from the previous section.
 
@@ -183,7 +185,7 @@ $$
 
 ## References
 
-<!---->References can included, with details given in a BibTeX file.
+<!---->References can be included, with details given in a BibTeX file.
 
 ````
 ---

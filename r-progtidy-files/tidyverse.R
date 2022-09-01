@@ -324,7 +324,7 @@ counts <- counts_untidy %>%
     pivot_longer(cols=!Feature, names_to="sample", values_to="count") %>%
     separate(sample, sep=":", into=c("strain","time"), convert=TRUE, remove=FALSE) %>%
     mutate(
-        sample = factor(sample, unique(sample)),
+        sample = factor(sample, levels=unique(sample)),
         strain = factor(strain, levels=c("WT","SET1","RRP6","SET1-RRP6"))
     ) %>%
     filter(time >= 2) %>%

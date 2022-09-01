@@ -46,3 +46,14 @@ Noting also 9:15am Melbourn time is quite early for Malaysia students.
 
 Next time, run 10am-1:30pm. (Instructors present from 9:45am.)
 
+---- ...but instead of that, I added a "Communication" section... ----
+
+
+Zoom run of r-progtidy, with added Communication section, 2022-08-30/31
+
+We scheduled 10:10am-2:15pm on two days. Instructors were present from 10am to help with any problems, however no problems reported. Two 10 minute breaks per day seemed about right.
+
+First day we did programming section, ran a little under time. There is always some variation, I'm not too worried about this.
+
+Second day we did communication and tidyverse sections, finished nicely on time.
+

@@ -396,6 +396,8 @@ sumtabs <- lapply(filenames, load_fastqc)
 # objects are never modified once created. Sometimes the objects used
 # are themselves functions.
 
+# See also: `purrr` package.
+
 # An alternative would be to use a for loop. Using a for loop is
 # "procedural programming", where the result is modified step by step
 # until we obtain the value we want:
@@ -522,11 +524,13 @@ source("fastqc.R")
 README.txt
 
 
+# Use version control, such as Git + GitHub.
+
 # Some tips I've gathered:
 
 # * Working on a project is iterative. Sometimes we put code for
 # multiple approaches side by side. Sometimes we use version control
-# such as git.
+# features such as branches.
 
 # * Coming back to a project, we've regretted not writing down the order
 # things need to be run to fully reproduce outputs and reports, and what
@@ -537,8 +541,10 @@ README.txt
 
 # * The `here` package is useful when you have multiple folders.
 
-# * Software Carpentry's list of best practices in R:
+# See also Software Carpentry's list of best practices in R:
 # http://swcarpentry.github.io/r-novice-inflammation/06-best-practices-R/
+
+# See also Data Fluency workshop "Introduction to Data Organization."
 
 # __________________
 # ==== Packages ====

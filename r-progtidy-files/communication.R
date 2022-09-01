@@ -52,6 +52,10 @@ myplot <- ggplot(bigtab, aes(x=file, y=test, fill=grade)) +
 myplot
 
 
+# Colors from: https://davidmathlogic.com/colorblind/
+
+# See also: `forcats` package for factor manipulation.
+
 ## _____________________________________
 ## ----> Publication quality images ----
 
@@ -122,8 +126,8 @@ rmarkdown::render("report.Rmd")
 # More on chunk options:
 # https://bookdown.org/yihui/rmarkdown/r-code.html
 
-### ____________________
-### ---->> Exercise ----
+### _____________________
+### ---->> Challenge ----
 # 
 # 1. Add a code chunk to produce the plot from the previous section.
 # 
@@ -174,7 +178,7 @@ $$
 ## _____________________
 ## ----> References ----
 
-# References can included, with details given in a BibTeX file.
+# References can be included, with details given in a BibTeX file.
 
 ---
 bibliography: r-progtidy-files/bibliography.bib

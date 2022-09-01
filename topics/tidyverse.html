@@ -1606,7 +1606,7 @@ vignette(&quot;dplyr&quot;, package=&quot;dplyr&quot;)</code></pre>
 starting fresh for this lesson, load it with:</p>
 <pre class="r"><code>bigtab &lt;- read_csv(&quot;r-progtidy-files/fastqc.csv&quot;)</code></pre>
 <pre><code>## Rows: 72 Columns: 3
-## ── Column specification ───────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (3): grade, test, file
 ## 
@@ -2015,7 +2015,7 @@ it gets a bit confusing. Anyway, let’s work through a toy example:</p>
      Australia,            1,        2,            3,          4
      New Zealand,          5,        6,            7,          8&quot;)</code></pre>
 <pre><code>## Rows: 2 Columns: 5
-## ── Column specification ───────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (1): country
 ## dbl (4): male-young, male-old, female-young, female-old
@@ -2149,7 +2149,7 @@ Unfortunately it looks like this:</p>
      x,   2,   4,   1,   2,   3,   4,   5
      y,   4,   4,   2,   1,   1,   1,   2&quot;)</code></pre>
 <pre><code>## Rows: 2 Columns: 8
-## ── Column specification ───────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr (1): dim
 ## dbl (7): E_1, E_2, M_1, M_2, M_3, M_4, M_5
@@ -2193,7 +2193,7 @@ part-way through the pipeline.</p>
 <pre class="r"><code># Use readr&#39;s read_csv function to load the file
 counts_untidy &lt;- read_csv(&quot;r-progtidy-files/read-counts.csv&quot;)</code></pre>
 <pre><code>## Rows: 45 Columns: 41
-## ── Column specification ───────────────────────────────────────────────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────
 ## Delimiter: &quot;,&quot;
 ## chr  (1): Feature
 ## dbl (40): WT:1, WT:2, WT:3, WT:4, WT:5, WT:6, WT:7, WT:8, WT:9, WT:10, SET1:...
@@ -2204,7 +2204,7 @@ counts_untidy &lt;- read_csv(&quot;r-progtidy-files/read-counts.csv&quot;)</code
     pivot_longer(cols=!Feature, names_to=&quot;sample&quot;, values_to=&quot;count&quot;) %&gt;%
     separate(sample, sep=&quot;:&quot;, into=c(&quot;strain&quot;,&quot;time&quot;), convert=TRUE, remove=FALSE) %&gt;%
     mutate(
-        sample = factor(sample, unique(sample)),
+        sample = factor(sample, levels=unique(sample)),
         strain = factor(strain, levels=c(&quot;WT&quot;,&quot;SET1&quot;,&quot;RRP6&quot;,&quot;SET1-RRP6&quot;))
     ) %&gt;%
     filter(time &gt;= 2) %&gt;%
