@@ -264,10 +264,20 @@ output: html_notebook
 # document. It is based on Markdown. It is implemented in the R package
 # `rmarkdown`, and builds on a package called `knitr` by Yihui Xie.
 
+# **Bookdown** is a package that lets you write large documents spanning
+# multiple files, such as whole books. However also consider the newer
+# Quarto system.
+
+# **Quarto** is an overhaul of R Markdown released in 2022 by Posit, the
+# authors of RStudio. It has many useful features, including features
+# for working on larger projects such as books and websites. It is not
+# necessary to use Quarto, but it is worth a look.
+
 # **Markdown** is a concise language for producing nicely formatted
 # documents. It can be converted to formats such as HTML and PDF, using
-# a command line program called pandoc. Markdown in various forms is
-# widely used on the internet.
+# a command-line program called pandoc (this is done automatically
+# during knitting). Markdown in various forms is widely used on the
+# internet.
 
 # **HTML** (Hyper-Text Markup Language) is the language for documents on
 # the web. You can write your own HTML, but it is more verbose than
