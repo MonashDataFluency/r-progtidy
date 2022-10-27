@@ -128,13 +128,9 @@ rmarkdown::render("report.Rmd")
 
 ### _____________________
 ### ---->> Challenge ----
-# 
 # 1. Add a code chunk to produce the plot from the previous section.
-# 
 # 2. Adjust output of messages and warnings, and whether the code is
 # shown.
-# 
-# 
 #
 ## ___________________
 ## ----> Markdown ----

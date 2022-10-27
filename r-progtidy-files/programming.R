@@ -66,11 +66,8 @@ num <- 2/3
 
 ## _______________
 ## ----> Quiz ----
-# 
 # Which lines above are executed, and in what order, for each value of
 # `num`?
-# 
-# 
 #
 # ___________________
 # ==== Functions ====
@@ -177,23 +174,15 @@ fahr_to_celsius(212)
 
 ## ____________________
 ## ----> Challenge ----
-# 
 # Write a function to calculate the length of the hypotenuse of a right
 # angled triangle using Pythagorus's rule, given the lengths of the
 # other sides.
-# 
 # Hint: `sqrt` calculates the square root of a number.
-# 
 # Testing your code is important. Invent a test case for your code
 # consisting of:
-# 
 # * The input arguments to your function.
 # * The return value you expect.
-# 
 # Confirm that your function works as expected.
-# 
-# 
-# 
 #
 # ___________________
 # ==== For-loops ====
@@ -239,13 +228,10 @@ cat("done\n")                       #                            12
 
 ## ____________________
 ## ----> Challenge ----
-# 
 # As a small group, compare your answers as you go.
-# 
 # 1. Write down what these lines of code do in English. Check they do
 # what you expect by running them in R. Try adding `cat`s or `print`s to
 # the for-loop body to check what is going on.
-# 
 
 myvec <- c(10,20,30,40)
 
@@ -256,10 +242,8 @@ for(item in myvec) {
 
 total
 
-# 
 # 2. Write down what these lines of code do in English. How could this
 # be changed to work with any length of `myvec`?
-# 
 
 myvec <- c(10,20,30,40)
 
@@ -267,20 +251,14 @@ for(index in 1:4) {
     myvec[index] <- myvec[index] * 2
 }
 
-# 
 # 3. Write the steps to calculate *n* factorial in English, i.e. `1*2*3*
 # ... *n`.
-# 
 # 4. Write R code to calculate 10 factorial.
-# 
 
 numbers <- 1:10
 
 ... your code here ...
 
-# 
-# 
-# 
 #
 # __________________________________________
 # ==== A practical programming exercise ====
@@ -426,6 +404,9 @@ sumtabs[[1]]
 sumtabs[[2]]
 
 
+# It would be nicer if this was a single big data frame. The `dplyr`
+# package provides a function to do this:
+
 library(dplyr)
 bigtab <- bind_rows(sumtabs)
 
@@ -509,7 +490,7 @@ load_fastqc <- function(filename) {
 
 # From the console:
 
-source("fastqc.R")
+source("fastqc.R", local=TRUE)
 
 
 # ______________________________

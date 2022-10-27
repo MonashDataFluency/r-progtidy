@@ -5,9 +5,9 @@ output:
         toc_depth: 2
 ---
 
-<!---->This short section looks at a couple of topics to do with professionally communicating your results with others: making nice looking plots, and producing documents including R output and code.
+This short section looks at a couple of topics to do with professionally communicating your results with others: making nice looking plots, and producing documents including R output and code.
 
-<!---->Let's continue our examination of the FastQC output. If you're starting fresh for this lesson, you can load the necessary data frame with:
+Let's continue our examination of the FastQC output. If you're starting fresh for this lesson, you can load the necessary data frame with:
 
 ```{r warning=FALSE, message=FALSE}
 library(tidyverse)
@@ -17,23 +17,27 @@ bigtab <- read_csv("r-progtidy-files/fastqc.csv")
 
 # Publication quality ggplot2
 
+::: {.omit}
 [ggplot2 is covered in our introductory R workshop](https://monashdatafluency.github.io/r-intro-2/plotting-with-ggplot2.html). Recall that we could assign columns of a data frame to aesthetics--x and y position, color, etc--and then add "geom"s to draw the data.
+:::
 
-<!---->With `ggplot2` we can view the whole data set.
+With `ggplot2` we can view the whole data set.
 
 ```{r}
 ggplot(bigtab, aes(x=file,y=test,color=grade)) + 
     geom_point()
 ```
 
+::: {.omit}
 With categorical data on the x and y axes, a better geom to use is `geom_tile`.
+:::
 
 ```{r}
 ggplot(bigtab, aes(x=file,y=test,fill=grade)) + 
     geom_tile()
 ```
 
-<!---->`ggplot2` offers a very wide variety of ways to adjust a plot. For categorical aesthetics, usually the first step is ensuring the relevant column is a factor with a meaningful level order.
+`ggplot2` offers a very wide variety of ways to adjust a plot. For categorical aesthetics, usually the first step is ensuring the relevant column is a factor with a meaningful level order.
 
 ```{r}
 # Put x axis in order first found in data frame
@@ -58,38 +62,40 @@ myplot <- ggplot(bigtab, aes(x=file, y=test, fill=grade)) +
 myplot
 ```
 
-<!---->Colors from: https://davidmathlogic.com/colorblind/
+Colors from: https://davidmathlogic.com/colorblind/
 
-<!---->See also: `forcats` package for factor manipulation.
+See also: `forcats` package for factor manipulation.
 
 
 ## Publication quality images
 
-<!---->Plots can be saved with ``ggsave``. Width and height are given in inches, and an image resolution in Dots Per Inch should also be given. The width and height will determine the relative size of text and graphics, so increasing the resolution is best done by adjusting the DPI. Compare the files produced by:
+Plots can be saved with ``ggsave``. Width and height are given in inches, and an image resolution in Dots Per Inch should also be given. The width and height will determine the relative size of text and graphics, so increasing the resolution is best done by adjusting the DPI. Compare the files produced by:
 
 ```{r, eval=FALSE}
 ggsave("plot-bad.png",  myplot, width=10, height=10, dpi=300)
 ggsave("plot-good.png", myplot, width=5,  height=5,  dpi=600)
 ```
 
-<!---->It may be necessary to edit a plot further in a program such as Inkscape or Adobe Illustrator. To allow this, the image needs to be saved in a "vector" format such as SVG, EPS, or PDF. In this case, the DPI argument isn't needed.
+It may be necessary to edit a plot further in a program such as Inkscape or Adobe Illustrator. To allow this, the image needs to be saved in a "vector" format such as SVG, EPS, or PDF. In this case, the DPI argument isn't needed.
 
 
 # R Markdown documents
 
-<!---->This is a *very* brief introduction to a large topic.
+This is a *very* brief introduction to a large topic.
 
+::: {.omit}
 To share results and the R code that produced them, you can write a report in "R Markdown". The idea is to write a file containing a mixture of text and R code. This is then "knit" into an HTML or PDF document, with the output from the R code and any plots also shown. This workshop is written in R Markdown!
+:::
 
-<!---->Use R Markdown to:
+Use R Markdown to:
 
-<!---->* Make a record of results for yourself.
+* Make a record of results for yourself.
 
-<!---->* Communicate with your colleagues or supervisor.
+* Communicate with your colleagues or supervisor.
 
-<!---->* Write a thesis, book, or journal article (but also consider using LaTeX directly).
+* Write a thesis, book, or journal article (but also consider using LaTeX directly).
 
-<!---->Create a file called `report.Rmd` containing: 
+Create a file called `report.Rmd` containing: 
 
 ````
 ---
@@ -108,18 +114,21 @@ kable(bigtab)
 `r ''````
 ````
 
-<!---->Press the "knit" button or type:
+Press the "knit" button or type:
 
 ```{r eval=FALSE}
 rmarkdown::render("report.Rmd")
 ```
 
+::: {.omit}
 All of the R code in the file is run, but now an HTML file showing the code and output is created.
-
+:::
 
 ## Code chunks
 
+::: {.omit}
 Further code chunks can be included:
+:::
 
 ````
 `r ''````{r}
@@ -127,9 +136,9 @@ Further code chunks can be included:
 `r ''````
 ````
 
-<!---->Code chunks can have options included in the curly brackets. In RStudio, click on the gear icon in the upper right of the code chunk to seem some options.
+Code chunks can have options included in the curly brackets. In RStudio, click on the gear icon in the upper right of the code chunk to seem some options.
 
-<!---->More on chunk options: https://bookdown.org/yihui/rmarkdown/r-code.html
+More on chunk options: https://bookdown.org/yihui/rmarkdown/r-code.html
 
 
 ### Challenge {.challenge}
@@ -141,9 +150,9 @@ Further code chunks can be included:
 
 ## Markdown
 
-<!---->R Markdown is built on Markdown, a concise way of formatting text documents with headings, formatting, links, tables, etc.
+R Markdown is built on Markdown, a concise way of formatting text documents with headings, formatting, links, tables, etc.
 
-<!---->Try including some of the following in your report:
+Try including some of the following in your report:
 
 ````
 # Heading
@@ -155,14 +164,14 @@ Some *italic* and **bold** text.
 A [link](https://zombo.com/) to a website.
 ````
 
-<!---->Further reading: https://bookdown.org/yihui/rmarkdown/markdown-syntax.html
+Further reading: https://bookdown.org/yihui/rmarkdown/markdown-syntax.html
 
 
 ## Mathematics
 
-<!---->R Markdown documents can include LaTeX-style mathematics.
+R Markdown documents can include LaTeX-style mathematics.
 
-<!---->Try including this in your document:
+Try including this in your document:
 
 ````
 $$
@@ -170,22 +179,24 @@ c = \sqrt{a^2+b^2}
 $$
 ````
 
+::: {.omit}
 The result should appear like:
 
 $$
 c = \sqrt{a^2+b^2}
 $$
+:::
 
-<!---->More on math in rmarkdown: https://bookdown.org/yihui/rmarkdown/markdown-syntax.html#math-expressions
+More on math in rmarkdown: https://bookdown.org/yihui/rmarkdown/markdown-syntax.html#math-expressions
 
-<!---->More on LaTeX math: https://en.wikibooks.org/wiki/LaTeX/Mathematics
+More on LaTeX math: https://en.wikibooks.org/wiki/LaTeX/Mathematics
 
-<!---->A nice web editor: https://latexeditor.lagrida.com/
+A nice web editor: https://latexeditor.lagrida.com/
 
 
 ## References
 
-<!---->References can be included, with details given in a BibTeX file.
+References can be included, with details given in a BibTeX file.
 
 ````
 ---
@@ -195,22 +206,22 @@ bibliography: r-progtidy-files/bibliography.bib
 An experiment by @cleveland1984 compared different types of visual information.
 ````
 
-<!---->Citations in R Markdown: https://bookdown.org/yihui/rmarkdown-cookbook/bibliography.html
+Citations in R Markdown: https://bookdown.org/yihui/rmarkdown-cookbook/bibliography.html
 
-<!---->About the BibTeX format: https://www.bibtex.com/format/
+About the BibTeX format: https://www.bibtex.com/format/
 
-<!---->Get BibTeX entry from a DOI: https://www.bibtex.com/c/doi-to-bibtex-converter/
+Get BibTeX entry from a DOI: https://www.bibtex.com/c/doi-to-bibtex-converter/
 
-<!---->Gotcha: For some bibliography styles, BibTeX will convert some upper-case letters in titles to lower-case. Surround letters or the entire title in an extra { } to prevent this.
+Gotcha: For some bibliography styles, BibTeX will convert some upper-case letters in titles to lower-case. Surround letters or the entire title in an extra { } to prevent this.
 
 
 ## Output formats
 
-<!---->By default `rmarkdown` produces HTML outputs. It can also produce PDF and Word documents. To output PDF, you will need to install TeX. It's also possible to produce slideshows.
+By default `rmarkdown` produces HTML outputs. It can also produce PDF and Word documents. To output PDF, you will need to install TeX. It's also possible to produce slideshows.
 
-<!---->In RStudio, click on the gear icon and select "Output options..." or go to "File/New File/Rmarkdown..." and try a few of the template documents.
+In RStudio, click on the gear icon and select "Output options..." or go to "File/New File/Rmarkdown..." and try a few of the template documents.
 
-<!---->The output format is determined by the `output: ...` line in the YAML header at the top of the document.
+The output format is determined by the `output: ...` line in the YAML header at the top of the document.
 
 
 ### I don't like R Notebooks
@@ -221,16 +232,16 @@ output: html_notebook
 ---
 ````
 
-<!---->RStudio also offers "R Notebooks". These are like R Markdown, but output can be produced chunk by chunk rather than all at once.
+RStudio also offers "R Notebooks". These are like R Markdown, but output can be produced chunk by chunk rather than all at once.
 
-<!---->You can get in a muddle with R Notebooks by running code in an odd order or using results from code that you then alter.
+You can get in a muddle with R Notebooks by running code in an odd order or using results from code that you then alter.
 
-<!---->R Notebooks may be appealing for long running computations. Consider instead putting long computations in a .R script. Save results with `saveRDS()` and load them in an R Markdown file with `readRDS()`. Your R Markdown documents should knit quickly.
+R Notebooks may be appealing for long running computations. Consider instead putting long computations in a .R script. Save results with `saveRDS()` and load them in an R Markdown file with `readRDS()`. Your R Markdown documents should knit quickly.
 
 
 ## Under the hood
 
-<!---->The process of turning R Markdown into the final output has several steps.
+The process of turning R Markdown into the final output has several steps.
 ```
       rmarkdown and knitr                   pandoc
 .Rmd ---------------------> .md (markdown) --------> .html
@@ -240,31 +251,31 @@ output: html_notebook
 .Rmd ---------------------> .md (markdown) -------> .tex (latex) -------> .pdf
 ```
 
-<!---->For HTML output, a CSS file can be used to customize the appearance of the output, and you can also directly include HTML tags in the R Markdown document. For PDF output, you can directly use LaTeX commands. By learning HTML and CSS, or LaTeX, you can gain a lot more control over the appearance of the output.
+For HTML output, a CSS file can be used to customize the appearance of the output, and you can also directly include HTML tags in the R Markdown document. For PDF output, you can directly use LaTeX commands. By learning HTML and CSS, or LaTeX, you can gain a lot more control over the appearance of the output.
 
-<!---->For larger documents, the `bookdown` package can be used.
+For larger documents, the `bookdown` package can be used.
 
-<!---->If your aim is to produce a PDF document such as a thesis or journal article, you may prefer to write LaTeX directly.
+If your aim is to produce a PDF document such as a thesis or journal article, you may prefer to write LaTeX directly.
 
 
 ## Languages and formats
 
-<!---->**R Markdown** is a language for including R code and outputs in a document. It is based on Markdown. It is implemented in the R package `rmarkdown`, and builds on a package called `knitr` by Yihui Xie.
+**R Markdown** is a language for including R code and outputs in a document. It is based on Markdown. It is implemented in the R package `rmarkdown`, and builds on a package called `knitr` by Yihui Xie.
 
-<!---->**Bookdown** is a package that lets you write large documents spanning multiple files, such as whole books. However also consider the newer Quarto system.
+**Bookdown** is a package that lets you write large documents spanning multiple files, such as whole books. However also consider the newer Quarto system.
 
-<!---->**Quarto** is an overhaul of R Markdown released in 2022 by Posit, the authors of RStudio. It has many useful features, including features for working on larger projects such as books and websites. It is not necessary to use Quarto, but it is worth a look.
+**Quarto** is an overhaul of R Markdown released in 2022 by Posit, the authors of RStudio. It has many useful features, including features for working on larger projects such as books and websites. It is not necessary to use Quarto, but it is worth a look.
 
-<!---->**Markdown** is a concise language for producing nicely formatted documents. It can be converted to formats such as HTML and PDF, using a command-line program called pandoc (this is done automatically during knitting). Markdown in various forms is widely used on the internet.
+**Markdown** is a concise language for producing nicely formatted documents. It can be converted to formats such as HTML and PDF, using a command-line program called pandoc (this is done automatically during knitting). Markdown in various forms is widely used on the internet.
 
-<!---->**HTML** (Hyper-Text Markup Language) is the language for documents on the web. You can write your own HTML, but it is more verbose than Markdown.
+**HTML** (Hyper-Text Markup Language) is the language for documents on the web. You can write your own HTML, but it is more verbose than Markdown.
 
-<!---->**CSS** (Cascadings Style Sheets) is a language that defines how HTML appears on screen.
+**CSS** (Cascadings Style Sheets) is a language that defines how HTML appears on screen.
 
-<!---->**LaTeX** is a venerable language for producing high quality documents. These days, the output is usually PDF. LaTeX is built on top of an earlier system called TeX written by Donald Knuth.
+**LaTeX** is a venerable language for producing high quality documents. These days, the output is usually PDF. LaTeX is built on top of an earlier system called TeX written by Donald Knuth.
 
-<!---->**BibTeX** is a format for bibliographic information, created alongside TeX.
+**BibTeX** is a format for bibliographic information, created alongside TeX.
 
-<!---->**MathJax** is a Javascript library that lets LaTeX-style math be used in HTML documents.
+**MathJax** is a Javascript library that lets LaTeX-style math be used in HTML documents.
 
-<!---->**PDF** (Portable Document Format) is a binary format for documents. You can't edit it directly. 
+**PDF** (Portable Document Format) is a binary format for documents. You can't edit it directly. 

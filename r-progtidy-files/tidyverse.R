@@ -163,12 +163,8 @@ scoretab %>%
 
 ### _____________________
 ### ---->> Challenge ----
-# 
 # Write a pipeline using `%>%`s that starts with `bigtab`, joins the
 # `scoring` table, and then calculates the average score for each test.
-# 
-# 
-# 
 #
 ## ____________________
 ## ----> mutate( ) ----
@@ -244,6 +240,11 @@ longer
 # many columns, which generally makes data less tidy but is sometimes
 # necessary.
 
+# A common application is producing a scatter plot, where the x and y
+# axes need to be two different columns even though they measure the
+# same type of thing. Data may also be easier to look at in a table in
+# spread form.
+
 pivot_wider(longer, names_from=group, values_from=cases)
 
 pivot_wider(bigtab, names_from=file, values_from=grade)
@@ -283,29 +284,22 @@ unnest(nested, data)
 
 ### _____________________
 ### ---->> Challenge ----
-# 
 # You receive data on a set of points. The points are in two dimensions
 # (`dim`), and each point has x and y coordinates. Unfortunately it
 # looks like this:
-# 
 
 df <- read_csv(
     "dim, E_1, E_2, M_1, M_2, M_3, M_4, M_5
      x,   2,   4,   1,   2,   3,   4,   5
      y,   4,   4,   2,   1,   1,   1,   2")
 
-# 
 # 1. Tidy the data by pivoting longer all of the columns except `dim`.
 # What does each row now represent?
-# 
 # 2. We want to plot the points as a scatter-plot, using either `plot`
 # or `ggplot`. Pivot the long data wider so that this is possible. Now
 # what do the rows represent?
-# 
 # 3. The data seems to be divided into "E" and "M" points. How could we
 # make a column containing "E"s and "M"s?
-# 
-# 
 #
 # ____________________________
 # ==== An RNA-Seq example ====
@@ -447,6 +441,8 @@ ggplot(counts_norm, aes(x=time, y=strain, fill=log_norm_count)) +
 # A more traditional way of examining the interaction between two
 # factors is a line graph called an "interaction plot".
 
+# We can also give each gene a separate scale.
+
 ggplot(counts_norm, aes(x=time, y=log_norm_count, color=strain, group=strain)) +
     geom_line() +
     facet_wrap(~ gene, scale="free")
@@ -454,17 +450,13 @@ ggplot(counts_norm, aes(x=time, y=log_norm_count, color=strain, group=strain)) +
 
 ### _____________________
 ### ---->> Exercises ----
-# 
 # 1. Which are the three most variable genes?
-# 
 # Hint:
 # `intToUtf8(utf8ToInt("xvh#jurxsbe|/#vxppdul}h/#vg/#dqg#duudqjh")-3)`
-# 
 # 2. Different genes have different average expression levels, but what
 # we are interested in is how they change over time. Further normalize
 # the data by subtracting the average for each gene from
 # `log_norm_count`.
-# 
 #
 ### ____________
 ### ---->>  ----

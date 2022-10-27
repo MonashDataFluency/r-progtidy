@@ -1539,11 +1539,9 @@ border-radius: 0px;
 </div>
 
 
-<!---->
 <p>This short section looks at a couple of topics to do with
 professionally communicating your results with others: making nice
 looking plots, and producing documents including R output and code.</p>
-<!---->
 <p>Let’s continue our examination of the FastQC output. If you’re
 starting fresh for this lesson, you can load the necessary data frame
 with:</p>
@@ -1552,19 +1550,21 @@ with:</p>
 bigtab &lt;- read_csv(&quot;r-progtidy-files/fastqc.csv&quot;)</code></pre>
 <div id="publication-quality-ggplot2" class="section level1">
 <h1>Publication quality ggplot2</h1>
+<div class="omit">
 <p><a href="https://monashdatafluency.github.io/r-intro-2/plotting-with-ggplot2.html">ggplot2
 is covered in our introductory R workshop</a>. Recall that we could
 assign columns of a data frame to aesthetics–x and y position, color,
 etc–and then add “geom”s to draw the data.</p>
-<!---->
+</div>
 <p>With <code>ggplot2</code> we can view the whole data set.</p>
 <pre class="r"><code>ggplot(bigtab, aes(x=file,y=test,color=grade)) + 
     geom_point()</code></pre>
+<div class="omit">
 <p>With categorical data on the x and y axes, a better geom to use is
 <code>geom_tile</code>.</p>
+</div>
 <pre class="r"><code>ggplot(bigtab, aes(x=file,y=test,fill=grade)) + 
     geom_tile()</code></pre>
-<!---->
 <p><code>ggplot2</code> offers a very wide variety of ways to adjust a
 plot. For categorical aesthetics, usually the first step is ensuring the
 relevant column is a factor with a meaningful level order.</p>
@@ -1588,13 +1588,10 @@ myplot &lt;- ggplot(bigtab, aes(x=file, y=test, fill=grade)) +
           axis.text.x=element_text(                # Vertical text on x axis
               angle=90,vjust=0.5,hjust=0))              
 myplot</code></pre>
-<!---->
 <p>Colors from: <a href="https://davidmathlogic.com/colorblind/" class="uri">https://davidmathlogic.com/colorblind/</a></p>
-<!---->
 <p>See also: <code>forcats</code> package for factor manipulation.</p>
 <div id="publication-quality-images" class="section level2">
 <h2>Publication quality images</h2>
-<!---->
 <p>Plots can be saved with <code>ggsave</code>. Width and height are
 given in inches, and an image resolution in Dots Per Inch should also be
 given. The width and height will determine the relative size of text and
@@ -1602,7 +1599,6 @@ graphics, so increasing the resolution is best done by adjusting the
 DPI. Compare the files produced by:</p>
 <pre class="r"><code>ggsave(&quot;plot-bad.png&quot;,  myplot, width=10, height=10, dpi=300)
 ggsave(&quot;plot-good.png&quot;, myplot, width=5,  height=5,  dpi=600)</code></pre>
-<!---->
 <p>It may be necessary to edit a plot further in a program such as
 Inkscape or Adobe Illustrator. To allow this, the image needs to be
 saved in a “vector” format such as SVG, EPS, or PDF. In this case, the
@@ -1611,29 +1607,21 @@ DPI argument isn’t needed.</p>
 </div>
 <div id="r-markdown-documents" class="section level1">
 <h1>R Markdown documents</h1>
-<!---->
 <p>This is a <em>very</em> brief introduction to a large topic.</p>
+<div class="omit">
 <p>To share results and the R code that produced them, you can write a
 report in “R Markdown”. The idea is to write a file containing a mixture
 of text and R code. This is then “knit” into an HTML or PDF document,
 with the output from the R code and any plots also shown. This workshop
 is written in R Markdown!</p>
-<!---->
+</div>
 <p>Use R Markdown to:</p>
-<!---->
 <ul>
-<li>Make a record of results for yourself.</li>
+<li><p>Make a record of results for yourself.</p></li>
+<li><p>Communicate with your colleagues or supervisor.</p></li>
+<li><p>Write a thesis, book, or journal article (but also consider using
+LaTeX directly).</p></li>
 </ul>
-<!---->
-<ul>
-<li>Communicate with your colleagues or supervisor.</li>
-</ul>
-<!---->
-<ul>
-<li>Write a thesis, book, or journal article (but also consider using
-LaTeX directly).</li>
-</ul>
-<!---->
 <p>Create a file called <code>report.Rmd</code> containing:</p>
 <pre><code>---
 title: Report
@@ -1649,22 +1637,23 @@ bigtab &lt;- read_csv(&quot;r-progtidy-files/fastqc.csv&quot;)
 
 kable(bigtab)
 ```</code></pre>
-<!---->
 <p>Press the “knit” button or type:</p>
 <pre class="r"><code>rmarkdown::render(&quot;report.Rmd&quot;)</code></pre>
+<div class="omit">
 <p>All of the R code in the file is run, but now an HTML file showing
 the code and output is created.</p>
+</div>
 <div id="code-chunks" class="section level2">
 <h2>Code chunks</h2>
+<div class="omit">
 <p>Further code chunks can be included:</p>
+</div>
 <pre><code>```{r}
 # ...your code here...
 ```</code></pre>
-<!---->
 <p>Code chunks can have options included in the curly brackets. In
 RStudio, click on the gear icon in the upper right of the code chunk to
 seem some options.</p>
-<!---->
 <p>More on chunk options: <a href="https://bookdown.org/yihui/rmarkdown/r-code.html" class="uri">https://bookdown.org/yihui/rmarkdown/r-code.html</a></p>
 <div id="challenge" class="section level3 challenge">
 <h3 class="challenge">Challenge</h3>
@@ -1678,10 +1667,8 @@ shown.</p></li>
 </div>
 <div id="markdown" class="section level2">
 <h2>Markdown</h2>
-<!---->
 <p>R Markdown is built on Markdown, a concise way of formatting text
 documents with headings, formatting, links, tables, etc.</p>
-<!---->
 <p>Try including some of the following in your report:</p>
 <pre><code># Heading
 
@@ -1690,60 +1677,48 @@ documents with headings, formatting, links, tables, etc.</p>
 Some *italic* and **bold** text.
 
 A [link](https://zombo.com/) to a website.</code></pre>
-<!---->
 <p>Further reading: <a href="https://bookdown.org/yihui/rmarkdown/markdown-syntax.html" class="uri">https://bookdown.org/yihui/rmarkdown/markdown-syntax.html</a></p>
 </div>
 <div id="mathematics" class="section level2">
 <h2>Mathematics</h2>
-<!---->
 <p>R Markdown documents can include LaTeX-style mathematics.</p>
-<!---->
 <p>Try including this in your document:</p>
 <pre><code>$$
 c = \sqrt{a^2+b^2}
 $$</code></pre>
+<div class="omit">
 <p>The result should appear like:</p>
 <p><span class="math display">\[
 c = \sqrt{a^2+b^2}
 \]</span></p>
-<!---->
+</div>
 <p>More on math in rmarkdown: <a href="https://bookdown.org/yihui/rmarkdown/markdown-syntax.html#math-expressions" class="uri">https://bookdown.org/yihui/rmarkdown/markdown-syntax.html#math-expressions</a></p>
-<!---->
 <p>More on LaTeX math: <a href="https://en.wikibooks.org/wiki/LaTeX/Mathematics" class="uri">https://en.wikibooks.org/wiki/LaTeX/Mathematics</a></p>
-<!---->
 <p>A nice web editor: <a href="https://latexeditor.lagrida.com/" class="uri">https://latexeditor.lagrida.com/</a></p>
 </div>
 <div id="references" class="section level2">
 <h2>References</h2>
-<!---->
 <p>References can be included, with details given in a BibTeX file.</p>
 <pre><code>---
 bibliography: r-progtidy-files/bibliography.bib
 ---
 
 An experiment by @cleveland1984 compared different types of visual information.</code></pre>
-<!---->
 <p>Citations in R Markdown: <a href="https://bookdown.org/yihui/rmarkdown-cookbook/bibliography.html" class="uri">https://bookdown.org/yihui/rmarkdown-cookbook/bibliography.html</a></p>
-<!---->
 <p>About the BibTeX format: <a href="https://www.bibtex.com/format/" class="uri">https://www.bibtex.com/format/</a></p>
-<!---->
 <p>Get BibTeX entry from a DOI: <a href="https://www.bibtex.com/c/doi-to-bibtex-converter/" class="uri">https://www.bibtex.com/c/doi-to-bibtex-converter/</a></p>
-<!---->
 <p>Gotcha: For some bibliography styles, BibTeX will convert some
 upper-case letters in titles to lower-case. Surround letters or the
 entire title in an extra { } to prevent this.</p>
 </div>
 <div id="output-formats" class="section level2">
 <h2>Output formats</h2>
-<!---->
 <p>By default <code>rmarkdown</code> produces HTML outputs. It can also
 produce PDF and Word documents. To output PDF, you will need to install
 TeX. It’s also possible to produce slideshows.</p>
-<!---->
 <p>In RStudio, click on the gear icon and select “Output options…” or go
 to “File/New File/Rmarkdown…” and try a few of the template
 documents.</p>
-<!---->
 <p>The output format is determined by the <code>output: ...</code> line
 in the YAML header at the top of the document.</p>
 <div id="i-dont-like-r-notebooks" class="section level3">
@@ -1751,13 +1726,10 @@ in the YAML header at the top of the document.</p>
 <pre><code>---
 output: html_notebook
 ---</code></pre>
-<!---->
 <p>RStudio also offers “R Notebooks”. These are like R Markdown, but
 output can be produced chunk by chunk rather than all at once.</p>
-<!---->
 <p>You can get in a muddle with R Notebooks by running code in an odd
 order or using results from code that you then alter.</p>
-<!---->
 <p>R Notebooks may be appealing for long running computations. Consider
 instead putting long computations in a .R script. Save results with
 <code>saveRDS()</code> and load them in an R Markdown file with
@@ -1767,7 +1739,6 @@ quickly.</p>
 </div>
 <div id="under-the-hood" class="section level2">
 <h2>Under the hood</h2>
-<!---->
 <p>The process of turning R Markdown into the final output has several
 steps.</p>
 <pre><code>      rmarkdown and knitr                   pandoc
@@ -1776,59 +1747,46 @@ steps.</p>
 
       rmarkdown and knitr                   pandoc                latex
 .Rmd ---------------------&gt; .md (markdown) -------&gt; .tex (latex) -------&gt; .pdf</code></pre>
-<!---->
 <p>For HTML output, a CSS file can be used to customize the appearance
 of the output, and you can also directly include HTML tags in the R
 Markdown document. For PDF output, you can directly use LaTeX commands.
 By learning HTML and CSS, or LaTeX, you can gain a lot more control over
 the appearance of the output.</p>
-<!---->
 <p>For larger documents, the <code>bookdown</code> package can be
 used.</p>
-<!---->
 <p>If your aim is to produce a PDF document such as a thesis or journal
 article, you may prefer to write LaTeX directly.</p>
 </div>
 <div id="languages-and-formats" class="section level2">
 <h2>Languages and formats</h2>
-<!---->
 <p><strong>R Markdown</strong> is a language for including R code and
 outputs in a document. It is based on Markdown. It is implemented in the
 R package <code>rmarkdown</code>, and builds on a package called
 <code>knitr</code> by Yihui Xie.</p>
-<!---->
 <p><strong>Bookdown</strong> is a package that lets you write large
 documents spanning multiple files, such as whole books. However also
 consider the newer Quarto system.</p>
-<!---->
 <p><strong>Quarto</strong> is an overhaul of R Markdown released in 2022
 by Posit, the authors of RStudio. It has many useful features, including
 features for working on larger projects such as books and websites. It
 is not necessary to use Quarto, but it is worth a look.</p>
-<!---->
 <p><strong>Markdown</strong> is a concise language for producing nicely
 formatted documents. It can be converted to formats such as HTML and
 PDF, using a command-line program called pandoc (this is done
 automatically during knitting). Markdown in various forms is widely used
 on the internet.</p>
-<!---->
 <p><strong>HTML</strong> (Hyper-Text Markup Language) is the language
 for documents on the web. You can write your own HTML, but it is more
 verbose than Markdown.</p>
-<!---->
 <p><strong>CSS</strong> (Cascadings Style Sheets) is a language that
 defines how HTML appears on screen.</p>
-<!---->
 <p><strong>LaTeX</strong> is a venerable language for producing high
 quality documents. These days, the output is usually PDF. LaTeX is built
 on top of an earlier system called TeX written by Donald Knuth.</p>
-<!---->
 <p><strong>BibTeX</strong> is a format for bibliographic information,
 created alongside TeX.</p>
-<!---->
 <p><strong>MathJax</strong> is a Javascript library that lets
 LaTeX-style math be used in HTML documents.</p>
-<!---->
 <p><strong>PDF</strong> (Portable Document Format) is a binary format
 for documents. You can’t edit it directly.</p>
 </div>

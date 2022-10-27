@@ -1,5 +1,5 @@
 
-# Extract code blocks from an .Rmd file
+# Extract code blocks, headings, and some of the text from an .Rmd file
 
 import sys, textwrap, re
 
@@ -7,6 +7,13 @@ print()
 
 in_code = False
 in_challenge = False
+in_omit = False
+
+# Skip yaml header
+sys.stdin.readline()
+for line in sys.stdin:
+    if line.strip() == "---": break
+
 for line in sys.stdin:
     line = line.rstrip()
     if line.startswith("```"):
@@ -27,10 +34,15 @@ for line in sys.stdin:
         bracket = "----" if n > 1 else "===="
         print(left+"_"*(n-1+len(line)+len(bracket)*2+2))
         print(left+bracket+">"*(n-1)+" "+line+" "+bracket)
-    elif line.startswith("<!---->") or in_challenge:
+    elif line == "::: {.omit}":
+        in_omit = True
+    elif line == ":::":
+        in_omit = False
+    #elif line.startswith("<!---->") or in_challenge:
+    elif line and not in_omit:
         # Hack to include some text. Text to be included is marked by an empty comment.
-        if line.startswith("<!---->"):
-            line = line[7:]
+        #if line.startswith("<!---->"):
+        #    line = line[7:]
 
         urls = re.findall(r"\[.*?\]\((.*?)\)", line)
         line = re.sub(r"\[(.*?)\]\(.*?\)", r"\1", line)
