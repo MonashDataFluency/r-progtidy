@@ -42,7 +42,7 @@ bigtab <- read_csv("r-progtidy-files/fastqc.csv")
 # stringing together a series of simpler operations in a pipeline.
 
 # input         +--------+        +--------+        +--------+      result
-#  data   %>%   |  verb  |  %>%   |  verb  |  %>%   |  verb  |  ->   data
+#  data    |>   |  verb  |   |>   |  verb  |   |>   |  verb  |  ->   data
 #   frame       +--------+        +--------+        +--------+        frame
 
 
@@ -129,41 +129,39 @@ summarize(group_by(scoretab, file), average_score=mean(score))
 summarize(group_by(scoretab, grade), count=n())
 
 
-## _______________________
-## ----> The pipe %>% ----
+## ______________________
+## ----> The pipe |> ----
 
 # We often want to string together a series of `dplyr` functions. This
-# is achieved using `dplyr`'s pipe operator, `%>%` (actually defined in
-# the `magrittr` package). This takes the value on the left, and passes
-# it as the first argument to the function call on the right. So the
-# previous summarization could be written:
-
-scoretab %>% group_by(grade) %>% summarize(count=n())
-
-
-# With R version 4, pipes are also part of base R as the `|>` operator:
+# is achieved using R's pipe operator, `|>`. This takes the value on the
+# left, and passes it as the first argument to the function call on the
+# right. So the previous summarization could be written:
 
 scoretab |> group_by(grade) |> summarize(count=n())
 
 
-# `%>%` (or `|>`) isn't limited to `dplyr` functions. It's an
-# alternative way of writing any R code.
+# In older books and web pages you may see `%>%` used instead of `|>`.
+# This is a predecessor to the now standardized R pipe, defined in the
+# `magrittr` package.
+
+# `|>` isn't limited to `dplyr` functions. It's an alternative way of
+# writing any R code.
 
 rep(paste("hello", "world"), 5)
 
-"hello" %>% paste("world") %>% rep(5)
+"hello" |> paste("world") |> rep(5)
 
 
 # Often for readability we will write a pipeline over several lines:
 
-scoretab %>%
-    group_by(grade) %>%
+scoretab |>
+    group_by(grade) |>
     summarize(count=n())
 
 
 ### _____________________
 ### ---->> Challenge ----
-# Write a pipeline using `%>%`s that starts with `bigtab`, joins the
+# Write a pipeline using `|>`s that starts with `bigtab`, joins the
 # `scoring` table, and then calculates the average score for each test.
 #
 ## ____________________
@@ -177,7 +175,7 @@ mutate(scoretab, doublescore = score*2)
 
 # Equivalently:
 
-scoretab %>%
+scoretab |>
     mutate(doublescore = score*2)
 
 
@@ -260,8 +258,8 @@ separate(longer, col=group, into=c("gender","age"))
 
 # All of this would typically be written as a single pipline:
 
-tidied <- untidy %>%
-    pivot_longer(cols=!country, names_to="group", values_to="cases") %>%
+tidied <- untidy |>
+    pivot_longer(cols=!country, names_to="group", values_to="cases") |>
     separate(group, into=c("gender","age"))
 
 
@@ -314,14 +312,14 @@ df <- read_csv(
 # Use readr's read_csv function to load the file
 counts_untidy <- read_csv("r-progtidy-files/read-counts.csv")
 
-counts <- counts_untidy %>%
-    pivot_longer(cols=!Feature, names_to="sample", values_to="count") %>%
-    separate(sample, sep=":", into=c("strain","time"), convert=TRUE, remove=FALSE) %>%
+counts <- counts_untidy |>
+    pivot_longer(cols=!Feature, names_to="sample", values_to="count") |>
+    separate(sample, sep=":", into=c("strain","time"), convert=TRUE, remove=FALSE) |>
     mutate(
         sample = factor(sample, levels=unique(sample)),
         strain = factor(strain, levels=c("WT","SET1","RRP6","SET1-RRP6"))
-    ) %>%
-    filter(time >= 2) %>%
+    ) |>
+    filter(time >= 2) |>
     select(sample, strain, time, gene=Feature, count)
 
 summary(counts)
@@ -357,14 +355,14 @@ ggplot(counts, aes(x=log2(count), group=sample)) +
 # log-transforming so that zeros do not become negative infinity (as if
 # adding 1 further read count to an average sample).
 
-normalizer <- counts %>%
-    filter(gene == "SRP68") %>%
+normalizer <- counts |>
+    filter(gene == "SRP68") |>
     select(sample, norm=count)
 
 moderation <- 1/mean(normalizer$norm)
 
-counts_norm <- counts %>%
-    left_join(normalizer, by="sample") %>%
+counts_norm <- counts |>
+    left_join(normalizer, by="sample") |>
     mutate(
         norm_count = count/norm,
         log_norm_count = log2(norm_count+moderation)
@@ -377,8 +375,8 @@ ggplot(counts_norm, aes(x=sample, y=log_norm_count)) +
 
 # For a full sized RNA-Seq dataset:
 library(edgeR)
-mat <- counts_untidy %>%
-    column_to_rownames("Feature") %>%
+mat <- counts_untidy |>
+    column_to_rownames("Feature") |>
     as.matrix()
 adjusted_lib_sizes <- colSums(mat) * calcNormFactors(mat)
 normalizer_by_tmm <- tibble(

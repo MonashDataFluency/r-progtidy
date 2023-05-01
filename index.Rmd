@@ -21,9 +21,9 @@ These are the course notes for the [Monash Data Fluency](https://www.monash.edu/
 
 ## Setup
 
-This workshop is designed to work with [RStudio Cloud](https://rstudio.cloud/). Go to https://rstudio.cloud/ (Monash users can log in with their Monash google account) and create a new project.
+This workshop is designed to work [Posit Cloud](https://posit.cloud/). Monash users can log in to Posit Cloud with their Monash google account. You can also use R and RStudio on your own laptop.
 
-Running the R code below will download files and install packages used in this workshop. This should also work for R used locally, excepting that to use [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) you will need to have installed Java, and the FastQC steps will probably need some adjustments for Windows computers (this isn't an essential part of the workshop).
+Create a new project, either in Posit Cloud or RStudio on your own laptop, then run the R code below. This will download files and install packages used in this workshop. If using R on your own laptop, then to use [FastQC](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/) you will need to have installed Java, and the FastQC steps will probably need some adjustments for Windows computers (this isn't an essential part of the workshop).
 
 ```{r eval=FALSE}
 # Download workshop files
@@ -57,14 +57,7 @@ The workshop files downloaded by the setup instructions above are also available
 
 ## See also
 
-In this series:
-
-* [Introduction to R (version 2)](https://monashdatafluency.github.io/r-intro-2/)
-* [Linear models in R](https://monashdatafluency.github.io/r-linear/)
-* [Reproducible Research in R](https://monashdatafluency.github.io/r-rep-res/)
-
-Other resources:
-
+* [R workshop material from Monash Data Fluency](https://www.monash.edu/data-fluency/workshops)
 * [Monash Data Fluency](https://www.monash.edu/data-fluency)
 * [Monash Bioinformatics Platform](https://www.monash.edu/researchinfrastructure/bioinformatics)
 * [Next steps](https://monashdatafluency.github.io/r-intro-2/next-steps.html)
@@ -74,7 +67,6 @@ Other resources:
 * ["R for Data Science" by Garret Grolemund and Hadley Wickham](https://r4ds.had.co.nz/)
 * [Hadley Wickham's website](http://hadley.nz/) has further useful resources.
 * [The official R manuals](https://cran.r-project.org/manuals.html) give a complete description of the R language.
-
 
 
 ## Authors

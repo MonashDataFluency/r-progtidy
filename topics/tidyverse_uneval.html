@@ -1438,23 +1438,17 @@ overflow-y: auto;
 border: 1px solid #ddd;
 border-radius: 4px;
 }
-.tabset-dropdown > .nav-tabs > li.active:before {
-content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+content: "\e259";
 font-family: 'Glyphicons Halflings';
 display: inline-block;
 padding: 10px;
 border-right: 1px solid #ddd;
 }
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-content: "";
-border: none;
-}
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-content: "";
+content: "\e258";
 font-family: 'Glyphicons Halflings';
-display: inline-block;
-padding: 10px;
-border-right: 1px solid #ddd;
+border: none;
 }
 .tabset-dropdown > .nav-tabs > li.active {
 display: block;
@@ -1595,7 +1589,7 @@ apPLYeR”, as some of these verbs have a similar flavour to
 of it. The idea is that complex operations can be performed by stringing
 together a series of simpler operations in a pipeline.</p>
 <pre><code># input         +--------+        +--------+        +--------+      result
-#  data   %&gt;%   |  verb  |  %&gt;%   |  verb  |  %&gt;%   |  verb  |  -&gt;   data
+#  data    |&gt;   |  verb  |   |&gt;   |  verb  |   |&gt;   |  verb  |  -&gt;   data
 #   frame       +--------+        +--------+        +--------+        frame</code></pre>
 <div class="omit">
 <p>Some of these verbs are covered in our <a href="https://monashdatafluency.github.io/r-intro-2/data-frames.html">introductory
@@ -1721,27 +1715,25 @@ Grouping can be removed with <code>ungroup</code>.</p>
 </div>
 </div>
 <div id="the-pipe" class="section level2">
-<h2>The pipe %&gt;%</h2>
+<h2>The pipe |&gt;</h2>
 <p>We often want to string together a series of <code>dplyr</code>
-functions. This is achieved using <code>dplyr</code>’s pipe operator,
-<code>%&gt;%</code> (actually defined in the <code>magrittr</code>
-package). This takes the value on the left, and passes it as the first
-argument to the function call on the right. So the previous
-summarization could be written:</p>
-<pre class="r"><code>scoretab %&gt;% group_by(grade) %&gt;% summarize(count=n())</code></pre>
-<p>With R version 4, pipes are also part of base R as the
-<code>|&gt;</code> operator:</p>
+functions. This is achieved using R’s pipe operator, <code>|&gt;</code>.
+This takes the value on the left, and passes it as the first argument to
+the function call on the right. So the previous summarization could be
+written:</p>
 <pre class="r"><code>scoretab |&gt; group_by(grade) |&gt; summarize(count=n())</code></pre>
-<p><code>%&gt;%</code> (or <code>|&gt;</code>) isn’t limited to
-<code>dplyr</code> functions. It’s an alternative way of writing any R
-code.</p>
+<p>In older books and web pages you may see <code>%&gt;%</code> used
+instead of <code>|&gt;</code>. This is a predecessor to the now
+standardized R pipe, defined in the <code>magrittr</code> package.</p>
+<p><code>|&gt;</code> isn’t limited to <code>dplyr</code> functions.
+It’s an alternative way of writing any R code.</p>
 <pre class="r"><code>rep(paste(&quot;hello&quot;, &quot;world&quot;), 5)
 
-&quot;hello&quot; %&gt;% paste(&quot;world&quot;) %&gt;% rep(5)</code></pre>
+&quot;hello&quot; |&gt; paste(&quot;world&quot;) |&gt; rep(5)</code></pre>
 <p>Often for readability we will write a pipeline over several
 lines:</p>
-<pre class="r"><code>scoretab %&gt;% 
-    group_by(grade) %&gt;% 
+<pre class="r"><code>scoretab |&gt;
+    group_by(grade) |&gt; 
     summarize(count=n())</code></pre>
 <div class="omit">
 <p>The idea of adding geoms in <code>ggplot2</code> is rather like the
@@ -1751,7 +1743,7 @@ invention of the pipe.</p>
 </div>
 <div id="challenge" class="section level3 challenge">
 <h3 class="challenge">Challenge</h3>
-<p>Write a pipeline using <code>%&gt;%</code>s that starts with
+<p>Write a pipeline using <code>|&gt;</code>s that starts with
 <code>bigtab</code>, joins the <code>scoring</code> table, and then
 calculates the average score for each test.</p>
 </div>
@@ -1763,7 +1755,7 @@ calculates the average score for each test.</p>
 value for them.</p>
 <pre class="r"><code>mutate(scoretab, doublescore = score*2)</code></pre>
 <p>Equivalently:</p>
-<pre class="r"><code>scoretab %&gt;%
+<pre class="r"><code>scoretab |&gt;
     mutate(doublescore = score*2)</code></pre>
 <p>Even though this is called “mutate”, it is not literally modifying
 the input. Rather it is producing a copy of the data frame that has the
@@ -1842,8 +1834,8 @@ non-alphanumeric characters, but different separator characters can be
 specified.</p>
 <pre class="r"><code>separate(longer, col=group, into=c(&quot;gender&quot;,&quot;age&quot;))</code></pre>
 <p>All of this would typically be written as a single pipline:</p>
-<pre class="r"><code>tidied &lt;- untidy %&gt;%
-    pivot_longer(cols=!country, names_to=&quot;group&quot;, values_to=&quot;cases&quot;) %&gt;%
+<pre class="r"><code>tidied &lt;- untidy |&gt;
+    pivot_longer(cols=!country, names_to=&quot;group&quot;, values_to=&quot;cases&quot;) |&gt;
     separate(group, into=c(&quot;gender&quot;,&quot;age&quot;))</code></pre>
 <p>Finally, we mention that <code>pivot_longer</code> has features we
 haven’t explored, and it is actually possible to do this in one step. <a href="https://tidyr.tidyverse.org/articles/pivot.html">See the tidyr
@@ -1914,14 +1906,14 @@ part-way through the pipeline.</p>
 <pre class="r"><code># Use readr&#39;s read_csv function to load the file
 counts_untidy &lt;- read_csv(&quot;r-progtidy-files/read-counts.csv&quot;)
 
-counts &lt;- counts_untidy %&gt;%
-    pivot_longer(cols=!Feature, names_to=&quot;sample&quot;, values_to=&quot;count&quot;) %&gt;%
-    separate(sample, sep=&quot;:&quot;, into=c(&quot;strain&quot;,&quot;time&quot;), convert=TRUE, remove=FALSE) %&gt;%
+counts &lt;- counts_untidy |&gt;
+    pivot_longer(cols=!Feature, names_to=&quot;sample&quot;, values_to=&quot;count&quot;) |&gt;
+    separate(sample, sep=&quot;:&quot;, into=c(&quot;strain&quot;,&quot;time&quot;), convert=TRUE, remove=FALSE) |&gt;
     mutate(
         sample = factor(sample, levels=unique(sample)),
         strain = factor(strain, levels=c(&quot;WT&quot;,&quot;SET1&quot;,&quot;RRP6&quot;,&quot;SET1-RRP6&quot;))
-    ) %&gt;%
-    filter(time &gt;= 2) %&gt;%
+    ) |&gt;
+    filter(time &gt;= 2) |&gt;
     select(sample, strain, time, gene=Feature, count)
 
 summary(counts)</code></pre>
@@ -1959,14 +1951,14 @@ counts in each sample by the count for SRP68 to correct for library
 size, then log-transform the data. We add a small constant when
 log-transforming so that zeros do not become negative infinity (as if
 adding 1 further read count to an average sample).</p>
-<pre class="r"><code>normalizer &lt;- counts %&gt;%
-    filter(gene == &quot;SRP68&quot;) %&gt;%
+<pre class="r"><code>normalizer &lt;- counts |&gt;
+    filter(gene == &quot;SRP68&quot;) |&gt;
     select(sample, norm=count)
 
 moderation &lt;- 1/mean(normalizer$norm)
 
-counts_norm &lt;- counts %&gt;%
-    left_join(normalizer, by=&quot;sample&quot;) %&gt;%
+counts_norm &lt;- counts |&gt;
+    left_join(normalizer, by=&quot;sample&quot;) |&gt;
     mutate(
         norm_count = count/norm, 
         log_norm_count = log2(norm_count+moderation)
@@ -1985,8 +1977,8 @@ calculated by <code>calcNormFactors</code> in <code>edgeR</code>:</p>
 </div>
 <pre class="r"><code># For a full sized RNA-Seq dataset:
 library(edgeR)
-mat &lt;- counts_untidy %&gt;% 
-    column_to_rownames(&quot;Feature&quot;) %&gt;% 
+mat &lt;- counts_untidy |&gt; 
+    column_to_rownames(&quot;Feature&quot;) |&gt; 
     as.matrix()
 adjusted_lib_sizes &lt;- colSums(mat) * calcNormFactors(mat)
 normalizer_by_tmm &lt;- tibble(

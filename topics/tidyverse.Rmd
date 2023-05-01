@@ -48,7 +48,7 @@ Each verb takes a data frame as input and returns a modified version of it. The 
 
 ```
 # input         +--------+        +--------+        +--------+      result
-#  data   %>%   |  verb  |  %>%   |  verb  |  %>%   |  verb  |  ->   data
+#  data    |>   |  verb  |   |>   |  verb  |   |>   |  verb  |  ->   data
 #   frame       +--------+        +--------+        +--------+        frame
 ```
 
@@ -175,33 +175,29 @@ summarize(group_by(scoretab, grade), count=n())
 **Tip:** `group_by` also affects other verbs, such as mutate. This is more advanced than we will be going into today. Grouping can be removed with `ungroup`.
 :::
 
-## The pipe %>%
+## The pipe |>
 
-We often want to string together a series of `dplyr` functions. This is achieved using `dplyr`'s pipe operator, `%>%` (actually defined in the `magrittr` package). This takes the value on the left, and passes it as the first argument to the function call on the right. So the previous summarization could be written:
-
-```{r eval=FALSE}
-scoretab %>% group_by(grade) %>% summarize(count=n())
-```
-
-With R version 4, pipes are also part of base R as the `|>` operator:
+We often want to string together a series of `dplyr` functions. This is achieved using R's pipe operator, `|>`. This takes the value on the left, and passes it as the first argument to the function call on the right. So the previous summarization could be written:
 
 ```{r eval=FALSE}
 scoretab |> group_by(grade) |> summarize(count=n())
 ```
 
-`%>%` (or `|>`) isn't limited to `dplyr` functions. It's an alternative way of writing any R code.
+In older books and web pages you may see `%>%` used instead of `|>`. This is a predecessor to the now standardized R pipe, defined in the `magrittr` package.
+
+`|>` isn't limited to `dplyr` functions. It's an alternative way of writing any R code.
 
 ```{r}
 rep(paste("hello", "world"), 5)
 
-"hello" %>% paste("world") %>% rep(5)
+"hello" |> paste("world") |> rep(5)
 ```
 
 Often for readability we will write a pipeline over several lines:
 
 ```{r eval=FALSE}
-scoretab %>% 
-    group_by(grade) %>% 
+scoretab |>
+    group_by(grade) |> 
     summarize(count=n())
 ```
 
@@ -211,7 +207,7 @@ The idea of adding geoms in `ggplot2` is rather like the `dplyr` pipe. The only 
 
 ### Challenge {.challenge}
 
-Write a pipeline using `%>%`s that starts with `bigtab`, joins the `scoring` table, and then calculates the average score for each test.
+Write a pipeline using `|>`s that starts with `bigtab`, joins the `scoring` table, and then calculates the average score for each test.
 
 
 
@@ -226,7 +222,7 @@ mutate(scoretab, doublescore = score*2)
 Equivalently:
 
 ```{r}
-scoretab %>%
+scoretab |>
     mutate(doublescore = score*2)
 ```
 
@@ -308,8 +304,8 @@ separate(longer, col=group, into=c("gender","age"))
 All of this would typically be written as a single pipline:
 
 ```{r}
-tidied <- untidy %>%
-    pivot_longer(cols=!country, names_to="group", values_to="cases") %>%
+tidied <- untidy |>
+    pivot_longer(cols=!country, names_to="group", values_to="cases") |>
     separate(group, into=c("gender","age"))
 ```
 
@@ -372,14 +368,14 @@ Recall the diagram from the ["R for Data Science" book](http://r4ds.had.co.nz/).
 # Use readr's read_csv function to load the file
 counts_untidy <- read_csv("r-progtidy-files/read-counts.csv")
 
-counts <- counts_untidy %>%
-    pivot_longer(cols=!Feature, names_to="sample", values_to="count") %>%
-    separate(sample, sep=":", into=c("strain","time"), convert=TRUE, remove=FALSE) %>%
+counts <- counts_untidy |>
+    pivot_longer(cols=!Feature, names_to="sample", values_to="count") |>
+    separate(sample, sep=":", into=c("strain","time"), convert=TRUE, remove=FALSE) |>
     mutate(
         sample = factor(sample, levels=unique(sample)),
         strain = factor(strain, levels=c("WT","SET1","RRP6","SET1-RRP6"))
-    ) %>%
-    filter(time >= 2) %>%
+    ) |>
+    filter(time >= 2) |>
     select(sample, strain, time, gene=Feature, count)
 
 summary(counts)
@@ -417,14 +413,14 @@ Log transformation has greatly improved things, although now there are more outl
 The gene SRP68 was included as a control housekeeping gene. Its expression level should be the same in all samples. We will divide counts in each sample by the count for SRP68 to correct for library size, then log-transform the data. We add a small constant when log-transforming so that zeros do not become negative infinity (as if adding 1 further read count to an average sample).
 
 ```{r}
-normalizer <- counts %>%
-    filter(gene == "SRP68") %>%
+normalizer <- counts |>
+    filter(gene == "SRP68") |>
     select(sample, norm=count)
 
 moderation <- 1/mean(normalizer$norm)
 
-counts_norm <- counts %>%
-    left_join(normalizer, by="sample") %>%
+counts_norm <- counts |>
+    left_join(normalizer, by="sample") |>
     mutate(
         norm_count = count/norm, 
         log_norm_count = log2(norm_count+moderation)
@@ -442,8 +438,8 @@ ggplot(counts_norm, aes(x=sample, y=log_norm_count)) +
 ```{r eval=FALSE}
 # For a full sized RNA-Seq dataset:
 library(edgeR)
-mat <- counts_untidy %>% 
-    column_to_rownames("Feature") %>% 
+mat <- counts_untidy |> 
+    column_to_rownames("Feature") |> 
     as.matrix()
 adjusted_lib_sizes <- colSums(mat) * calcNormFactors(mat)
 normalizer_by_tmm <- tibble(
