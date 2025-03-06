@@ -189,7 +189,7 @@ arrange(summarize(scoretab, average_score=mean(score), .by=file), average_score)
 
 Writing code like this quickly gets confusing! 
 
-We often want to take the result of one `dplyr` function and feed it into another, and another. R's pipe operator, `|>`, provides a more readable way to tod this. The pipe operator takes the value on the left, and passes it as the first argument to the function call on the right. So instead we could write:
+We often want to take the result of one `dplyr` function and feed it into another, and another. R's pipe operator, `|>`, provides a readable way to do this. The pipe operator takes the value on the left, and passes it as the first argument to the function call on the right. So instead we could write:
 
 ```{r eval=FALSE}
 scoretab |> summarize(average_score=mean(score), .by=file) |> arrange(average_score)
