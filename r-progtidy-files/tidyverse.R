@@ -118,26 +118,54 @@ scoretab
 summarize(scoretab, average_score=mean(score))
 
 
-# `summarize` when used with `group_by` turns each group of rows into a
-# single row:
+# We really want to summarize the data grouped by file, so we can see if
+# there are any particularly bad files. This is achieved using the `.by`
+# argument, which names a column or columns to group by. Each group will
+# then produce a single row in the output:
+
+summarize(scoretab, average_score=mean(score), .by=file)
+
+
+# For completeness, we should also mention an older way of doing this
+# with the `group_by` helper function, which associates a grouping with
+# the tibble:
 
 group_by(scoretab, file)
 
 summarize(group_by(scoretab, file), average_score=mean(score))
 
 
-summarize(group_by(scoretab, grade), count=n())
+# The special function `n()` can be used within `dplyr` verbs such as
+# `summarize` to get the number of rows.
+
+summarize(scoretab, count=n(), .by=grade)
 
 
 ## ______________________
 ## ----> The pipe |> ----
 
-# We often want to string together a series of `dplyr` functions. This
-# is achieved using R's pipe operator, `|>`. This takes the value on the
-# left, and passes it as the first argument to the function call on the
-# right. So the previous summarization could be written:
+# Suppose we wanted to sort the files by their average score. We could
+# write:
 
-scoretab |> group_by(grade) |> summarize(count=n())
+arrange(summarize(scoretab, average_score=mean(score), .by=file), average_score)
+
+
+# Writing code like this quickly gets confusing!
+
+# We often want to take the result of one `dplyr` function and feed it
+# into another, and another. R's pipe operator, `|>`, provides a more
+# readable way to tod this. The pipe operator takes the value on the
+# left, and passes it as the first argument to the function call on the
+# right. So instead we could write:
+
+scoretab |> summarize(average_score=mean(score), .by=file) |> arrange(average_score)
+
+
+# For readability we will often write a pipeline over several lines:
+
+scoretab |>
+    summarize(average_score=mean(score), .by=file) |>
+    arrange(average_score)
 
 
 # In older books and web pages you may see `%>%` used instead of `|>`.
@@ -150,13 +178,6 @@ scoretab |> group_by(grade) |> summarize(count=n())
 rep(paste("hello", "world"), 5)
 
 "hello" |> paste("world") |> rep(5)
-
-
-# Often for readability we will write a pipeline over several lines:
-
-scoretab |>
-    group_by(grade) |>
-    summarize(count=n())
 
 
 ### _____________________
@@ -299,6 +320,22 @@ df <- read_csv(
 # 3. The data seems to be divided into "E" and "M" points. How could we
 # make a column containing "E"s and "M"s?
 #
+# __________________________________
+# ==== Other Tidyverse packages ====
+
+# They Tidyverse contains quite a few packages. Here are a few more
+# packages I find myself using often:
+
+# * `stringr` for string manipulation. Sometimes `separate` is not quite
+# flexible enough, so I'll wrangle and disentangle strings with
+# functions like `str_replace_all` and `str_match`.
+
+# * `forcats` for manipulating factors.
+
+# * `purrr` for `lapply`-like operations.
+
+# * `lubridate` for date and time parsing and manipulation.
+
 # ____________________________
 # ==== An RNA-Seq example ====
 

@@ -74,12 +74,12 @@ ggsave("plot-good.png", myplot, width=5,  height=5,  dpi=600)
 # saved in a "vector" format such as SVG, EPS, or PDF. In this case, the
 # DPI argument isn't needed.
 
-# ______________________________
-# ==== R Markdown documents ====
+# _________________________________________
+# ==== R Markdown and Quarto documents ====
 
 # This is a *very* brief introduction to a large topic.
 
-# Use R Markdown to:
+# Use R Markdown or Quarto to:
 
 # * Make a record of results for yourself.
 
@@ -88,7 +88,9 @@ ggsave("plot-good.png", myplot, width=5,  height=5,  dpi=600)
 # * Write a thesis, book, or journal article (but also consider using
 # LaTeX directly).
 
-# Create a file called `report.Rmd` containing:
+# Create a file called `report.qmd`. In RStudio you can switch between
+# "visual" and "source" editing. In "source" editing mode, make sure
+# your file contains:
 
 ---
 title: Report
@@ -106,9 +108,9 @@ kable(bigtab)
 ```
 
 
-# Press the "knit" button or type:
+# Press the "Render" button or type:
 
-rmarkdown::render("report.Rmd")
+quarto::quarto_render("report.qmd")
 
 
 ## ______________________
@@ -126,6 +128,9 @@ rmarkdown::render("report.Rmd")
 # More on chunk options:
 # https://bookdown.org/yihui/rmarkdown/r-code.html
 
+# More on chunk options in Quarto:
+# https://quarto.org/docs/computations/r.html
+
 ### _____________________
 ### ---->> Challenge ----
 # 1. Add a code chunk to produce the plot from the previous section.
@@ -135,8 +140,9 @@ rmarkdown::render("report.Rmd")
 ## ___________________
 ## ----> Markdown ----
 
-# R Markdown is built on Markdown, a concise way of formatting text
-# documents with headings, formatting, links, tables, etc.
+# R Markdown and Quarto are built on Markdown, a concise way of
+# formatting text documents with headings, formatting, links, tables,
+# etc.
 
 # Try including some of the following in your report:
 
@@ -155,7 +161,7 @@ A [link](https://zombo.com/) to a website.
 ## ______________________
 ## ----> Mathematics ----
 
-# R Markdown documents can include LaTeX-style mathematics.
+# R Markdown and Quarto documents can include LaTeX-style mathematics.
 
 # Try including this in your document:
 
@@ -198,15 +204,14 @@ An experiment by @cleveland1984 compared different types of visual information.
 ## _________________________
 ## ----> Output formats ----
 
-# By default `rmarkdown` produces HTML outputs. It can also produce PDF
-# and Word documents. To output PDF, you will need to install TeX. It's
-# also possible to produce slideshows.
+# By default Quarto produces HTML output. We can also produce PDF and
+# Word documents. To output PDF, you may need to install TeX. It's also
+# possible to produce slideshows.
 
-# In RStudio, click on the gear icon and select "Output options..." or
-# go to "File/New File/Rmarkdown..." and try a few of the template
-# documents.
+# In RStudio, go to "File/New File/Quarto Document..." and try a few of
+# the template documents.
 
-# The output format is determined by the `output: ...` line in the YAML
+# The output format is determined by the `format: ...` line in the YAML
 # header at the top of the document.
 
 ### ____________________________________
@@ -226,13 +231,13 @@ output: html_notebook
 # R Notebooks may be appealing for long running computations. Consider
 # instead putting long computations in a .R script. Save results with
 # `saveRDS()` and load them in an R Markdown file with `readRDS()`. Your
-# R Markdown documents should knit quickly.
+# R Markdown and Quarto documents should be written to knit quickly.
 
 ## _________________________
 ## ----> Under the hood ----
 
-# The process of turning R Markdown into the final output has several
-# steps.
+# The process of turning R Markdown or Quarto into the final output has
+# several steps.
 
       rmarkdown and knitr                   pandoc
 .Rmd ---------------------> .md (markdown) --------> .html
@@ -248,7 +253,8 @@ output: html_notebook
 # commands. By learning HTML and CSS, or LaTeX, you can gain a lot more
 # control over the appearance of the output.
 
-# For larger documents, the `bookdown` package can be used.
+# For larger documents, the `bookdown` package can be used, or Quarto
+# has several book formats.
 
 # If your aim is to produce a PDF document such as a thesis or journal
 # article, you may prefer to write LaTeX directly.
@@ -260,14 +266,14 @@ output: html_notebook
 # document. It is based on Markdown. It is implemented in the R package
 # `rmarkdown`, and builds on a package called `knitr` by Yihui Xie.
 
+# **Quarto** is an overhaul of R Markdown released in 2022 by Posit, the
+# authors of RStudio. It has many useful features, including features
+# for working on larger projects such as books and websites, and
+# improved layout such as figures that span the whole width of the page.
+
 # **Bookdown** is a package that lets you write large documents spanning
 # multiple files, such as whole books. However also consider the newer
 # Quarto system.
-
-# **Quarto** is an overhaul of R Markdown released in 2022 by Posit, the
-# authors of RStudio. It has many useful features, including features
-# for working on larger projects such as books and websites. It is not
-# necessary to use Quarto, but it is worth a look.
 
 # **Markdown** is a concise language for producing nicely formatted
 # documents. It can be converted to formats such as HTML and PDF, using

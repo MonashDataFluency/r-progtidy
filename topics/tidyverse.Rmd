@@ -147,11 +147,15 @@ summarize(scoretab, average_score=mean(score))
 
 ::: {.omit}
 In this, `average_score` is used to name the new column. Any summary function could be used in place of `mean`, such as `sum`, `median`, `sd`.
-
-We really want to summarize the data grouped by file, so we can see if there are any particularly bad files. This is achieved using the `group_by` "adjective". `group_by` gives the data frame a grouping using one or more columns, which modifies the subsequent call to `summarize`.
 :::
 
-`summarize` when used with `group_by` turns each group of rows into a single row:
+We really want to summarize the data grouped by file, so we can see if there are any particularly bad files. This is achieved using the `.by` argument, which names a column or columns to group by. Each group will then produce a single row in the output:
+
+```{r}
+summarize(scoretab, average_score=mean(score), .by=file)
+```
+
+For completeness, we should also mention an older way of doing this with the `group_by` helper function, which associates a grouping with the tibble:
 
 ```{r}
 group_by(scoretab, file)
@@ -159,12 +163,10 @@ group_by(scoretab, file)
 summarize(group_by(scoretab, file), average_score=mean(score))
 ```
 
-::: {.omit}
-The special function `n()` can be used within `summarize` to get the number of rows. (This also works in `mutate`, but is most useful in `summarize`.)
-:::
+The special function `n()` can be used within `dplyr` verbs such as `summarize` to get the number of rows.
 
 ```{r}
-summarize(group_by(scoretab, grade), count=n())
+summarize(scoretab, count=n(), .by=grade)
 ```
 
 ::: {.omit}
@@ -172,15 +174,33 @@ summarize(group_by(scoretab, grade), count=n())
 
 **See also:** `table` and `tapply` in base R.
 
-**Tip:** `group_by` also affects other verbs, such as mutate. This is more advanced than we will be going into today. Grouping can be removed with `ungroup`.
+**Tip:** Other verbs also have a `.by` argument or can be used with `group_by`, such as mutate. This is more advanced than we will be going into today. Grouping with `group_by` can be removed with `ungroup`.
+
+**Tip:** You can group by multiple columns using `c( )`, for example `.by=c(file, grade)`.
 :::
 
 ## The pipe |>
 
-We often want to string together a series of `dplyr` functions. This is achieved using R's pipe operator, `|>`. This takes the value on the left, and passes it as the first argument to the function call on the right. So the previous summarization could be written:
+Suppose we wanted to sort the files by their average score. We could write:
 
 ```{r eval=FALSE}
-scoretab |> group_by(grade) |> summarize(count=n())
+arrange(summarize(scoretab, average_score=mean(score), .by=file), average_score)
+```
+
+Writing code like this quickly gets confusing! 
+
+We often want to take the result of one `dplyr` function and feed it into another, and another. R's pipe operator, `|>`, provides a more readable way to tod this. The pipe operator takes the value on the left, and passes it as the first argument to the function call on the right. So instead we could write:
+
+```{r eval=FALSE}
+scoretab |> summarize(average_score=mean(score), .by=file) |> arrange(average_score)
+```
+
+For readability we will often write a pipeline over several lines:
+
+```{r}
+scoretab |> 
+    summarize(average_score=mean(score), .by=file) |> 
+    arrange(average_score)
 ```
 
 In older books and web pages you may see `%>%` used instead of `|>`. This is a predecessor to the now standardized R pipe, defined in the `magrittr` package.
@@ -193,16 +213,8 @@ rep(paste("hello", "world"), 5)
 "hello" |> paste("world") |> rep(5)
 ```
 
-Often for readability we will write a pipeline over several lines:
-
-```{r eval=FALSE}
-scoretab |>
-    group_by(grade) |> 
-    summarize(count=n())
-```
-
 ::: {.omit}
-The idea of adding geoms in `ggplot2` is rather like the `dplyr` pipe. The only reason pipes aren't used in `ggplot2` is that it predates `dplyr` and the invention of the pipe.
+The idea of adding geoms in `ggplot2` is rather like piping in `dplyr`. I suspect the only reason pipes aren't used in `ggplot2` is that it predates `dplyr` and the invention of the pipe.
 :::
 
 ### Challenge {.challenge}
@@ -253,7 +265,7 @@ select(bigtab, !file)
 ```
 
 ::: {.omit}
-With `filter`, `arrange`, `mutate`, `select`, `group_by`, `summarize`, and joins, we have a core vocabulary for manipulating data frames in pipelines.
+With `filter`, `arrange`, `mutate`, `select`, `summarize`, and joins, we have a core vocabulary for manipulating data frames in pipelines.
 :::
 
 # tidyr
@@ -334,7 +346,7 @@ unnest(nested, data)
 
 You receive data on a set of points. The points are in two dimensions (`dim`), and each point has x and y coordinates. Unfortunately it looks like this:
 
-```{r}
+```{r eval=FALSE}
 df <- read_csv(
     "dim, E_1, E_2, M_1, M_2, M_3, M_4, M_5
      x,   2,   4,   1,   2,   3,   4,   5
@@ -346,6 +358,19 @@ df <- read_csv(
 2. We want to plot the points as a scatter-plot, using either `plot` or `ggplot`. Pivot the long data wider so that this is possible. Now what do the rows represent?
 
 3. The data seems to be divided into "E" and "M" points. How could we make a column containing "E"s and "M"s?
+
+
+# Other Tidyverse packages
+
+They Tidyverse contains quite a few packages. Here are a few more packages I find myself using often:
+
+* `stringr` for string manipulation. Sometimes `separate` is not quite flexible enough, so I'll wrangle and disentangle strings with functions like `str_replace_all` and `str_match`.
+
+* `forcats` for manipulating factors.
+
+* `purrr` for `lapply`-like operations.
+
+* `lubridate` for date and time parsing and manipulation.
 
 
 # An RNA-Seq example

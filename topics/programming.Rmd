@@ -157,19 +157,21 @@ fahr_to_kelvin(212)
 
 ## Variations
 
-::: {.omit}
 Here are some other equivalent ways to write this function. 
 
 The braces are not actually needed if the function only contains one statement.
-:::
 
 ```{r}
 fahr_to_kelvin <- function(temp) (temp-32) * (5/9) + 273.15
 ```
 
-::: {.omit}
+Modern usage of R can involve a lot of little functions. Writing out `function` each time can become tedious, so `\` can be used as an abbreviation.
+
+```{r}
+fahr_to_kelvin <- \(temp) (temp-32) * (5/9) + 273.15
+```
+
 The body of the function within the `{}` can contain multiple lines of code, "statements". Only the last line is returned.
-:::
 
 ```{r}
 fahr_to_kelvin <- function(temp) {
@@ -178,9 +180,7 @@ fahr_to_kelvin <- function(temp) {
 }
 ```
 
-::: {.omit}
 `return` can be used to return from a function immediately. Further code will not be run.
-:::
 
 ```{r}
 fahr_to_kelvin <- function(temp) {
@@ -190,9 +190,7 @@ fahr_to_kelvin <- function(temp) {
 }
 ```
 
-::: {.omit}
 Statements in the function may be split over several lines, so long as it is clear that the statement is incomplete due to an unclosed bracket or an operator in need of a right hand argument.
-:::
 
 ```{r}
 fahr_to_kelvin <- function(temp) {
@@ -203,13 +201,11 @@ fahr_to_kelvin <- function(temp) {
 }
 ```
 
-::: {.omit}
-Spacing and layout is largely for our own sanity.
-:::
+Spacing and layout is largely for our own sanity. ಠ_ಠ
 
 ```{r}
    fahr_to_kelvin<- 
-function(
+\(
                    temp){(temp 
   -32  )*(    5 
             /9 )+ 
@@ -217,9 +213,7 @@ function(
 273.15}
 ```
 
-::: {.omit}
-Beware! however of accidentally finishing a statement early.
-:::
+Beware of accidentally finishing a statement early!
 
 ```{r}
 fahr_to_kelvin_broken <- function(temp) {
@@ -230,11 +224,9 @@ fahr_to_kelvin_broken <- function(temp) {
 fahr_to_kelvin_broken(212)
 ```
 
-::: {.omit}
 The first line in the body of the function is computed then discarded. The second line, `+ 273.15`, is valid R so we don't even get an error.
 
 Finally, the computer doesn't understand or care what names we give to functions, arguments, or variables.
-:::
 
 ```{r}
 charmander <- function(bulbasaur) {
@@ -482,6 +474,9 @@ for(day in days) {
 }
 ```
 
+::: {.omit}
+Here I explicitly listed the biological samples involved in this project, using the `days` vector. This is my personal preference for how to structure a project. If I'm working with a set of biological samples, I will often start a project by constructing a data frame with details of all the samples. An alternative would be to get all the filenames directly, for example with `Sys.glob("r-progtidy-files/*.fastq")`.
+:::
 
 ## Loading the summary.txt files
 
@@ -633,7 +628,7 @@ Our `load_fastqc` function will currently fail in a confusing way if it is given
 load_fastqc("Day0_fastqc/fastqc_data.txt")
 ```
 
-It's best to stop as soon as something goes wrong, and with an informative error message.
+It's best to stop as soon as something goes wrong, with an informative error message.
 
 ```{r error=TRUE}
 load_fastqc <- function(filename) {
@@ -703,14 +698,16 @@ Similarly, if you are going to be doing several different things with a data set
 I like to organize large projects into multiple folders:
 
 ```
-/raw        Raw data (do not edit!)
-/output     Output files
-/scripts    R scripts
-/reports    Reports in R Markdown
+/raw        Raw data     (Do not edit!)
+/output     Output files (Fine to delete!)
+/R          R scripts
+/reports    Reports in R Markdown or Quarto
 README.txt
 ```
 
 Use version control, such as Git + GitHub.
+
+Use `renv` to manage installed packages per project, and keep track of the exact versions of packages you've used. Also `rig` can be used to manage R versions.
 
 Some tips I've gathered:
 
@@ -720,7 +717,7 @@ Some tips I've gathered:
 
 * Some people like `workflowr`, which automates working on a large project.
 
-* The `here` package is useful when you have multiple folders.
+* The `here` package is useful when you have multiple folders and are using R Markdown. If using Quarto, it can be configured to always use the project folder as the working directory.
 
 See also Software Carpentry's list of best practices in R: http://swcarpentry.github.io/r-novice-inflammation/06-best-practices-R/
 
@@ -796,7 +793,8 @@ Once a package is mature and well documented, it can be submitted to CRAN or Bio
 **Bioconductor submissions:** Bioconductor is for packages that deal with large biology-related datasets. Packages should make use of existing Bioconductor data types and infrastructure where possible. Bioconductor has some additional automated checks you will need to pass. The initial review process is more intensive than CRAN's and happens in GitHub, so some familiarity with git will be necessary. Once the package is accepted, changes can be pushed to the Bioconductor git repositories without further manual review. You are also expected to be available to answer questions on their Stack Overflow-style support site and subscribe to the developer mailing list.
 
 ```{r}
-# (Recording the R version and versions of packages used improves reproducibility.)
+# Recording the R version and versions of packages used improves reproducibility.
+# See also: renv
 sessionInfo()
 ```
 

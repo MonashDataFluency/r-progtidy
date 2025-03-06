@@ -99,8 +99,23 @@ fahr_to_kelvin(212)
 ## _____________________
 ## ----> Variations ----
 
+# Here are some other equivalent ways to write this function.
+
+# The braces are not actually needed if the function only contains one
+# statement.
+
 fahr_to_kelvin <- function(temp) (temp-32) * (5/9) + 273.15
 
+
+# Modern usage of R can involve a lot of little functions. Writing out
+# `function` each time can become tedious, so `\` can be used as an
+# abbreviation.
+
+fahr_to_kelvin <- \(temp) (temp-32) * (5/9) + 273.15
+
+
+# The body of the function within the `{}` can contain multiple lines of
+# code, "statements". Only the last line is returned.
 
 fahr_to_kelvin <- function(temp) {
     kelvin <- (temp-32) * (5/9) + 273.15
@@ -108,12 +123,19 @@ fahr_to_kelvin <- function(temp) {
 }
 
 
+# `return` can be used to return from a function immediately. Further
+# code will not be run.
+
 fahr_to_kelvin <- function(temp) {
     kelvin <- (temp-32) * (5/9) + 273.15
     return(kelvin)
     plot(1:10)
 }
 
+
+# Statements in the function may be split over several lines, so long as
+# it is clear that the statement is incomplete due to an unclosed
+# bracket or an operator in need of a right hand argument.
 
 fahr_to_kelvin <- function(temp) {
     kelvin <-
@@ -123,14 +145,18 @@ fahr_to_kelvin <- function(temp) {
 }
 
 
+# Spacing and layout is largely for our own sanity. ಠ_ಠ
+
    fahr_to_kelvin<-
-function(
+\(
                    temp){(temp
   -32  )*(    5
             /9 )+
 
 273.15}
 
+
+# Beware of accidentally finishing a statement early!
 
 fahr_to_kelvin_broken <- function(temp) {
     (temp-32) * (5/9)
@@ -139,6 +165,12 @@ fahr_to_kelvin_broken <- function(temp) {
 
 fahr_to_kelvin_broken(212)
 
+
+# The first line in the body of the function is computed then discarded.
+# The second line, `+ 273.15`, is valid R so we don't even get an error.
+
+# Finally, the computer doesn't understand or care what names we give to
+# functions, arguments, or variables.
 
 charmander <- function(bulbasaur) {
     mew <- (bulbasaur-32) * (5/9) + 273.15
@@ -436,8 +468,8 @@ table(bigtab$test, bigtab$grade)
 load_fastqc("Day0_fastqc/fastqc_data.txt")
 
 
-# It's best to stop as soon as something goes wrong, and with an
-# informative error message.
+# It's best to stop as soon as something goes wrong, with an informative
+# error message.
 
 load_fastqc <- function(filename) {
     # Load file
@@ -498,14 +530,18 @@ source("fastqc.R", local=TRUE)
 
 # I like to organize large projects into multiple folders:
 
-/raw        Raw data (do not edit!)
-/output     Output files
-/scripts    R scripts
-/reports    Reports in R Markdown
+/raw        Raw data     (Do not edit!)
+/output     Output files (Fine to delete!)
+/R          R scripts
+/reports    Reports in R Markdown or Quarto
 README.txt
 
 
 # Use version control, such as Git + GitHub.
+
+# Use `renv` to manage installed packages per project, and keep track of
+# the exact versions of packages you've used. Also `rig` can be used to
+# manage R versions.
 
 # Some tips I've gathered:
 
@@ -520,7 +556,9 @@ README.txt
 # * Some people like `workflowr`, which automates working on a large
 # project.
 
-# * The `here` package is useful when you have multiple folders.
+# * The `here` package is useful when you have multiple folders and are
+# using R Markdown. If using Quarto, it can be configured to always use
+# the project folder as the working directory.
 
 # See also Software Carpentry's list of best practices in R:
 # http://swcarpentry.github.io/r-novice-inflammation/06-best-practices-R/
@@ -613,6 +651,7 @@ remotes::install_github("myusername/mypack")
 # Overflow-style support site and subscribe to the developer mailing
 # list.
 
-# (Recording the R version and versions of packages used improves reproducibility.)
+# Recording the R version and versions of packages used improves reproducibility.
+# See also: renv
 sessionInfo()
 
