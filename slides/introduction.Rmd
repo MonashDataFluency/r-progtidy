@@ -270,6 +270,32 @@ addup( c(3,5,9,7) )
 </td></tr>
 </table>
 
+## LLMs such as ChatGPT
+
+::: {style="float: right; border-radius: 10px; background: #eee; margin-left: 20px; margin-bottom: 20px; padding: 10px; width: 400px;"}
+Write some R code to ...
+
+Please explain this code ...
+
+Suggest a package to ...
+:::
+
+* Have seen *a lot* of R and tidyverse code in their training data.
+* Can **mimic and adapt** their training data to solve your problem.
+* Can try to **explain** what code does.
+* Can **suggest** relevant packages and functions.
+
+May
+
+* Talk **nonsense**.<br>(I'm especially distrustful on difficult statistical concepts.)
+* Suggest things that are slightly out of date.
+
+You should also
+
+* Mess around with suggested code to understand it better.
+* Read the documentation.
+* Build a mental model.
+
 ##
 
 (do programming section)
