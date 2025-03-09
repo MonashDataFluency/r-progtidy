@@ -1571,6 +1571,8 @@ setting up for this workshop, you won’t need to do it again now.</p>
 <pre class="r"><code>vignette()
 vignette(package=&quot;dplyr&quot;)
 vignette(&quot;dplyr&quot;, package=&quot;dplyr&quot;)</code></pre>
+<p>Many packages also have more extensive vignettes on their own web
+page.</p>
 <p>We will continue using the FastQC output data frame. If you’re
 starting fresh for this lesson, load it with:</p>
 <pre class="r"><code>bigtab &lt;- read_csv(&quot;r-progtidy-files/fastqc.csv&quot;)</code></pre>
@@ -1995,10 +1997,7 @@ to tidy. In a tidy data frame:</p>
 <li>each column is a single piece of information</li>
 </ul>
 <div class="omit">
-<p>I’m not convinced <code>tidyr</code> is a great package, but the
-<em>ideas</em> behind it are very important. <code>dplyr</code> uses
-magic arguments to produce beautiful R code, but in <code>tidyr</code>
-it gets a bit confusing. Anyway, let’s work through a toy example:</p>
+<p>Let’s work through a toy example:</p>
 </div>
 <pre class="r"><code>untidy &lt;- read_csv(
     &quot;country,     male-young, male-old, female-young, female-old
@@ -2049,7 +2048,7 @@ columns into many columns, which generally makes data less tidy but is
 sometimes necessary. A common application is producing a scatter plot,
 where the x and y axes need to be two different columns even though they
 measure the same type of thing. Data may also be easier to look at in a
-table in spread form.</p>
+table in wide form.</p>
 <pre class="r"><code>pivot_wider(longer, names_from=group, values_from=cases)</code></pre>
 <pre><code>## # A tibble: 2 × 5
 ##   country     `male-young` `male-old` `female-young` `female-old`
@@ -2148,7 +2147,7 @@ we make a column containing “E”s and “M”s?</p></li>
 </div>
 <div id="other-tidyverse-packages" class="section level1">
 <h1>Other Tidyverse packages</h1>
-<p>They Tidyverse contains quite a few packages. Here are a few more
+<p>The Tidyverse contains quite a few packages. Here are a few more
 packages I find myself using often:</p>
 <ul>
 <li><p><code>stringr</code> for string manipulation. Sometimes
@@ -2161,6 +2160,8 @@ operations.</p></li>
 <li><p><code>lubridate</code> for date and time parsing and
 manipulation.</p></li>
 </ul>
+<p>I also like the <code>arrow</code> package for working with large
+data in parquet format using <code>dplyr</code> functions.</p>
 </div>
 <div id="an-rna-seq-example" class="section level1">
 <h1>An RNA-Seq example</h1>
@@ -2200,7 +2201,7 @@ counts_untidy &lt;- read_csv(&quot;r-progtidy-files/read-counts.csv&quot;)</code
     pivot_longer(cols=!Feature, names_to=&quot;sample&quot;, values_to=&quot;count&quot;) |&gt;
     separate(sample, sep=&quot;:&quot;, into=c(&quot;strain&quot;,&quot;time&quot;), convert=TRUE, remove=FALSE) |&gt;
     mutate(
-        sample = factor(sample, levels=unique(sample)),
+        sample = fct_inorder(sample),
         strain = factor(strain, levels=c(&quot;WT&quot;,&quot;SET1&quot;,&quot;RRP6&quot;,&quot;SET1-RRP6&quot;))
     ) |&gt;
     filter(time &gt;= 2) |&gt;

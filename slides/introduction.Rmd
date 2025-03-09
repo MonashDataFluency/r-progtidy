@@ -380,17 +380,17 @@ Example from: [Wickham, H. (2015) Tidy data. The Journal of Statistical Software
 
 <img src="../figures/tidy.png" height="450">
 
-("melt" = "gather" = "pivot_long")
+("melt" = "gather" = "pivot_longer")
 
 ## Learning more
 
 <img src="../figures/r4ds.png" style="float: right; width: 300px;">
 
-["R for Data Science" by Garret Grolemund and Hadley Wickham](https://r4ds.had.co.nz/)
+["R for Data Science" book](https://r4ds.hadley.nz/)
 
 * good general introduction, more detail on most topics covered today
 
-[RStudio's cheat sheets](https://www.rstudio.com/resources/cheatsheets/)
+[Posit's cheat sheets](https://posit.co/resources/cheatsheets/)
 
 * good to discover what exists
 

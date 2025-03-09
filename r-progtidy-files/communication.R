@@ -30,16 +30,16 @@ ggplot(bigtab, aes(x=file,y=test,fill=grade)) +
 # categorical aesthetics, usually the first step is ensuring the
 # relevant column is a factor with a meaningful level order.
 
-# Put x axis in order first found in data frame
-x_order <- unique(bigtab$file)
-bigtab$file <- factor(bigtab$file, levels=x_order)
+# Use a forcats function to put x axis in order first found in data frame,
+bigtab$file <- fct_inorder(bigtab$file)
 
+# Manually order the grades.
 # Only necessary if not continuing from previous lesson on programming!
 color_order <- c("FAIL", "WARN", "PASS")
 bigtab$grade <- factor(bigtab$grade, levels=color_order)
 
 myplot <- ggplot(bigtab, aes(x=file, y=test, fill=grade)) +
-    geom_tile(color="black", size=0.5) +           # Black border on tiles
+    geom_tile(color="black", linewidth=0.5) +      # Black border on tiles
     scale_y_discrete(limits=rev) +                 # Flip the y axis
     scale_fill_manual(                             # Colors, as color hex codes
         values=c("#D81B60","#FFC107","#1E88E5")) +
@@ -129,13 +129,18 @@ quarto::quarto_render("report.qmd")
 # https://bookdown.org/yihui/rmarkdown/r-code.html
 
 # More on chunk options in Quarto:
-# https://quarto.org/docs/computations/r.html
+# https://quarto.org/docs/reference/cells/cells-knitr.html
+
+# Quarto accepts either the old R Markdown style chunk options or a new
+# type of option using lines starting with "#|". Out of habit and a
+# desire for conciseness, I've generally been continuing to use the old
+# style.
 
 ### _____________________
 ### ---->> Challenge ----
 # 1. Add a code chunk to produce the plot from the previous section.
-# 2. Adjust output of messages and warnings, and whether the code is
-# shown.
+# 2. Use the gear icon to adjust output of messages and warnings and
+# whether the code is shown.
 #
 ## ___________________
 ## ----> Markdown ----

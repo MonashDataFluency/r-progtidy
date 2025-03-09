@@ -23,6 +23,9 @@ vignette(package="dplyr")
 vignette("dplyr", package="dplyr")
 
 
+# Many packages also have more extensive vignettes on their own web
+# page.
+
 # We will continue using the FastQC output data frame. If you're
 # starting fresh for this lesson, load it with:
 
@@ -262,7 +265,7 @@ longer
 # A common application is producing a scatter plot, where the x and y
 # axes need to be two different columns even though they measure the
 # same type of thing. Data may also be easier to look at in a table in
-# spread form.
+# wide form.
 
 pivot_wider(longer, names_from=group, values_from=cases)
 
@@ -323,7 +326,7 @@ df <- read_csv(
 # __________________________________
 # ==== Other Tidyverse packages ====
 
-# They Tidyverse contains quite a few packages. Here are a few more
+# The Tidyverse contains quite a few packages. Here are a few more
 # packages I find myself using often:
 
 # * `stringr` for string manipulation. Sometimes `separate` is not quite
@@ -335,6 +338,9 @@ df <- read_csv(
 # * `purrr` for `lapply`-like operations.
 
 # * `lubridate` for date and time parsing and manipulation.
+
+# I also like the `arrow` package for working with large data in parquet
+# format using `dplyr` functions.
 
 # ____________________________
 # ==== An RNA-Seq example ====
@@ -353,7 +359,7 @@ counts <- counts_untidy |>
     pivot_longer(cols=!Feature, names_to="sample", values_to="count") |>
     separate(sample, sep=":", into=c("strain","time"), convert=TRUE, remove=FALSE) |>
     mutate(
-        sample = factor(sample, levels=unique(sample)),
+        sample = fct_inorder(sample),
         strain = factor(strain, levels=c("WT","SET1","RRP6","SET1-RRP6"))
     ) |>
     filter(time >= 2) |>

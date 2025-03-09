@@ -33,6 +33,7 @@ vignette(package="dplyr")
 vignette("dplyr", package="dplyr")
 ```
 
+Many packages also have more extensive vignettes on their own web page.
 
 We will continue using the FastQC output data frame. If you're starting fresh for this lesson, load it with:
 
@@ -276,7 +277,7 @@ With `filter`, `arrange`, `mutate`, `select`, `summarize`, and joins, we have a 
 * each column is a single piece of information
 
 ::: {.omit}
-I'm not convinced `tidyr` is a great package, but the *ideas* behind it are very important. `dplyr` uses magic arguments to produce beautiful R code, but in `tidyr` it gets a bit confusing. Anyway, let's work through a toy example:
+Let's work through a toy example:
 :::
 
 ```{r}
@@ -299,7 +300,7 @@ We give a data frame, a specification of columns to use (`cols=`), a column to p
 :::
 
 `pivot_wider` is the opposite operation, spreading two columns into many columns, which generally makes data less tidy but is sometimes necessary. 
-A common application is producing a scatter plot, where the x and y axes need to be two different columns even though they measure the same type of thing. Data may also be easier to look at in a table in spread form.
+A common application is producing a scatter plot, where the x and y axes need to be two different columns even though they measure the same type of thing. Data may also be easier to look at in a table in wide form.
 
 ```{r}
 pivot_wider(longer, names_from=group, values_from=cases)
@@ -362,7 +363,7 @@ df <- read_csv(
 
 # Other Tidyverse packages
 
-They Tidyverse contains quite a few packages. Here are a few more packages I find myself using often:
+The Tidyverse contains quite a few packages. Here are a few more packages I find myself using often:
 
 * `stringr` for string manipulation. Sometimes `separate` is not quite flexible enough, so I'll wrangle and disentangle strings with functions like `str_replace_all` and `str_match`.
 
@@ -371,6 +372,8 @@ They Tidyverse contains quite a few packages. Here are a few more packages I fin
 * `purrr` for `lapply`-like operations.
 
 * `lubridate` for date and time parsing and manipulation.
+
+I also like the `arrow` package for working with large data in parquet format using `dplyr` functions.
 
 
 # An RNA-Seq example
@@ -397,7 +400,7 @@ counts <- counts_untidy |>
     pivot_longer(cols=!Feature, names_to="sample", values_to="count") |>
     separate(sample, sep=":", into=c("strain","time"), convert=TRUE, remove=FALSE) |>
     mutate(
-        sample = factor(sample, levels=unique(sample)),
+        sample = fct_inorder(sample),
         strain = factor(strain, levels=c("WT","SET1","RRP6","SET1-RRP6"))
     ) |>
     filter(time >= 2) |>
