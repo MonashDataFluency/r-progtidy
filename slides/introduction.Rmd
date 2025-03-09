@@ -41,7 +41,7 @@ We will be focussing on the modern [Tidyverse](https://tidyverse.org) approach.
 
 ## Analysis cycle
 
-From the ["R for Data Science" book](http://r4ds.had.co.nz/)
+From the ["R for Data Science" book](https://r4ds.hadley.nz/)
 
 <img src="../figures/data-science.png" height="285">
 
