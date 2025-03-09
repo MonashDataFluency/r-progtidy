@@ -173,8 +173,8 @@ fahr_to_kelvin_broken(212)
 # functions, arguments, or variables.
 
 charmander <- function(bulbasaur) {
-    mew <- (bulbasaur-32) * (5/9) + 273.15
-    mew
+    snorlax <- (bulbasaur-32) * (5/9) + 273.15
+    snorlax
 }
 
 
@@ -401,10 +401,14 @@ filenames
 sumtabs <- lapply(filenames, load_fastqc)
 
 
-# Using `lapply` is "functional programming", where we define a series
-# of objects by using functions on earlier objects. In this approach
-# objects are never modified once created. Sometimes the objects used
-# are themselves functions.
+# Using functions like `lapply` is part of an approach to writing
+# software called "functional programming". With functional programming,
+# a program consists of a series of definitions. These might each be new
+# functions or new data. Doing this, we can refer back to functions and
+# data we defined earlier, but we *never modify* things we created
+# earlier. Also important to this approach is treating functions like
+# other data, so we can have functions that take other functions as
+# arguments.
 
 # See also: `purrr` package.
 
@@ -543,7 +547,11 @@ README.txt
 # the exact versions of packages you've used. Also `rig` can be used to
 # manage R versions.
 
-# Some tips I've gathered:
+# Raw data files should have an accompanying "data dictionary",
+# describing exactly what the columns of the file mean and any special
+# values, such as how missing values are represented.
+
+# Some further tips I've gathered:
 
 # * Working on a project is iterative. Sometimes we put code for
 # multiple approaches side by side. Sometimes we use version control
@@ -561,9 +569,7 @@ README.txt
 # the project folder as the working directory.
 
 # See also Software Carpentry's list of best practices in R:
-# http://swcarpentry.github.io/r-novice-inflammation/06-best-practices-R/
-
-# See also Data Fluency workshop "Introduction to Data Organization."
+# https://swcarpentry.github.io/r-novice-inflammation/06-best-practices-R.html
 
 # __________________
 # ==== Packages ====

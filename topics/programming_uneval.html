@@ -1738,8 +1738,8 @@ don’t even get an error.</p>
 <p>Finally, the computer doesn’t understand or care what names we give
 to functions, arguments, or variables.</p>
 <pre class="r"><code>charmander &lt;- function(bulbasaur) {
-    mew &lt;- (bulbasaur-32) * (5/9) + 273.15
-    mew
+    snorlax &lt;- (bulbasaur-32) * (5/9) + 273.15
+    snorlax
 }</code></pre>
 </div>
 <div id="composing-functions" class="section level2">
@@ -2064,8 +2064,7 @@ function repeatedly on subsets of a data set. Some examples are
 <code>apply</code>, <code>lapply</code>, <code>vapply</code>, and
 <code>tapply</code>. <code>apply</code> itself is for use with matrices
 and usually produces a vector as output. Other functions in this family
-have different input and output types. Writing code that makes use of
-this type of function is called “functional programming”.</p>
+have different input and output types.</p>
 <p>The flavour of apply we need here is <code>lapply</code>, which takes
 a vector and calls a function on each element in turn of that vector
 (i.e. the “subsets” here are simply individual elements). The result is
@@ -2079,10 +2078,14 @@ filenames</code></pre>
 <p>Now we can use <code>lapply</code> to apply our function to each of
 the filenames.</p>
 <pre class="r"><code>sumtabs &lt;- lapply(filenames, load_fastqc)</code></pre>
-<p>Using <code>lapply</code> is “functional programming”, where we
-define a series of objects by using functions on earlier objects. In
-this approach objects are never modified once created. Sometimes the
-objects used are themselves functions.</p>
+<p>Using functions like <code>lapply</code> is part of an approach to
+writing software called “functional programming”. With functional
+programming, a program consists of a series of definitions. These might
+each be new functions or new data. Doing this, we can refer back to
+functions and data we defined earlier, but we <em>never modify</em>
+things we created earlier. Also important to this approach is treating
+functions like other data, so we can have functions that take other
+functions as arguments.</p>
 <p>See also: <code>purrr</code> package.</p>
 <p>An alternative would be to use a for loop. Using a for loop is
 “procedural programming”, where the result is modified step by step
@@ -2207,7 +2210,10 @@ README.txt</code></pre>
 <p>Use <code>renv</code> to manage installed packages per project, and
 keep track of the exact versions of packages you’ve used. Also
 <code>rig</code> can be used to manage R versions.</p>
-<p>Some tips I’ve gathered:</p>
+<p>Raw data files should have an accompanying “data dictionary”,
+describing exactly what the columns of the file mean and any special
+values, such as how missing values are represented.</p>
+<p>Some further tips I’ve gathered:</p>
 <ul>
 <li><p>Working on a project is iterative. Sometimes we put code for
 multiple approaches side by side. Sometimes we use version control
@@ -2221,9 +2227,7 @@ on a large project.</p></li>
 folders and are using R Markdown. If using Quarto, it can be configured
 to always use the project folder as the working directory.</p></li>
 </ul>
-<p>See also Software Carpentry’s list of best practices in R: <a href="http://swcarpentry.github.io/r-novice-inflammation/06-best-practices-R/" class="uri">http://swcarpentry.github.io/r-novice-inflammation/06-best-practices-R/</a></p>
-<p>See also Data Fluency workshop “Introduction to Data
-Organization.”</p>
+<p>See also Software Carpentry’s list of best practices in R: <a href="https://swcarpentry.github.io/r-novice-inflammation/06-best-practices-R.html" class="uri">https://swcarpentry.github.io/r-novice-inflammation/06-best-practices-R.html</a></p>
 </div>
 <div id="packages" class="section level1">
 <h1>Packages</h1>

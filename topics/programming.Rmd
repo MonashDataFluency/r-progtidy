@@ -230,8 +230,8 @@ Finally, the computer doesn't understand or care what names we give to functions
 
 ```{r}
 charmander <- function(bulbasaur) {
-    mew <- (bulbasaur-32) * (5/9) + 273.15
-    mew
+    snorlax <- (bulbasaur-32) * (5/9) + 273.15
+    snorlax
 }
 ```
 
@@ -547,7 +547,7 @@ load_fastqc("Day0_fastqc/summary.txt")
 ## Applying the function
 
 ::: {.omit}
-We now want to load each of the `summary.txt` files we created earlier. To do this we're going to use an "apply"-style function. "apply"-style functions are functions that call some other function repeatedly on subsets of a data set. Some examples are `apply`, `lapply`, `vapply`, and `tapply`. `apply` itself is for use with matrices and usually produces a vector as output. Other functions in this family have different input and output types. Writing code that makes use of this type of function is called "functional programming".
+We now want to load each of the `summary.txt` files we created earlier. To do this we're going to use an "apply"-style function. "apply"-style functions are functions that call some other function repeatedly on subsets of a data set. Some examples are `apply`, `lapply`, `vapply`, and `tapply`. `apply` itself is for use with matrices and usually produces a vector as output. Other functions in this family have different input and output types.
 
 The flavour of apply we need here is `lapply`, which takes a vector and calls a function on each element in turn of that vector (i.e. the "subsets" here are simply individual elements). The result is a list containing the returned values, hence the name `lapply`.
 :::
@@ -567,7 +567,7 @@ Now we can use `lapply` to apply our function to each of the filenames.
 sumtabs <- lapply(filenames, load_fastqc)
 ```
 
-Using `lapply` is "functional programming", where we define a series of objects by using functions on earlier objects. In this approach objects are never modified once created. Sometimes the objects used are themselves functions.
+Using functions like `lapply` is part of an approach to writing software called "functional programming". With functional programming, a program consists of a series of definitions. These might each be new functions or new data. Doing this, we can refer back to functions and data we defined earlier, but we *never modify* things we created earlier. Also important to this approach is treating functions like other data, so we can have functions that take other functions as arguments.
 
 See also: `purrr` package.
 
@@ -709,7 +709,9 @@ Use version control, such as Git + GitHub.
 
 Use `renv` to manage installed packages per project, and keep track of the exact versions of packages you've used. Also `rig` can be used to manage R versions.
 
-Some tips I've gathered:
+Raw data files should have an accompanying "data dictionary", describing exactly what the columns of the file mean and any special values, such as how missing values are represented.
+
+Some further tips I've gathered:
 
 * Working on a project is iterative. Sometimes we put code for multiple approaches side by side. Sometimes we use version control features such as branches.
 
@@ -719,9 +721,7 @@ Some tips I've gathered:
 
 * The `here` package is useful when you have multiple folders and are using R Markdown. If using Quarto, it can be configured to always use the project folder as the working directory.
 
-See also Software Carpentry's list of best practices in R: http://swcarpentry.github.io/r-novice-inflammation/06-best-practices-R/
-
-See also Data Fluency workshop "Introduction to Data Organization."
+See also Software Carpentry's list of best practices in R: https://swcarpentry.github.io/r-novice-inflammation/06-best-practices-R.html
 
 
 # Packages

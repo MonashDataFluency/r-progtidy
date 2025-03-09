@@ -281,7 +281,7 @@ Suggest a package to ...
 :::
 
 * Have seen *a lot* of R and tidyverse code in their training data.
-* Can **mimic and adapt** their training data to solve your problem.
+* Can **mimic and adapt** code they've seen to solve your problem.
 * Can try to **explain** what code does.
 * Can **suggest** relevant packages and functions.
 
