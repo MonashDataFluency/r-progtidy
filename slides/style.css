@@ -6,3 +6,7 @@ h1,h2,h3, .title-slide hgroup h1 {
 strong, b {
     color: #0b8;
 }
+
+article {
+    margin-top: 20px !important;
+}
