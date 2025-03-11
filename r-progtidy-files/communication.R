@@ -30,7 +30,7 @@ ggplot(bigtab, aes(x=file,y=test,fill=grade)) +
 # categorical aesthetics, usually the first step is ensuring the
 # relevant column is a factor with a meaningful level order.
 
-# Use a forcats function to put x axis in order first found in data frame,
+# Use a forcats function to put x axis in order first found in data frame.
 bigtab$file <- fct_inorder(bigtab$file)
 
 # Manually order the grades.
@@ -71,8 +71,8 @@ ggsave("plot-good.png", myplot, width=5,  height=5,  dpi=600)
 
 # It may be necessary to edit a plot further in a program such as
 # Inkscape or Adobe Illustrator. To allow this, the image needs to be
-# saved in a "vector" format such as SVG, EPS, or PDF. In this case, the
-# DPI argument isn't needed.
+# saved in a "vector" format such as SVG or PDF. In this case, the DPI
+# argument isn't needed.
 
 # _________________________________________
 # ==== R Markdown and Quarto documents ====
@@ -121,20 +121,16 @@ quarto::quarto_render("report.qmd")
 ```
 
 
-# Code chunks can have options included in the curly brackets. In
-# RStudio, click on the gear icon in the upper right of the code chunk
-# to seem some options.
+# Code chunks can have options included in the curly brackets. Quarto
+# also adds a new style of options using lines inside the chunk starting
+# with "#|". In RStudio, click on the gear icon in the upper right of
+# the code chunk to seem some options.
 
 # More on chunk options:
 # https://bookdown.org/yihui/rmarkdown/r-code.html
 
 # More on chunk options in Quarto:
 # https://quarto.org/docs/reference/cells/cells-knitr.html
-
-# Quarto accepts either the old R Markdown style chunk options or a new
-# type of option using lines starting with "#|". Out of habit and a
-# desire for conciseness, I've generally been continuing to use the old
-# style.
 
 ### _____________________
 ### ---->> Challenge ----

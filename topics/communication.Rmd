@@ -18,7 +18,7 @@ bigtab <- read_csv("r-progtidy-files/fastqc.csv")
 # Publication quality ggplot2
 
 ::: {.omit}
-[ggplot2 is covered in our introductory R workshop](https://monashdatafluency.github.io/r-intro-2/plotting-with-ggplot2.html). Recall that we could assign columns of a data frame to aesthetics--x and y position, color, etc--and then add "geom"s to draw the data.
+[ggplot2 is covered in our introductory R workshop](https://monashdatafluency.github.io/r-intro-2/plotting.html). Recall that we could assign columns of a data frame to aesthetics--x and y position, color, etc--and then add "geom"s to draw the data.
 :::
 
 With `ggplot2` we can view the whole data set.
@@ -40,7 +40,7 @@ ggplot(bigtab, aes(x=file,y=test,fill=grade)) +
 `ggplot2` offers a very wide variety of ways to adjust a plot. For categorical aesthetics, usually the first step is ensuring the relevant column is a factor with a meaningful level order.
 
 ```{r}
-# Use a forcats function to put x axis in order first found in data frame, 
+# Use a forcats function to put x axis in order first found in data frame.
 bigtab$file <- fct_inorder(bigtab$file)
 
 # Manually order the grades.
@@ -76,7 +76,7 @@ ggsave("plot-bad.png",  myplot, width=10, height=10, dpi=300)
 ggsave("plot-good.png", myplot, width=5,  height=5,  dpi=600)
 ```
 
-It may be necessary to edit a plot further in a program such as Inkscape or Adobe Illustrator. To allow this, the image needs to be saved in a "vector" format such as SVG, EPS, or PDF. In this case, the DPI argument isn't needed.
+It may be necessary to edit a plot further in a program such as Inkscape or Adobe Illustrator. To allow this, the image needs to be saved in a "vector" format such as SVG or PDF. In this case, the DPI argument isn't needed.
 
 
 # R Markdown and Quarto documents
@@ -136,13 +136,12 @@ Further code chunks can be included:
 `r ''````
 ````
 
-Code chunks can have options included in the curly brackets. In RStudio, click on the gear icon in the upper right of the code chunk to seem some options.
+Code chunks can have options included in the curly brackets. Quarto also adds a new style of options using lines inside the chunk starting with "#|". In RStudio, click on the gear icon in the upper right of the code chunk to seem some options.
 
 More on chunk options: https://bookdown.org/yihui/rmarkdown/r-code.html
 
 More on chunk options in Quarto: https://quarto.org/docs/reference/cells/cells-knitr.html
 
-Quarto accepts either the old R Markdown style chunk options or a new type of option using lines starting with "#|". Out of habit and a desire for conciseness, I've generally been continuing to use the old style.
 
 
 ### Challenge {.challenge}
