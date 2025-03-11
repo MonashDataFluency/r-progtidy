@@ -57,3 +57,26 @@ First day we did programming section, ran a little under time. There is always s
 
 Second day we did communication and tidyverse sections, finished nicely on time.
 
+
+----
+
+In person run of r-progtidy over two afternoons, 2025-03-10/11, with 14 attendees.
+
+We allocated 12:30 - 5:00pm for the workshop on both days, with two breaks. This was just a little long, see below.
+
+We encouraged people to run R locally if they could, but this did mean several people couldn't run FastQC.
+
+Day 1:
+
+- Began at 12:30.
+- 10 minute break at 1:40. We're mid-way through functions.
+- 20 minute break at 3:00. About to start the practical programming exercise.
+- Finished at 4:37pm.
+
+Day 2:
+
+- Began a little after 12:30.
+- 10 minute break at 1:40. We've finished the communication section.
+- 20 minute break at 3:00. After the break we did the final challenge with pivoting.
+- Finished 4:15.
+

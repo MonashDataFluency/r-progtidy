@@ -393,28 +393,43 @@ ggplot(counts, aes(x=log2(count), group=sample)) +
 
 # The gene SRP68 was included as a control housekeeping gene. Its
 # expression level should be the same in all samples. We will divide
-# counts in each sample by the count for SRP68 to correct for library
-# size, then log-transform the data. We add a small constant when
-# log-transforming so that zeros do not become negative infinity (as if
-# adding 1 further read count to an average sample).
+# counts in each sample by a normalization amount to make the normalized
+# count for SRP68 the same in each sample.
+
+counts |> filter(gene == "SRP68") |> pull(count) |> summary()
+
+
+# We see SRP68 has a typical count of around 1500. Let's normalize so
+# each SRP68 has a count of exactly 1500 in each sample, and then log
+# transform. When log transforming I use log2(norm_count+1). This means
+# a count of zero becomes zero rather than negative infinity, and
+# squishes together small values more than a plain logarithm would. We
+# could squish small values even further by normalizing SRP68 to a lower
+# value. This is a simple form of "variance stabilizing transformation".
 
 normalizer <- counts |>
     filter(gene == "SRP68") |>
-    select(sample, norm=count)
-
-moderation <- 1/mean(normalizer$norm)
+    mutate(norm = count/1500) |>
+    select(sample, norm)
 
 counts_norm <- counts |>
     left_join(normalizer, by="sample") |>
     mutate(
         norm_count = count/norm,
-        log_norm_count = log2(norm_count+moderation)
+        log_norm_count = log2(norm_count+1)
     )
 
 ggplot(counts_norm, aes(x=sample, y=log_norm_count)) +
     geom_boxplot() +
     coord_flip()
 
+
+# Note: Here all of the genes are potentially differentially expressed.
+# For a full RNA-Seq data set we would probably assume most genes aren't
+# differentially expressed, so rather than nominating a normalizing gene
+# we would normalize by total library size. Often units of "Counts Per
+# Million" (CPM) are used. A slight adjustment using the "TMM" method as
+# calculated by `calcNormFactors` in `edgeR` is often applied:
 
 # For a full sized RNA-Seq dataset:
 library(edgeR)
@@ -424,12 +439,12 @@ mat <- counts_untidy |>
 adjusted_lib_sizes <- colSums(mat) * calcNormFactors(mat)
 normalizer_by_tmm <- tibble(
     sample=names(adjusted_lib_sizes),
-    norm=adjusted_lib_sizes)
+    norm=adjusted_lib_sizes / 1e6)
 
 
-# (In practice, with a full size RNA-Seq dataset I would use the `edgeR`
+# In practice, with a full size RNA-Seq dataset I would use the `edgeR`
 # function `cpm`, which performs the same type of normalization and log
-# transformation as above.)
+# transformation as above.
 
 # Whatever your data is measuring, two common themes are:
 

@@ -2281,8 +2281,8 @@ frame that we can use for other purposes.</p></li>
 </div>
 <div id="improving-load_fastqc" class="section level2">
 <h2>Improving load_fastqc</h2>
-<p>Our <code>load_fastqc</code> function will currently fail in a
-confusing way if it is given the wrong file:</p>
+<p>Our <code>load_fastqc</code> function produces an unexpected return
+value if it is given the wrong file:</p>
 <pre class="r"><code>load_fastqc(&quot;Day0_fastqc/fastqc_data.txt&quot;)</code></pre>
 <pre><code>## Warning: One or more parsing issues, call `problems()` on your data frame for details, e.g.:
 ##   dat &lt;- vroom(...)

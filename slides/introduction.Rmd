@@ -380,7 +380,7 @@ Example from: [Wickham, H. (2015) Tidy data. The Journal of Statistical Software
 
 <img src="../figures/tidy.png" height="450">
 
-("melt" = "gather" = "pivot_longer")
+("melt" = "gather" = "pivot_longer", [see this animation](https://www.garrickadenbuie.com/project/tidyexplain/#pivot-wider-and-longer))
 
 ## Learning more
 

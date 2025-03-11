@@ -466,8 +466,8 @@ table(bigtab$test, bigtab$grade)
 ## ________________________________
 ## ----> Improving load_fastqc ----
 
-# Our `load_fastqc` function will currently fail in a confusing way if
-# it is given the wrong file:
+# Our `load_fastqc` function produces an unexpected return value if it
+# is given the wrong file:
 
 load_fastqc("Day0_fastqc/fastqc_data.txt")
 
