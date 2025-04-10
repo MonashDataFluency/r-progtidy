@@ -537,8 +537,8 @@ source("fastqc.R", local=TRUE)
 # working directory is set to the project folder. Do not use `setwd()`
 # to change the working directory in your scripts, as your code will
 # then only work from the exact location it is in. It will stop working
-# if you move it, and it won't work for other people if you share your
-# code.
+# if you move your project, and it won't work for other people if you
+# share your code.
 
 # I like to organize large projects into multiple sub-folders:
 

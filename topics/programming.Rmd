@@ -695,7 +695,7 @@ Similarly, if you are going to be doing several different things with a data set
 
 # Organizing a project
 
-Your project should live in its own folder. Using RStudio, you should create a "Project" for the project. When you open the project, the working directory is set to the project folder. Do not use `setwd()` to change the working directory in your scripts, as your code will then only work from the exact location it is in. It will stop working if you move it, and it won't work for other people if you share your code.
+Your project should live in its own folder. Using RStudio, you should create a "Project" for the project. When you open the project, the working directory is set to the project folder. Do not use `setwd()` to change the working directory in your scripts, as your code will then only work from the exact location it is in. It will stop working if you move your project, and it won't work for other people if you share your code.
 
 I like to organize large projects into multiple sub-folders:
 
