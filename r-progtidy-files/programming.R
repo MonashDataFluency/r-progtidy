@@ -532,7 +532,15 @@ source("fastqc.R", local=TRUE)
 # ______________________________
 # ==== Organizing a project ====
 
-# I like to organize large projects into multiple folders:
+# Your project should live in its own folder. Using RStudio, you should
+# create a "Project" for the project. When you open the project, the
+# working directory is set to the project folder. Do not use `setwd()`
+# to change the working directory in your scripts, as your code will
+# then only work from the exact location it is in. It will stop working
+# if you move it, and it won't work for other people if you share your
+# code.
+
+# I like to organize large projects into multiple sub-folders:
 
 /raw        Raw data     (Do not edit!)
 /output     Output files (Fine to delete!)
@@ -541,11 +549,11 @@ source("fastqc.R", local=TRUE)
 README.txt
 
 
-# Use version control, such as Git + GitHub.
+# Possibly use version control, such as Git + GitHub.
 
-# Use `renv` to manage installed packages per project, and keep track of
-# the exact versions of packages you've used. Also `rig` can be used to
-# manage R versions.
+# Possibly use `renv` to manage installed packages per project, and keep
+# track of the exact versions of packages you've used. Also `rig` can be
+# used to manage R versions.
 
 # Raw data files should have an accompanying "data dictionary",
 # describing exactly what the columns of the file mean and any special
